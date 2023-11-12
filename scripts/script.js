@@ -16,10 +16,12 @@ async function fetchDataAndRender() {
 
     const barsGroup = svg.append("g").attr("class", "bars-group");
 
-    let yScale = null;
-    let xScale = null;
-    let xAxis = null;
-    let yAxis = null;
+    let ratingYScale;
+    let favoritesYScale;
+    let xScale;
+    let xAxis;
+    let ratingYAxis;
+    let favoritesYAxis;
 
     let dataset = data;
 
@@ -33,24 +35,26 @@ async function fetchDataAndRender() {
 
       console.log("Sorted data by " + id + " : ", dataset);
 
-      updateChart();
+      updateChart(id);
     });
 
     function init(dataset, isFastest) {
       setUp(dataset, isFastest);
 
       createDefaultChart(dataset);
-      console.log("yScale domain:", yScale.domain());
+      console.log("yScale domain:", ratingYScale.domain());
 
       addAxes();
     }
 
     function setUp(dataset, isFastest) {
-      yScale = createScaleY(dataset);
+      ratingYScale = createRatingScaleY(dataset);
+      favoritesYScale = createFavoritesScaleY(dataset);
       xScale = createScaleX(dataset);
 
       xAxis = createAxisX(xScale, isFastest);
-      yAxis = createAxisY(yScale);
+      ratingYAxis = createAxisY(ratingYScale);
+      favoritesYAxis = createAxisY(favoritesYScale);
     }
 
     function createDefaultChart(dataset) {
@@ -64,18 +68,17 @@ async function fetchDataAndRender() {
           return xScale(i) + padding;
         })
         .attr("y", function (d) {
-          return yScale(d.rating);
+          return ratingYScale(d.rating);
         })
         .attr(
           "width",
-          w / dataset.length - 2 * padding - (2 * axisPadding) / dataset.length
+          w / dataset.length - (2 * padding) - (2 * axisPadding) / dataset.length
         )
         .attr("height", function (d) {
-          const height = h - padding - axisPadding - yScale(d.rating);
-          return height;
+          return h - padding - axisPadding - ratingYScale(d.rating);
         })
         .attr("fill", function (d) {
-          return "rgb(0, 0, " + (256 - d.rating) + ")";
+          return "rgb(0, 0, " + (255 - d.rating) + ")";
         });
 
       barsGroup
@@ -88,7 +91,7 @@ async function fetchDataAndRender() {
           return xScale(i) + padding + (w / dataset.length - 2 * padding) / 2;
         })
         .attr("y", function (d) {
-          return yScale(d.rating) - 10; 
+          return ratingYScale(d.rating) - 10; 
         })
         .attr("text-anchor", "middle")
         .text(function (d) {
@@ -100,31 +103,46 @@ async function fetchDataAndRender() {
       return (
         d3
           .scaleBand()
-          .range([padding + axisPadding, w - padding - axisPadding])
           .domain(dataset.map((d, i) => i))
+          .range([padding + axisPadding, w - padding - axisPadding])
       );
     }
 
-    function createScaleY(dataset) {
+    function createRatingScaleY(dataset) {
         return d3
           .scaleLinear()
           .domain([
             0,
             d3.max(dataset, function (d) {
-              return +d.rating;
+              return + d.rating;
             }),
           ])
           .range([h - padding - axisPadding, padding + axisPadding])
           .nice();
-      }      
+      }     
+      function createFavoritesScaleY(dataset) {
+        return d3
+          .scaleLinear()
+          .domain([
+            0,
+            d3.max(dataset, function (d) {
+              return + d.favorites;
+            }),
+          ])
+          .range([h - padding - axisPadding, padding + axisPadding])
+          .nice();
+      }       
       
 
     function createAxisY(yScale) {
-      return d3.axisLeft().scale(yScale).ticks(5);
+      return d3
+        .axisLeft()
+        .scale(yScale)
+        .ticks(5);
     }
 
 
-function createAxisX(xScale, isFastest) {
+function createAxisX(xScale) {
     return d3
       .axisBottom()
       .scale(xScale)
@@ -144,7 +162,7 @@ function createAxisX(xScale, isFastest) {
         .append("g")
         .attr("transform", "translate(" + (padding + axisPadding) + ",0)")
         .attr("id", "yAxis")
-        .call(yAxis);
+        .call(ratingYAxis);
 
       formatAxisX();
     }
@@ -159,9 +177,8 @@ function createAxisX(xScale, isFastest) {
         .style("text-anchor", "end");
     }
 
-    function updateChart() {
+    function updateChart(id) {
         const randomColor = d3.interpolateRainbow(Math.random());
-    
         barsGroup
             .selectAll(".bar")
             .data(dataset)
@@ -171,14 +188,21 @@ function createAxisX(xScale, isFastest) {
                 return xScale(i) + padding;
             })
             .attr("y", function (d) {
-                return yScale(d.rating);
+              if (id === "favorites") {
+                return favoritesYScale(d.favorites);
+              } 
+              return ratingYScale(d.rating);
             })
             .attr("width", w / dataset.length - 2 * padding - (2 * axisPadding) / dataset.length)
             .attr("height", function (d) {
-                return h - padding - axisPadding - yScale(d.rating);
+              if (id === "favorites") {
+                return h - padding - axisPadding - favoritesYScale(d.favorites);
+              } else {
+                return h - padding - axisPadding - ratingYScale(d.rating);
+              }
             })
             .attr("fill", randomColor);
-    
+
         barsGroup
             .selectAll(".bar-label")
             .data(dataset)
@@ -188,15 +212,39 @@ function createAxisX(xScale, isFastest) {
                 return xScale(i) + padding + (w / dataset.length - 2 * padding) / 2;
             })
             .attr("y", function (d) {
-                return yScale(d.rating) - 10;
+                return ratingYScale(d.rating) - 10;
             })
             .text(function (d) {
-                return d.rating;
+              if (id === "favorites") {
+                return d.favorites;
+              } else {
+                return d.rating; 
+              }
             })
             .attr("fill", randomColor);
+
+            barsGroup
+            .selectAll(".bar-label")
+            .data(data)
+            .transition()
+            .duration(1000)
+            .text(function (d) {
+              if (id === "favorites") {
+                return d.favorites;
+              } else {
+                return d.rating; 
+              }
+            })
+            .attr("y", function (d) {
+              if (id === "favorites") {
+                return favoritesYScale(d.favorites) - 10; 
+              } else {
+                return ratingYScale(d.rating) - 10; 
+              }
+            }); 
     
         svg.select("#xAxis").call(xAxis);
-        svg.select("#yAxis").call(yAxis);
+        
     
         barsGroup.selectAll(".bar")
             .on("mouseover", function (event, d) {
@@ -216,19 +264,21 @@ function createAxisX(xScale, isFastest) {
             });
     }
     
-    
-
-    function sortData(by) {
-      if (by === "rating") {
+    function sortData(id) {
+      // De forskellige sorteringer alt efter kategori
+      if (id === "rating") {
         dataset.sort(function (a, b) {
+          svg.select("#yAxis").call(ratingYAxis)
           return a.rating - b.rating;
         });
-      } else if (by === "productionYear") {
+      } else if (id === "productionYear") {
         dataset.sort(function (a, b) {
+          svg.select("#yAxis").call(ratingYAxis)
           return a.productionYear - b.productionYear;
         });
-      } else if (by === "favorites") {
+      } else if (id === "favorites") {
         dataset.sort(function (a, b) {
+          svg.select("#yAxis").call(favoritesYAxis);
           return a.favorites - b.favorites;
         });
       }
