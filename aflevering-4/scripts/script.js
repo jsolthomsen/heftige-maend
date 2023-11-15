@@ -18,10 +18,12 @@ async function fetchDataAndRender() {
 
     let ratingYScale;
     let favoritesYScale;
+    let productionYearYScale;
     let xScale;
     let xAxis;
     let ratingYAxis;
     let favoritesYAxis;
+    let productionYearYAxis;
 
     let dataset = data;
 
@@ -50,11 +52,13 @@ async function fetchDataAndRender() {
     function setUp(dataset, isFastest) {
       ratingYScale = createRatingScaleY(dataset);
       favoritesYScale = createFavoritesScaleY(dataset);
+      productionYearYScale = createProductionYearScaleY(dataset);
       xScale = createScaleX(dataset);
 
       xAxis = createAxisX(xScale, isFastest);
       ratingYAxis = createAxisY(ratingYScale);
       favoritesYAxis = createAxisY(favoritesYScale);
+      productionYearYAxis = createAxisY(productionYearYScale);
     }
 
     function createDefaultChart(dataset) {
@@ -131,7 +135,19 @@ async function fetchDataAndRender() {
           ])
           .range([h - padding - axisPadding, padding + axisPadding])
           .nice();
-      }       
+      }      
+      function createProductionYearScaleY(dataset) {
+        return d3
+          .scaleLinear()
+          .domain([
+            0,
+            d3.max(dataset, function (d) {
+              return + d.productionYear;
+            }),
+          ])
+          .range([h - padding - axisPadding, padding + axisPadding])
+          .nice();
+      }    
       
 
     function createAxisY(yScale) {
@@ -190,15 +206,20 @@ function createAxisX(xScale) {
             .attr("y", function (d) {
               if (id === "favorites") {
                 return favoritesYScale(d.favorites);
-              } 
-              return ratingYScale(d.rating);
+              } else if (id === "rating") {
+                return ratingYScale(d.rating);
+              } else {
+                return productionYearYScale(d.productionYear);
+              }
             })
             .attr("width", w / dataset.length - 2 * padding - (2 * axisPadding) / dataset.length)
             .attr("height", function (d) {
               if (id === "favorites") {
                 return h - padding - axisPadding - favoritesYScale(d.favorites);
-              } else {
+              } else if (id === "rating"){
                 return h - padding - axisPadding - ratingYScale(d.rating);
+              } else {
+                return h - padding - axisPadding - productionYearYScale(d.productionYear);
               }
             })
             .attr("fill", randomColor);
@@ -217,8 +238,10 @@ function createAxisX(xScale) {
             .text(function (d) {
               if (id === "favorites") {
                 return d.favorites;
-              } else {
+              } else if (id === "rating") {
                 return d.rating; 
+              } else {
+                return d.productionYear;
               }
             })
             .attr("fill", randomColor);
@@ -231,15 +254,19 @@ function createAxisX(xScale) {
             .text(function (d) {
               if (id === "favorites") {
                 return d.favorites;
-              } else {
+              } else if (id === "rating"){
                 return d.rating; 
+              } else {
+                return d.productionYear;
               }
             })
             .attr("y", function (d) {
               if (id === "favorites") {
                 return favoritesYScale(d.favorites) - 10; 
-              } else {
+              } else if (id === "rating"){
                 return ratingYScale(d.rating) - 10; 
+              } else {
+                return productionYearYScale(d.productionYear) - 10;
               }
             }); 
     
@@ -273,7 +300,7 @@ function createAxisX(xScale) {
         });
       } else if (id === "productionYear") {
         dataset.sort(function (a, b) {
-          svg.select("#yAxis").call(ratingYAxis)
+          svg.select("#yAxis").call(productionYearYAxis)
           return a.productionYear - b.productionYear;
         });
       } else if (id === "favorites") {
