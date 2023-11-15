@@ -1,23 +1,64 @@
 document.addEventListener('DOMContentLoaded', function () {
+    
+    function swim() {
+        const shark = document.querySelector(".shark");
+        const water = document.querySelector(".water");
+    
+        if (shark && water) {
+            shark.classList.add("shark-delay");
+    
+            // Nulstil vandanimationen
+            water.style.animation = "none";
+            void water.offsetWidth; // Trigger reflow (repaint) for at annullere animationen
+            water.style.animation = null;
+    
+            setTimeout(function () {
+                shark.classList.remove("shark-delay");
+                water.style.animation = "riseAndFall 20s linear"; // Start vandanimationen igen
+            }, 0); // Nulstil med en lille forsinkelse for at sikre, at det sker umiddelbart efter
+    
+            generateBubbles();
+
+            setTimeout(function () {
+                water.style.animationPlayState = "paused"; // Stop vandanimationen
+            }, 20000); // Fjern .shark-delay efter yderligere 20 sekunder
+        } else {
+            console.error("Couldn't find shark or water element.");
+        }
+    }
+
+    function generateBubbles() {
+        const numBubbles = 20; // Antallet af bobler
+        const water = document.querySelector(".water");
+    
+        for (let i = 0; i < numBubbles; i++) {
+            const bubble = document.createElement("div");
+            bubble.classList.add("bubble");
+            bubble.style.left = Math.random() * 100 + "%";
+            bubble.style.animationDuration = Math.random() * 3 + 2 + "s";
+            water.appendChild(bubble);
+        }
+    }
+    
+    swim(); // Start svømmeanimationen ved indlæsning
+    
+    setInterval(swim, 120000); // Gentag svømmeanimationen hvert andet minut
+    
+
     const width = 1000;
     const height = 600;
-
 
     const svg = d3.select('body').append('svg')
         .attr('width', width)
         .attr('height', height);
 
-
     const g = svg.append('g');
-
 
     const tooltip = d3.select('body').append('div')
         .attr('class', 'tooltip')
         .style('opacity', 0);
 
-
     let mergedData; // Declare mergedData in the outer scope
-
 
     const fictiveData = {
         data: [
@@ -30,26 +71,21 @@ document.addEventListener('DOMContentLoaded', function () {
         ]
     };
 
-
     d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
         .then(data => {
             const countries = topojson.feature(data, data.objects.countries);
             const projection = d3.geoMercator().fitSize([width, height], countries);
             const pathGenerator = d3.geoPath().projection(projection);
 
-
             // Normalize case for fictive data names
             const normalizedFictiveDataNames = fictiveData.data.map(data => data.name.toLowerCase().trim());
-
 
             // Print out unique country names from both datasets
             const uniqueFictiveDataNames = new Set(normalizedFictiveDataNames);
             const uniqueFeatureNames = new Set(countries.features.map(feature => feature.properties.name.toLowerCase().trim()));
 
-
             console.log('Unique Fictive Data Names:', Array.from(uniqueFictiveDataNames));
             console.log('Unique Feature Names:', Array.from(uniqueFeatureNames));
-
 
             // Function to calculate similarity ratio between two strings
             function calculateSimilarity(str1, str2) {
@@ -57,34 +93,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 const normalizedStr1 = normalize(str1);
                 const normalizedStr2 = normalize(str2);
 
-
                 let longer = normalizedStr1;
                 let shorter = normalizedStr2;
-
 
                 if (normalizedStr1.length < normalizedStr2.length) {
                     longer = normalizedStr2;
                     shorter = normalizedStr1;
                 }
 
-
                 const longerLength = longer.length;
-
 
                 if (longerLength === 0) {
                     return 1.0; // Both strings are empty, perfect match
                 }
 
-
                 return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
             }
-
 
             // Function to calculate edit distance between two strings
             function editDistance(str1, str2) {
                 str1 = str1.toLowerCase();
                 str2 = str2.toLowerCase();
-
 
                 const costs = new Array();
                 for (let i = 0; i <= str1.length; i++) {
@@ -110,29 +139,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 return costs[str2.length];
             }
 
+            // ...
+
+            // ...
 
             mergedData = countries.features.map(feature => {
                 let featureName = feature.properties.name || feature.properties;
-           
+            
                 if (typeof featureName === 'object') {
                     featureName = featureName.name;
                 }
-           
+            
                 const lowerCaseFeatureName = featureName.toLowerCase().trim();
-           
+            
                 // Find the best match
                 const matches = normalizedFictiveDataNames.map(fictiveName => ({
                     name: fictiveName,
                     similarity: calculateSimilarity(lowerCaseFeatureName, fictiveName),
                 }));
-           
+            
                 const bestMatch = matches.reduce((best, current) => (current.similarity > best.similarity ? current : best));
-           
+            
                 console.log('Matching:', bestMatch.similarity > 0.5, 'Best Match:', bestMatch.name);
-           
+            
                 if (bestMatch.similarity > 0.5) {
                     const countryData = fictiveData.data.find(data => data.name.toLowerCase().trim() === bestMatch.name.toLowerCase().trim());
-           
+            
                     return {
                         ...feature,
                         value: countryData.value,
@@ -147,12 +179,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     };
                 }
             });
-           
+            
 // ...
 
-
-           
-
+            
 
             // Dynamically set color scale domain based on data values
             const maxDataValue = d3.max(mergedData, d => d.value);
@@ -160,13 +190,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 .domain([0, maxDataValue])
                 .nice();
 
-
             console.log('Color Scale Domain:', colorScale.domain());
-
 
             // Draw map with colored countries
             // ...
-
 
             g.selectAll('path')
                 .data(mergedData)
@@ -177,19 +204,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 // ...
                 .on('mouseover', function (event, d) {
                     console.log('Mouseover event triggered:', event, d);
-               
+                
                     // Check if 'd' is a GeoJSON feature
                     const feature = d && d.type === 'Feature' ? d : d3.select(this).datum();
-               
+                
                     if (feature && feature.properties && feature.properties.name) {
                         const countryName = feature.properties.name;
-               
+                
                         console.log('Country data found:', feature);
-               
+                
                         tooltip.transition()
                             .duration(200)
                             .style('opacity', .9);
-               
+                
                         tooltip.html(`<strong>${countryName}</strong><br/>Value: ${feature.value}`)
                             .style('left', (event.pageX) + 'px')
                             .style('top', (event.pageY - 28) + 'px');
@@ -197,18 +224,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.error('Country data not found or invalid:', feature);
                     }
                 })
-               
-               
-               
-               
-               
-               
+                
+                
+                
+                
+                
+                
                 .on('mouseout', function () {
                     tooltip.transition()
                         .duration(500)
                         .style('opacity', 0);
                 });
-
 
             // ...
         })
