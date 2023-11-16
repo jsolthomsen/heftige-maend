@@ -50,3 +50,26 @@ a:hover {
     font-weight: 600;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
+
+/*Mockup */
+
+#div1 {
+width: 95%;
+height: 600px;
+background-color: lightgrey;
+margin: 2%;
+}
+
+#div1_1 {
+    width: 40%;
+    height: 600px;
+    background-color: white;
+    }
+
+    #div1_2 {
+        width: 40%;
+        height: 600px;
+        background-color: white;
+        position: relative;
+        float: right;
+        }
