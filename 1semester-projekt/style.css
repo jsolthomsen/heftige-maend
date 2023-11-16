@@ -1,0 +1,98 @@
+body {
+    background-image: linear-gradient(to bottom left, rgb(175, 243, 255), rgb(0, 110, 255));
+    background-color:rgb(175, 243, 255);
+    font-family: arial, sans-serif;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+h1  {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgb(0, 110, 255);
+}
+
+#billedeNr1 {
+    width: 99%;
+    border: 5px solid rgb(0, 110, 255);
+}
+
+table {
+    background-color: white;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(0, 110, 255);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+a:hover {
+    color: rgb(0, 110, 255);
+  }
+  
+  
+#ytLink {
+    border: 1px solid;
+    padding: 10px;
+    box-shadow: 5px 10px;
+}
+
+/*tabel*/
+.tabel {
+    background-image: linear-gradient(to bottom left, rgb(175, 243, 255), rgb(0, 110, 255));
+    width: 50%; 
+    margin: auto;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.række{
+    display: flex;
+    text-align: center;
+}
+
+.celle{
+    flex: 1;
+    text-align: center;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.header{
+    flex: 1;
+    color: rgb(0, 110, 255);
+    border: 1px solid black;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/*menu*/
+.menu{
+    margin: 10px;
+}
+
+.menuUnderside{
+    border: 2px solid rgb(0, 110, 255);
+    border-radius: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 10px;
+    background-color: rgb(175, 243, 255);
+    font-size: 25px;
+}
+
+.nuværendeUnderside{
+    border: 3.5px solid rgb(0, 110, 255);
+    border-radius: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 10px;
+    background-color: rgb(175, 243, 255);
+    font-size: 25px;
+    font-weight: 600;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
