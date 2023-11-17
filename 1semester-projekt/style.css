@@ -2,7 +2,7 @@ body {
     background-image: linear-gradient( rgb(175, 207, 223), rgb(74, 155, 177), rgb(41, 91, 115));
     background-color:rgb(175, 207, 223);
     font-family: arial, sans-serif;
-    background-attachment: fixed;
+    margin: 0;
 }
 
 h1  {
@@ -22,7 +22,13 @@ a:hover {
 
 /*menu*/
 .menu{
-    margin: 10px;
+    height: 150px;
+    padding: 1%;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-image: linear-gradient( rgb(175, 207, 223), rgb(175, 207, 223), rgba(175, 207, 223, 0));
 }
 
 .menuUnderside{
@@ -56,20 +62,21 @@ a:hover {
 #div1 {
 width: 95%;
 height: 600px;
-background-color: lightgrey;
+background-color: rgba(211, 211, 211, 0.5);
 margin: 2%;
+
 }
 
 #div1_1 {
     width: 40%;
     height: 600px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     }
 
     #div1_2 {
         width: 40%;
         height: 600px;
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.5);
         position: relative;
         float: right;
         }
