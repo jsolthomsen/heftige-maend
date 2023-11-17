@@ -17,15 +17,19 @@ a {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+a:hover {
+    color: rgb(38, 116, 137);
+  }
+
 button {
     text-decoration: none;
     color: rgb(74, 155, 177);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-a:hover {
+button:hover {
     color: rgb(38, 116, 137);
-  }
+}
 
 /*menu*/
 .menu{
