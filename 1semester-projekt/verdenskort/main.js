@@ -7,8 +7,6 @@ let g;
 let zoomContainer;
 let width;
 let height;
-let centerX; // Added variable to store center X coordinate
-let centerY; // Added variable to store center Y coordinate
 
 document.addEventListener('DOMContentLoaded', function () {
     width = 1200;
@@ -47,7 +45,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(data => {
                         if (data && data.objects && data.objects.countries) {
                             const countries = topojson.feature(data, data.objects.countries);
-                            const projection = d3.geoMercator().fitSize([width, height], countries);
+                            const projection = d3.geoMercator()
+                                .fitSize([width, height], countries)
+                                .scale(150)
+                                .translate([width / 2, height / 1.5]);
                             pathGenerator = d3.geoPath().projection(projection);
 
                             // Set the global countries variable
@@ -57,6 +58,49 @@ document.addEventListener('DOMContentLoaded', function () {
                             const colorScale = d3.scaleSequential(d3.interpolateReds)
                                 .domain([1, 200, 1000, maxDataValue])
                                 .nice();
+
+                            
+
+
+
+
+
+const legendValues = [0, 1, 100, 1000];
+
+const colorForZero = 'gray';
+
+const legendColors = legendValues.map(value => (value === 0 ? colorForZero : colorScale(value)));
+
+
+const legend = svg.append('g')  
+  .attr('id', 'legend')  
+  .attr('transform', 'translate(0, ' + (height - 100) + ')');
+
+
+legend.selectAll('rect')
+  .data(legendColors)
+  .enter()
+  .append('rect')
+  .attr('width', 18)
+  .attr('height', 18)
+  .attr('x', 10)
+  .attr('y', (d, i) => i * 25)
+  .attr('class', 'legend-rect')
+  .style('fill', d => d);
+
+legend.selectAll('text')
+  .data(legendValues)
+  .enter()
+  .append('text')
+  .attr('x', 35)
+  .attr('y', (d, i) => i * 25 + 9)
+  .attr('dy', '0.32em')
+  .attr('class', 'legend-text')
+  .text(d => d);
+
+  svg.append(() => legend.node());
+
+
 
                             const unmatchedCountries = mergedData.filter(d => {
                                 const matchingFeature = countries.features.find(f => f.properties && f.properties.name && typeof f.properties.name === 'string' && f.properties.name.trim().toLowerCase() === (d.name && typeof d.name === 'string' ? d.name.trim().toLowerCase() : ''));
@@ -125,7 +169,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Error loading data from the server:', error));
 });
 
-// ... (previous code)
 
 function clicked(event, element, d) {
     if (!pathGenerator) {
@@ -145,7 +188,7 @@ function clicked(event, element, d) {
         const translateX = width / 2 - scaleFactor * (x0 + x1) / 2;
         const translateY = height / 2 - scaleFactor * (y0 + y1) / 2;
 
-        d3.selectAll('.country.active') // Deselect all active countries
+        d3.selectAll('.country.active') 
             .classed('active', false)
             .transition().duration(750).attr('d', pathGenerator);
 
@@ -174,16 +217,16 @@ function reset(event, d) {
         return;
     }
 
-    // Set a transition duration
+    
     const duration = 750;
 
-    // Set the zoom identity
+    
     const transform = d3.zoomIdentity;
 
-    // Apply the transition
+    
     svg.transition().duration(duration).call(zoom.transform, transform);
     
-    // Deselect all active countries
+    
     d3.selectAll('.country.active')
         .classed('active', false)
         .transition().duration(duration).attr('d', pathGenerator);
