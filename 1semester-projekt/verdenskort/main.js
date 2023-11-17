@@ -72,7 +72,7 @@ const colorForZero = 'gray';
 const legendColors = legendValues.map(value => (value === 0 ? colorForZero : colorScale(value)));
 
 
-const legend = svg.append('g')  
+const legend = zoomContainer.append('g')  
   .attr('id', 'legend')  
   .attr('transform', 'translate(0, ' + (height - 100) + ')');
 

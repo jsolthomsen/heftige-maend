@@ -77,6 +77,6 @@ svg {
     background-color: #ffffff; /* Background color for legend container */
     border-radius: 8px;
     padding: 10px;
-    opacity: 0.1;
+    opacity: 0.2;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
