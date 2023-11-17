@@ -17,6 +17,12 @@ a {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+button {
+    text-decoration: none;
+    color: rgb(74, 155, 177);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
 a:hover {
     color: rgb(38, 116, 137);
   }
@@ -98,14 +104,61 @@ margin: 2%;
     width: 40%;
     height: 600px;
     background-color: rgba(255, 255, 255, 0.5);
-    position: relative;
     float: right;
     }
 
-    #button1 {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        /* Tilføj yderligere styling efter behov */
-      }
-      
+#button1 {
+
+    cursor: pointer;
+    border: 2px solid rgb(74, 155, 177);
+    border-radius: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 10px;
+    background-color: rgb(206, 247, 254);
+    font-size: 25px;
+    }
+
+#button2 {
+
+    cursor: pointer;
+    border: 2px solid rgb(74, 155, 177);
+    border-radius: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 10px;
+    background-color: rgb(206, 247, 254);
+    font-size: 25px;
+    }
+
+#button3 {
+
+    cursor: pointer;
+    border: 2px solid rgb(74, 155, 177);
+    border-radius: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 10px;
+    background-color: rgb(206, 247, 254);
+    font-size: 25px;
+    }
+
+#button4 {
+
+    cursor: pointer;
+    border: 2px solid rgb(74, 155, 177);
+    border-radius: 30px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 10px;
+    background-color: rgb(206, 247, 254);
+    font-size: 25px;
+    }
