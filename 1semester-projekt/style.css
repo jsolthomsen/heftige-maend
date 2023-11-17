@@ -101,3 +101,11 @@ margin: 2%;
     position: relative;
     float: right;
     }
+
+    #button1 {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        /* Tilføj yderligere styling efter behov */
+      }
+      
