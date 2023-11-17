@@ -65,19 +65,39 @@ width: 95%;
 height: 600px;
 background-color: rgba(211, 211, 211, 0.5);
 margin: 2%;
-
 }
 
-#div1_1 {
+#div2 {
+    width: 95%;
+    height: 600px;
+    background-color: rgba(211, 211, 211, 0.5);
+    margin: 2%;
+    }
+
+#div3 {
+    width: 95%;
+    height: 600px;
+    background-color: rgba(211, 211, 211, 0.5);
+    margin: 2%;
+    }
+
+#div4 {
+    width: 95%;
+    height: 600px;
+    background-color: rgba(211, 211, 211, 0.5);
+    margin: 2%;
+    }
+
+.visL {
     width: 40%;
     height: 600px;
     background-color: rgba(255, 255, 255, 0.5);
     }
 
-    #div1_2 {
-        width: 40%;
-        height: 600px;
-        background-color: rgba(255, 255, 255, 0.5);
-        position: relative;
-        float: right;
-        }
+.visR {
+    width: 40%;
+    height: 600px;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: relative;
+    float: right;
+    }
