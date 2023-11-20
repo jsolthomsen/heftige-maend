@@ -8,6 +8,28 @@ const data = [
   { gender: "Female", fatality: "andet", population: 0 },
 ];
   
+//HENT DATA
+
+d3.json('http://localhost:3000/attacks')
+  .then(data => {
+    // Behandle dataen, fx ved at kalde en funktion, der opdaterer dit diagram
+    handleData(data);
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
+
+// Funktion til at håndtere dataen, du kan tilpasse denne funktion efter dine behov
+function handleData(data) {
+  console.log('Data from server:', data);
+}
+
+
+//HENT DATA SLUT
+
+
+//CREATE CHART
+
 function createChart(data) {
   // Specify the chart’s dimensions.
   const width = 928;
