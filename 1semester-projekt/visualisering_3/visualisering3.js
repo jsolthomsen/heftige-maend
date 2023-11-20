@@ -84,7 +84,7 @@ function createChart(data) {
 
   // Farveskala til legenden
   const legendColor = d3.scaleOrdinal()
-  .domain(series.map(d => d.key))
+  .domain(series.map(d => d.key).reverse()) // Reverse rækkefølgen af domænet
   .range(customColors);
 
   // Opret legend
