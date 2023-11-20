@@ -1,10 +1,10 @@
 //fiktivt datasæt
 const data = [
-  { gender: "Male", fatality: "non-fatal", population: 24 },
-  { gender: "Male", fatality: "fatal", population: 53 },
+  { gender: "Male", fatality: "Non-Fatal", population: 24 },
+  { gender: "Male", fatality: "Fatal", population: 53 },
   { gender: "Male", fatality: "andet", population: 0 },
-  { gender: "Female", fatality: "non-fatal", population: 15 },
-  { gender: "Female", fatality: "fatal", population: 7 },
+  { gender: "Female", fatality: "Non-Fatal", population: 15 },
+  { gender: "Female", fatality: "Fatal", population: 7 },
   { gender: "Female", fatality: "andet", population: 0 },
 ];
   
@@ -79,6 +79,38 @@ function createChart(data) {
       .attr("transform", `translate(${marginLeft},0)`)
       .call(d3.axisLeft(y).ticks(null, "s"))
       .call(g => g.selectAll(".domain").remove());
+
+  //Legend
+
+  // Farveskala til legenden
+  const legendColor = d3.scaleOrdinal()
+  .domain(series.map(d => d.key))
+  .range(customColors);
+
+  // Opret legend
+  const legend = svg.append("g")
+  .attr("class", "legend")
+  .attr("transform", `translate(${width - marginRight - 100},${marginTop})`); // Justér placeringen efter behov
+
+  legend.selectAll("rect")
+  .data(legendColor.domain())
+  .enter()
+  .append("rect")
+  .attr("x", 0)
+  .attr("y", (d, i) => i * 20)
+  .attr("width", 18)
+  .attr("height", 18)
+  .attr("fill", d => legendColor(d));
+
+  legend.selectAll("text")
+  .data(legendColor.domain())
+  .enter()
+  .append("text")
+  .attr("x", 25)
+  .attr("y", (d, i) => i * 20 + 9)
+  .attr("dy", "0.35em")
+  .style("font-size", "12px")
+  .text(d => d);
 
   // Return the chart with the color scale as a property (for the legend).
   return Object.assign(svg.node(), {scales: {color}});
