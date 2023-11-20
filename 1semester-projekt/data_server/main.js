@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require("cors"); // Add this line
+const cors = require("cors");
 const app = express();
 const port = 3000;
 const { Client } = require("pg");
@@ -18,17 +18,14 @@ const klient = new Client({
 });
 
 
-const qry = 'select * from value_pr_countrY';
 klient.connect();
 
-
-// Enable CORS for all routes
 app.use(cors());
 
 
-app.get("/attacks", async (req, res) => {
+app.get("/values", async (req, res) => {
  try {
-   let queryData = await klient.query(qry);
+   let queryData = await klient.query('select * from value_pr_country');
    res.json({
      "ok": true,
      "attacks": queryData.rows,

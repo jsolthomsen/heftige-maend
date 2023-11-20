@@ -7,10 +7,12 @@ let g;
 let zoomContainer;
 let width;
 let height;
+let legendHeight;
 
 document.addEventListener('DOMContentLoaded', function () {
     width = 1200;
     height = 800;
+    legendHeight = 20;
 
     svg = d3.select('body').append('svg')
         .attr('width', width)
@@ -31,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     svg.call(zoom.transform, d3.zoomIdentity);
 
-    d3.json('http://localhost:3000/attacks')
+    d3.json('http://localhost:3000/values')
         .then(serverData => {
             if (serverData && serverData.attacks) {
                 mergedData = serverData.attacks.map(serverItem => ({
@@ -51,56 +53,75 @@ document.addEventListener('DOMContentLoaded', function () {
                                 .translate([width / 2, height / 1.5]);
                             pathGenerator = d3.geoPath().projection(projection);
 
-                            // Set the global countries variable
                             window.countries = countries;
 
                             const maxDataValue = d3.max(mergedData, d => d.value);
                             const colorScale = d3.scaleSequential(d3.interpolateReds)
-                                .domain([1, 200, 1000, maxDataValue])
+                                .domain([1, 200, 2000])
                                 .nice();
 
+                                const legendContainer = zoomContainer.append('g')
+                                .attr('class', 'legend-container')
+                                .attr('transform', 'translate(10, ' + (height - legendHeight) + ')');
                             
+                                const legendValues = d3.range(0, 1.01, 1.01 / 100); 
+                            const legendWidth = 300;
+                            const legendRectWidth = legendWidth;
+                            
+                                const legendColorScale = d3.scaleSequential(d3.interpolateReds)
+                                .domain([0, 1])
+                                .nice();
+                            
+                            const defs = legendContainer.append('defs');
+                            const linearGradient = defs.append('linearGradient')
+                                .attr('id', 'legend-gradient')
+                                .attr('x1', '0%')
+                                .attr('y1', '0%')
+                                .attr('x2', '70%')
+                                .attr('y2', '0%')
+                                .attr('x3', '100%')
+                                .attr('y3', '0%')
 
-
-
-
-
-const legendValues = [0, 1, 100, 1000];
-
-const colorForZero = 'gray';
-
-const legendColors = legendValues.map(value => (value === 0 ? colorForZero : colorScale(value)));
-
-
-const legend = zoomContainer.append('g')  
-  .attr('id', 'legend')  
-  .attr('transform', 'translate(0, ' + (height - 100) + ')');
-
-
-legend.selectAll('rect')
-  .data(legendColors)
-  .enter()
-  .append('rect')
-  .attr('width', 18)
-  .attr('height', 18)
-  .attr('x', 10)
-  .attr('y', (d, i) => i * 25)
-  .attr('class', 'legend-rect')
-  .style('fill', d => d);
-
-legend.selectAll('text')
-  .data(legendValues)
-  .enter()
-  .append('text')
-  .attr('x', 35)
-  .attr('y', (d, i) => i * 25 + 9)
-  .attr('dy', '0.32em')
-  .attr('class', 'legend-text')
-  .text(d => d);
-
-  svg.append(() => legend.node());
-
-
+                            
+                            linearGradient.selectAll('stop')
+                                .data(legendValues)
+                                .enter().append('stop')
+                                .attr('offset', d => d * 100 + '%') 
+                                .attr('stop-color', d => legendColorScale(d));
+                            
+                            legendContainer.append('rect')
+                                .attr('width', legendWidth)
+                                .attr('height', legendHeight)
+                                .style('fill', 'url(#legend-gradient)');
+                            const tickValues = [1, 100, '500+'];
+                            
+                            legendContainer.selectAll('.tick')
+                            .data(tickValues)
+                            .enter().append('line') 
+                            .attr('class', 'tick')
+                            .attr('x1', d => legendRectWidth * (tickValues.indexOf(d) / (tickValues.length - 1)))
+                            .attr('x2', d => legendRectWidth * (tickValues.indexOf(d) / (tickValues.length - 1)))
+                            .attr('y1', 0)
+                            .attr('y2', legendHeight)
+                            .style('stroke', d => legendColorScale(d)) 
+                            .style('stroke-width', 2);
+                        
+                        legendContainer.selectAll('.tick-label')
+                            .data(tickValues)
+                            .enter().append('text')
+                            .attr('class', 'tick-label')
+                            .attr('x', d => legendRectWidth * (tickValues.indexOf(d) / (tickValues.length - 1)))
+                            .attr('y', -20)
+                            .attr('text-anchor', 'middle')
+                            .attr('fill', 'white')
+                            .text(d => d);
+                            
+                            const arrowSize = 10;
+                            const arrow = legendContainer.append('polygon')
+                            .attr('points', `0,0 ${arrowSize / 2},${arrowSize} ${arrowSize},0`)
+                            .style('fill', 'black')
+                            .style('opacity', 0)
+                        
 
                             const unmatchedCountries = mergedData.filter(d => {
                                 const matchingFeature = countries.features.find(f => f.properties && f.properties.name && typeof f.properties.name === 'string' && f.properties.name.trim().toLowerCase() === (d.name && typeof d.name === 'string' ? d.name.trim().toLowerCase() : ''));
@@ -143,16 +164,36 @@ legend.selectAll('text')
                                             tooltip.html(`<strong>${countryName}</strong><br/>Value: ${countryData.value}`)
                                                 .style('left', (event.clientX + 10) + 'px')
                                                 .style('top', (event.clientY + 10) + 'px');
+
+                                                arrow.transition().duration(200) 
+                                                .style('opacity', 1)
+                                                .attr('transform', function () {
+                                                    const legendScale = d3.scaleLinear()
+                                                        .domain([1, 200, 2000])  
+                                                        .range([0, legendWidth, legendWidth]);
+                                                    
+                                                    const translateY = -arrowSize - 2;
+                                                    const arrowPosition = countryData.value || 0;
+                                                    const translateX = legendScale(arrowPosition);
+                                                    return `translate(${translateX - arrowSize / 2}, ${translateY})`;
+                                                    
+                                                });
+                                                
+                                                
                                         }
                                         tooltip.classed('active', true);
                                     }
                                 })
+                                
                                 
                                 .on('mouseout', function () {
                                     tooltip.transition()
                                         .duration(500)
                                         .style('opacity', 0);
                                     tooltip.classed('active', false);
+
+                                    arrow.transition().duration(200) 
+                                    .style('opacity', 0);
                                 })
                                 .on('click', function (event, d) {
                                     clicked(event, this, d);
