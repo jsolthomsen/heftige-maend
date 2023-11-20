@@ -233,7 +233,6 @@ function reset(event, d) {
 }
 
 
-// ... (remaining code)
 
 function calculateBounds(data) {
     const bounds = [[Infinity, Infinity], [-Infinity, -Infinity]];
