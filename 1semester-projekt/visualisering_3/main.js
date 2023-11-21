@@ -2,12 +2,12 @@
 const data = [
   { gender: "Male", fatality: "Non-Fatal", population: 24 },
   { gender: "Male", fatality: "Fatal", population: 53 },
-  { gender: "Male", fatality: "andet", population: 0 },
+  { gender: "Male", fatality: "Andet", population: 0 },
   { gender: "Female", fatality: "Non-Fatal", population: 15 },
   { gender: "Female", fatality: "Fatal", population: 7 },
-  { gender: "Female", fatality: "andet", population: 0 },
+  { gender: "Female", fatality: "Andet", population: 0 },
 ];
-  
+
 //HENT DATA
 
 d3.json('http://localhost:3000/attacks')
@@ -19,7 +19,7 @@ d3.json('http://localhost:3000/attacks')
     console.error('There was a problem with the fetch operation:', error);
   });
 
-// Funktion til at håndtere dataen, du kan tilpasse denne funktion efter dine behov
+// Funktion til at håndtere dataen
 function handleData(data) {
   console.log('Data from server:', data);
 }
@@ -55,7 +55,7 @@ function createChart(data) {
       .domain([0, d3.max(series, d => d3.max(d, d => d[1]))])
       .rangeRound([height - marginBottom, marginTop]);
 
-  // Angiv dine egne farver i et array
+  // Farver til chart
   const customColors = ["blue", "red"];
 
       
@@ -112,7 +112,7 @@ function createChart(data) {
   // Opret legend
   const legend = svg.append("g")
   .attr("class", "legend")
-  .attr("transform", `translate(${width - marginRight - 100},${marginTop})`); // Justér placeringen efter behov
+  .attr("transform", `translate(${width - marginRight - 100},${marginTop})`); // placeringen
 
   legend.selectAll("rect")
   .data(legendColor.domain())
