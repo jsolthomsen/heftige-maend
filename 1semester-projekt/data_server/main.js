@@ -18,14 +18,21 @@ const klient = new Client({
 });
 
 
+
+const valuesQry = 'SELECT * FROM value_pr_countrY';
+const activityFatalQry = 'SELECT * FROM activity_fatality';
+
 klient.connect();
 
+// Enable CORS for all routes
 app.use(cors());
 
+klient.connect();
 
 app.get("/values", async (req, res) => {
  try {
-   let queryData = await klient.query('select * from value_pr_country');
+   let queryData = await klient.query(valuesQry);
+
    res.json({
      "ok": true,
      "attacks": queryData.rows,
@@ -37,6 +44,18 @@ app.get("/values", async (req, res) => {
    });
  }
 });
+
+app.get("/activities-fatal", async (req, res) => {
+  try {
+    let queryData = await klient.query(activityFatalQry);
+    res.json(queryData.rows);
+  } catch (error) {
+    res.json({
+      "ok": false,
+      "message": error.message,
+    });
+  }
+ });
 
 
 app.listen(port, () => {
