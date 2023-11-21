@@ -1,6 +1,4 @@
-
 //HENT DATA
-
 d3.json('http://localhost:3000/attacks')
   .then(data => {
     // Behandle dataen og opret diagrammet
@@ -10,34 +8,38 @@ d3.json('http://localhost:3000/attacks')
     console.error('There was a problem with the fetch operation:', error);
   });
 
-  // Funktion til at håndtere dataen
+// Funktion til at håndtere dataen
 function handleData(data) {
   console.log('Data from server:', data);
 
   // Tjek om nødvendige nøgler findes i mindst ét element i data
-  const keyCheck = data.length > 0 && Object.keys(data[0]).includes('sex_id') && Object.keys(data[0]).includes('antal_personer') && Object.keys(data[0]).includes('antal_fatality');
+  const keyCheck = data.length > 0 &&
+    data[0].hasOwnProperty('antal_personer') &&
+    data[0].hasOwnProperty('antal_fatality') &&
+    data[0].hasOwnProperty('sex_id');
 
   if (!keyCheck) {
     console.error('Data is missing necessary keys. Please check your data structure.');
     return;
   }
 
-  // Opret diagrammet efter at have tjekket dataen
-  const chart = createChart(data);
+  // Konverter dataformatet til det forventede format
+  const formattedData = data.map(d => ({
+    gender: d.sex_id === 7 ? 'Male' : 'Female',
+    fatality: parseInt(d.antal_fatality) > 0 ? 'Fatal' : 'Non-Fatal',
+    population: parseInt(d.antal_personer),
+  }));
+
+  // Opret diagrammet med den formaterede data
+  const chart = createChart(formattedData);
 
   // Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
   document.body.appendChild(chart);
 }
 
 
-
-
-//HENT DATA SLUT
-
-
 //CREATE CHART
-
-function createChart(chartData) {
+function createChart(data) {
   // Specify the chart’s dimensions.
   const width = 928;
   const height = 500;
@@ -48,14 +50,13 @@ function createChart(chartData) {
 
   // Determine the series that need to be stacked.
   const series = d3.stack()
-      .keys(d3.union(chartData.map(d => d.antal_fatality))) // distinct series keys, in input order
-      .value(([, D], key) => D.get(key).antal_personer) // get value for each series key and stack
-    (d3.index(chartData, d => d.sex_id, d => d.antal_fatality)); // group by stack then series key
-
+      .keys(d3.union(data.map(d => d.fatality))) // distinct series keys, in input order
+      .value(([, D], key) => D.get(key).population) // get value for each series key and stack
+    (d3.index(data, d => d.gender, d => d.fatality)); // group by stack then series key
 
   // Prepare the scales for positional and color encodings.
   const x = d3.scaleBand()
-      .domain(d3.groupSort(data, D => -d3.sum(D, d => d.population), d => d.sex_id))
+      .domain(d3.groupSort(data, D => -d3.sum(D, d => d.population), d => d.gender))
       .range([marginLeft, width - marginRight])
       .padding(0.1);
 
@@ -63,7 +64,7 @@ function createChart(chartData) {
       .domain([0, d3.max(series, d => d3.max(d, d => d[1]))])
       .rangeRound([height - marginBottom, marginTop]);
 
-  // Farver til chart
+  // Angiv dine egne farver i et array
   const customColors = ["blue", "red"];
 
       
@@ -120,7 +121,7 @@ function createChart(chartData) {
   // Opret legend
   const legend = svg.append("g")
   .attr("class", "legend")
-  .attr("transform", `translate(${width - marginRight - 100},${marginTop})`); // placeringen
+  .attr("transform", `translate(${width - marginRight - 100},${marginTop})`); // Justér placeringen efter behov
 
   legend.selectAll("rect")
   .data(legendColor.domain())
@@ -143,7 +144,5 @@ function createChart(chartData) {
   .text(d => d);
 
   // Return the chart with the color scale as a property (for the legend).
-  return Object.assign(svg.node(), {scales: {color}});
+  return Object.assign(svg.node(), { scales: { color } });
 }
-
-
