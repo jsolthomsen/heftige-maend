@@ -19,8 +19,9 @@ const klient = new Client({
 
 
 
-const countryQry = 'SELECT * FROM value_pr_countrY';
+const valuesQry = 'SELECT * FROM value_pr_countrY';
 const activityFatalQry = 'SELECT * FROM activity_fatality';
+
 klient.connect();
 
 // Enable CORS for all routes
@@ -30,7 +31,7 @@ klient.connect();
 
 app.get("/values", async (req, res) => {
  try {
-   let queryData = await klient.query('select * from value_pr_country');
+   let queryData = await klient.query(valuesQry);
 
    res.json({
      "ok": true,
