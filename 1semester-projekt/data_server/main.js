@@ -27,8 +27,6 @@ klient.connect();
 // Enable CORS for all routes
 app.use(cors());
 
-klient.connect();
-
 app.get("/values", async (req, res) => {
  try {
    let queryData = await klient.query(valuesQry);
