@@ -1,4 +1,6 @@
- body {
+
+
+body {
     background-image: linear-gradient( rgb(175, 207, 223), rgb(74, 155, 177), rgb(41, 91, 115));
     background-color:rgb(175, 207, 223);
     font-family: arial, sans-serif;
@@ -43,36 +45,4 @@ svg {
 
 .tooltip.active {
     opacity: 1;
-}
-/* Style for legend rectangles */
-.legend-rect {
-    width: 18px;
-    height: 18px;
-    stroke: rgb(0, 0, 0);
-    stroke-width: 1px;
-    margin-right: 5px;
-
-}
-
-/* Style for legend text */
-.legend-text {
-    fill: #000000; /* Text color for legend text */
-    stroke: rgb(255, 255, 255);
-    stroke-width: 1px;
-    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
-}
-
-/* Style for the legend container */
-/* Style for the legend container */
-#legend-container {
-    position: absolute;
-    top: 688px;
-    left: 452px;
-    width: 100px;
-    height: 100px;
-    background-color: #ffffff; /* Background color for legend container */
-    border-radius: 8px;
-    padding: 10px;
-    opacity: 0.2;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
