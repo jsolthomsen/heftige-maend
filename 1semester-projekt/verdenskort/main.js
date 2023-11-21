@@ -81,9 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                 .domain([1, 200, 2000])
                                 .nice();
 
-                            // ... fortsætter med opsætning af legend og landevisualisering ...
-                            // ... fortsætter med opsætning af legend og landevisualisering ...
-
                             // Opret container for legenden og placer den i bunden af ​​visualiseringen
                             const legendContainer = zoomContainer.append('g')
                                 .attr('class', 'legend-container')
