@@ -72,7 +72,7 @@ button:hover {
 
 #div1 {
 width: 95%;
-height: 600px;
+height: 800px;
 background-color: rgba(211, 211, 211, 0.5);
 margin: 2%;
 }
@@ -246,4 +246,50 @@ margin: 2%;
             transform: translateX(0) scaleX(-1);
         }
     }
+
+    svg {
+        display: block;
+        margin: auto; /* Center the SVG horizontally */
+    }
+    .country {
+        stroke: #000000; /* Country border color */
+        stroke-width: 0.5; /* Country border width */
+        transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out; /* Add smooth transition effects */
+        border-radius: 8px; /* Optional: Add border-radius for rounded corners */
+        position: relative;
+    }
+    .country:hover {
+        fill: #ffc107;
+        stroke: #ff9800;
+        transition: fill 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), stroke 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+        z-index: 1;
+    }
     
+    .tooltip {
+        position: absolute;
+        padding: 10px;
+        background-color: #303030; /* Tooltip background color */
+        color: #ffffff; /* Tooltip text color */
+        border: 1px solid #ffffff; /* Tooltip border color */
+        border-radius: 6px;
+        pointer-events: none;
+        font-size: 16px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        top: 5%;
+        transform: translate(-50%, -50%); /* Center the tooltip */
+    }
+    
+    .tooltip.active {
+        opacity: 1;
+    }
+    #title {
+        font-size: 50px;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        padding-top: 30px;
+        
+    }

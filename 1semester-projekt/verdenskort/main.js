@@ -1,3 +1,4 @@
+const verdenskortet = document.getElementById("verdenskortet");
 // Variabeldeklarationer
 let mergedData;          // Samlet data fra serveren og verdenskortet
 let countryData;         // Data for det aktuelt valgte land
@@ -12,13 +13,15 @@ let legendHeight;        // Højden af ​​legen
 
 // Vent på at DOM'en er indlæst, før koden udføres
 document.addEventListener('DOMContentLoaded', function () {
+
+
     // Initialiser dimensionerne på visualiseringen
     width = 1200;
-    height = 800;
+    height = 650;
     legendHeight = 20;
 
     // Opret SVG-container
-    svg = d3.select('body').append('svg')
+    svg = d3.select('#verdenskortet').append('svg')
         .attr('width', width)
         .attr('height', height);
 

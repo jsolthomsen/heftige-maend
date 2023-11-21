@@ -4,8 +4,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
     <title>Forside</title>
-
+    <script src="verdenskort/main.js"></script>
 </head>
 <body>
     <div class="menu">
@@ -16,8 +18,11 @@
         <button id="button4">Visualisering 3</button>
     </div>
 
-    <div id="div1">
-        Verdenskort
+    <div id="div1"> <p id="title"> Hajangreb fordelt i verden </p>
+        <div id="verdenskortet"></div>
+        <div class="tooltip"></div>
+        <div id="legend"></div>
+        <div id="legend-container"></div>
     </div>
 
     <div id="div2">
