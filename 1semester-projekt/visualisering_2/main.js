@@ -1,15 +1,15 @@
-// Deklaration af vores const
-const margin = {top: 10, right: 10, bottom: 10, left: 10},
-  width = 1200 - margin.left - margin.right,
-  height = 800 - margin.top - margin.bottom;
+const margin = {top: 10, right: 10, bottom: 10, left: 10};
+const width2 = 600 - margin.left - margin.right;
+const height2 = 600 - margin.top - margin.bottom;
 
-const svg = d3.select("#my_dataviz")
+const svg2 = d3.select("#my_dataviz")
 .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+  .attr("width", width2 + margin.left + margin.right)
+  .attr("height", height2 + margin.top + margin.bottom)
 .append("g")
   .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
+
 
 // Loader JSON-data fra localhost, og starter vores treemap funktion.
 d3.json("http://localhost:3000/activities-fatal")
@@ -22,16 +22,17 @@ d3.json("http://localhost:3000/activities-fatal")
 
   function createTreemap(data) {
     // Liste over de forskellige aktiviter - det er disse keywords vi leder efter for at kategoriser aktiveter..
+
     let activities = ["Surfing", "Swimming", "Spearfishing", "Bathing", "Wading", "Diving", "Standing", "Snorkeling", "Scuba Diving", "Body Boarding"];
     
-    var x = d3.scaleLinear().range([0, width]);
-    var y = d3.scaleLinear().range([0, height]);
+    var x = d3.scaleLinear().range([0, width2]);
+    var y = d3.scaleLinear().range([0, height2]);
 
     // Zoom-in funktion på treemaps enkelte arealer
     function zoom (event, d) {
-      const transition = svg.transition().duration(1000);
+      const transition = svg2.transition().duration(1000);
       const detailData = d.parent.children || [];
-      const detailGroups = svg.selectAll(".detail")
+      const detailGroups = svg2.selectAll(".detail")
           .data(detailData)
           .enter()
           .append("g")
@@ -40,11 +41,11 @@ d3.json("http://localhost:3000/activities-fatal")
       x.domain([d.parent.x0, d.parent.x1]);
       y.domain([d.parent.y0, d.parent.y1]);
   
-      svg.selectAll("text")
+      svg2.selectAll("text")
           .transition(transition)
           .style("opacity", "0");
 
-          svg.selectAll("rect")
+          svg2.selectAll("rect")
           .transition(transition)
           .attr("x", function(d) { return x(d.parent.x0); })
           .attr("y", function(d) { return y(d.parent.y0); })
@@ -82,25 +83,25 @@ d3.json("http://localhost:3000/activities-fatal")
   }
 // Zoomer ud når man double-clicker - skal evt. aktiveres anderledes.
     function resetZoom() {
-        const transition = svg.transition().duration(1000);
-        x.domain([0, width]);
-        y.domain([0, height]);
+        const transition = svg2.transition().duration(1000);
+        x.domain([0, width2]);
+        y.domain([0, height2]);
     
-        svg.selectAll("rect")
+        svg2.selectAll("rect")
             .transition(transition)
             .attr("x", (d) => x(d.parent.x0))
             .attr("y", (d) => y(d.parent.y0))
             .attr("width", (d) => x(d.parent.x1) - x(d.parent.x0))
             .attr("height", (d) => y(d.parent.y1) - y(d.parent.y0));
     
-        svg.selectAll("text")
+        svg2.selectAll("text")
             .transition()
             .duration(1500)
             .style("opacity", "1")
             .attr("x", (d) => x(d.parent.x0) + 5)
             .attr("y", (d) => y(d.parent.y0) + 20);
             
-      svg.selectAll(".detail").remove();
+      svg2.selectAll(".detail").remove();
     }
 // Deklarer aktivitet dataen som en gruppering - groupActivites defineres længere nede
     let groupedData = groupActivities(data, activities);
@@ -108,11 +109,11 @@ d3.json("http://localhost:3000/activities-fatal")
     var root = d3.hierarchy(groupedData).sum(function(d){ return d.value})
 // Initaliser treemap
     d3.treemap()
-    .size([width, height])
+    .size([width2, height2])
     .padding(2)
     (root)
 // Laver de enkelte rektangler - altså arealerne over dataen.
-    svg
+    svg2
     .selectAll("rect")
     .data(root.leaves())
     .enter()
@@ -126,21 +127,18 @@ d3.json("http://localhost:3000/activities-fatal")
       .on("click", zoom);
       
   // Sætter tekst på de enkelte arealer
-      svg
+      svg2
       .selectAll("text")
       .data(root.leaves())
       .enter()
       .append("text")
-        .attr("x", function(d){ return d.parent.x0+5})
-        .attr("y", function(d){ return d.parent.y0+20}) 
-        .text(function(d){  
-          console.log(d);
-          return d.parent.data.name 
-        })
+        .attr("x", function(d){ return d.parent.x0+5; })
+        .attr("y", function(d){ return d.parent.y0+20; }) 
+        .text(function(d){ return d.parent.data.name; })
         .attr("font-size", "18px")
         .attr("fill", "white")
 
-        svg.on("dblclick", resetZoom)
+        svg2.on("dblclick", resetZoom)
   }
 
   // Funktion for at sætte gruppering til aktiviter til at være så mange som der er i vores aktiviteter array.
