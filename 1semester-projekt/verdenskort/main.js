@@ -204,8 +204,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                                 .style('opacity', .9);
 
                                             tooltip.html(`<strong>${countryName}</strong><br/>Value: ${countryData.value}`)
-                                                .style('left', (event.clientX + 10) + 'px')
-                                                .style('top', (event.clientY + 10) + 'px');
+                                                .style('left', (event.pageX + 10) + 'px')
+                                                .style('top', (event.pageY + 10) + 'px');
 
                                             // Animer pilens position baseret på værdien
                                             arrow.transition().duration(200)

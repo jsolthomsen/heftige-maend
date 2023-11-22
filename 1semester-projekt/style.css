@@ -178,7 +178,7 @@ margin: 2%;
         bottom: 100;
         left: -50%;
         transform-origin: center;
-        animation: swim 50s linear; /* Ændret til 60s for at matche intervallet */
+        animation: swim 20s linear; /* Ændret til 60s for at matche intervallet */
         
     }
 
@@ -187,7 +187,7 @@ margin: 2%;
         bottom: 100;
         left: -60%;
         transform-origin: center;
-        animation: swim 61s linear; /* Ændret til 60s for at matche intervallet */
+        animation: swim 31s linear; /* Ændret til 60s for at matche intervallet */
     }
       
     .shark-delay {
@@ -199,49 +199,18 @@ margin: 2%;
         0% {
             transform: translateX(0) scaleX(1);
         }
-        25% {
-            transform: translateX(70%) scaleX(1);
-        }
-        33% {
-            transform: translateX(130%) scaleX(1);
-        }
-        40% {
-            transform: translateX(180%) scaleX(1);
-        }
-        43% {
-            transform: translateX(210%) scaleX(1);
-        }
-        47% {
-            transform: translateX(300%) scaleX(1);
-        }
+       
+       
         49% {
-            transform: translateX(350%) scaleX(1);
+            transform: translateX(400%) scaleX(1);
         }
         50% {
-            transform: translateX(400%) scaleX(-1);
+            transform: translateX(450%) scaleX(-1);
         }
         51% {
-            transform: translateX(350%) scaleX(-1);
+            transform: translateX(400%) scaleX(-1);
         }
-        53% {
-            transform: translateX(300%) scaleX(-1);
-        }
-        58% {
-            transform: translateX(220%) scaleX(-1);
-        }
-
-        63% {
-            transform: translateX(180%) scaleX(-1);
-        }
-        75% {
-            transform: translateX(130%) scaleX(-1);
-        }
-        83% {
-            transform: translateX(95%) scaleX(-1);
-        }
-        95% {
-            transform: translateX(50%) scaleX(-1);
-        }
+        
         100% {
             transform: translateX(0) scaleX(-1);
         }
@@ -259,11 +228,12 @@ margin: 2%;
         position: relative;
     }
     .country:hover {
-        fill: #ffc107;
-        stroke: #ff9800;
+        fill: #0dc6ff;
+        stroke: #000000;
         transition: fill 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), stroke 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
         z-index: 1;
+        cursor: pointer;
     }
     
     .tooltip {
@@ -285,11 +255,14 @@ margin: 2%;
     .tooltip.active {
         opacity: 1;
     }
+
     #title {
-        font-size: 50px;
         text-align: center;
         margin-top: 10px;
         margin-bottom: 30px;
         padding-top: 30px;
-        
-    }
+        font-family: 'Bebas Neue', sans-serif; /* A bold and uppercase font */
+        color: #ee6055; /* A deep red color for a touch of danger */
+        font-size: 50px; /* A larger font size for emphasis */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow for depth */
+}
