@@ -58,6 +58,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Udskriv fusioneret data til konsollen
                 console.log('Merged Data:', mergedData);
 
+                // Opret søjlediagram til top 5 lande
+                createBarChart(mergedData, '#bar-chart-container');
+
                 // Hent verdenskortdata
                 d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
                     .then(data => {
@@ -353,4 +356,78 @@ function areValidBounds(bounds) {
         isFinite(bounds[1][0]) &&
         isFinite(bounds[1][1])
     );
+}
+
+
+// Funktion til at oprette en søjlediagram for de 5 lande med flest værdier
+function createBarChart(data) {
+    // Sorter data baseret på værdier i faldende rækkefølge
+    data.sort((a, b) => b.value - a.value);
+
+    // Tag de 5 lande med flest værdier
+    const top5Countries = data.slice(0, 5);
+
+    // Opsæt dimensioner for søjlediagrammet
+    const barChartWidth = 600;
+    const barChartHeight = 450;
+
+    // Opret en SVG-container til søjlediagrammet
+    const barChartSvg = d3.select('#bar-chart-container').append('svg')
+        .attr('width', 700)
+        .attr('height', 500)
+        .attr('style', 'padding-left: 50px;')
+        .attr('class', 'bar-chart');
+
+    // Opsæt skalaer for søjlediagrammet
+    const xScale = d3.scaleBand()
+        .domain(top5Countries.map(d => d.name))
+        .range([0, barChartWidth])
+        .padding(0.3);
+
+    const yScale = d3.scaleLinear()
+        .domain([0, 3000])
+        .range([barChartHeight, 0]);
+
+    // Fjern y-aksen og linjen
+    barChartSvg.select('.y-axis').remove();
+
+    // Fjern x-aksen og linjen
+    barChartSvg.select('.x-axis').remove();
+
+    // Opret søjler i søjlediagrammet
+    barChartSvg.selectAll('.bar')
+        .data(top5Countries)
+        .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('x', d => xScale(d.name))
+        .attr('y', d => yScale(d.value))
+        .attr('width', xScale.bandwidth())
+        .attr('height', d => barChartHeight - yScale(d.value))
+        .attr('fill', 'steelblue');
+
+    // Tekst til søjlediagrammet
+    barChartSvg.selectAll('.bar-label')
+        .data(top5Countries)
+        .enter().append('text')
+        .attr('class', 'bar-label')
+        .attr('x', d => xScale(d.name) + xScale.bandwidth() / 2)
+        .attr('y', d => yScale(d.value) - 5)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'black')
+        .attr('font-size', '10px')
+        .text(d => d.value);
+
+    // Tilføj x-akse til søjlediagrammet
+    barChartSvg.append('g')
+        .attr('class', 'x-axis')
+        .attr('transform', `translate(0, ${barChartHeight})`)
+        .call(d3.axisBottom(xScale).tickSize(0))
+        .selectAll('text')
+        .style('text-anchor', 'middle')
+        .attr('font-size', '11px');
+
+    // Tilføj y-akse til søjlediagrammet
+    barChartSvg.append('g')
+        .attr('class', 'y-axis')
+        .call(d3.axisLeft(yScale).ticks(d3.max(top5Countries, d => d.value) / 500).tickFormat(d3.format('')));
 }
