@@ -33,8 +33,8 @@ function handleData(data) {
   // Konverter dataformatet til det forventede format
   const formattedData = data.map(d => ({
     gender: d.sex_id === 7 ? 'Female' : 'Male',
-    fatality: parseInt(d.antal_fatality) > 0 ? 'Non-Fatal' : 'Fatal',
-    population: parseInt(d.antal_personer),
+    fatality: parseInt(d.antal_fatality) === 'Fatal' ? 'Fatal' : 'Non-Fatal',
+    population: parseInt(d.antal_personer) === 'Non-Fatal' ? 'Non-Fatal' : 'Fatal',
   }));
 
   // Opret diagrammet med den formaterede data
