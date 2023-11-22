@@ -68,7 +68,7 @@ d3.json("http://localhost:3000/activities-fatal")
               .attr("y", function(d) { return y((d.y0 + d.y1) / 2); })
               .text(function(d) { return d.data.name; })
               .style("text-anchor", "middle")
-              .attr("font-size", "32px")
+              .attr("font-size", "24px")
               .attr("fill", "white");
         
               detailGroups.append("text")
@@ -78,7 +78,7 @@ d3.json("http://localhost:3000/activities-fatal")
               .attr("y", function(d) { return y(((d.y0 + d.y1) / 2)) + 30; })
               .text(function(d) { return d.data.value; })
               .style("text-anchor", "middle")
-              .attr("font-size", "32px")
+              .attr("font-size", "24px")
               .attr("fill", "white");
   }
 // Zoomer ud når man double-clicker - skal evt. aktiveres anderledes.
