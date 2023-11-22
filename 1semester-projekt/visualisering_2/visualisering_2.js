@@ -50,7 +50,7 @@ d3.json("http://localhost:3000/activities-fatal")
           .attr("y", function(d) { return y(d.parent.y0); })
           .attr("width", function(d) { return x(d.parent.x1) - x(d.parent.x0); })
           .attr("height", function(d) { return y(d.parent.y1) - y(d.parent.y0); });
-      
+      // Laver rektanglerne med fatal/non-fatal + tekst med navn og værdien på dem
          detailGroups.append("rect")
               .transition()
               .duration(1000)
@@ -60,27 +60,24 @@ d3.json("http://localhost:3000/activities-fatal")
               .attr("height", function(d) { return y(d.y1) - y(d.y0); })
               .style("fill", function(d) { return d.data.name === 'Fatal' ? 'red' : 'green'; });
           
-          detailGroups.append("text")
+              detailGroups.append("text")
               .transition()
               .duration(1000)
-              .attr("x", function(d) { if (d.data.name === "Fatal") 
-              { return d.x1 - d.x0 } else 
-              { return d.x1 - d.x0 }
-              })
-              .attr("y", function(d) { return d.y1 - d.y0 })
-              .text(function(d) { return d.data.name})
+              .attr("x", function(d) { return x((d.x0 + d.x1) / 2); })
+              .attr("y", function(d) { return y((d.y0 + d.y1) / 2); })
+              .text(function(d) { return d.data.name; })
               .style("text-anchor", "middle")
-              .attr("font-size", "18px")
+              .attr("font-size", "32px")
               .attr("fill", "white");
         
-         detailGroups.append("text")
+              detailGroups.append("text")
               .transition()
               .duration(1000)
-              .attr("x", function(d) { return x(d.x0); })
-              .attr("y", function(d) { return y(d.y0) + 50; })
+              .attr("x", function(d) { return x((d.x0 + d.x1) / 2); })
+              .attr("y", function(d) { return y(((d.y0 + d.y1) / 2)) + 30; })
               .text(function(d) { return d.data.value; })
               .style("text-anchor", "middle")
-              .attr("font-size", "18px")
+              .attr("font-size", "32px")
               .attr("fill", "white");
   }
 // Zoomer ud når man double-clicker - skal evt. aktiveres anderledes.
@@ -98,12 +95,12 @@ d3.json("http://localhost:3000/activities-fatal")
     
         svg.selectAll("text")
             .transition()
-            .duration(2000)
+            .duration(1500)
             .style("opacity", "1")
             .attr("x", (d) => x(d.parent.x0) + 5)
             .attr("y", (d) => y(d.parent.y0) + 20);
             
-      svg.selectAll(".detail").transition().duration(500).remove();
+      svg.selectAll(".detail").remove();
     }
 // Deklarer aktivitet dataen som en gruppering - groupActivites defineres længere nede
     let groupedData = groupActivities(data, activities);
