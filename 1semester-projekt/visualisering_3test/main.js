@@ -3,7 +3,7 @@ let data;
 //HENT DATA
 d3.json('http://localhost:3000/attacks')
   .then(responseData => {
-    data = responseData;
+    data = responseData.attacks;
     // Behandle dataen og opret diagrammet
     handleData(data);
 
@@ -12,7 +12,6 @@ d3.json('http://localhost:3000/attacks')
     console.error('There was a problem with the fetch operation:', error);
   });
 
-  console.log(data)
 
 // Funktion til at håndtere dataen
 function handleData(data) {
@@ -20,15 +19,16 @@ function handleData(data) {
 
   // Tjek om nødvendige nøgler findes i mindst ét element i data
   const keyCheck = data.length > 0 &&
-    data[1][0][0].hasOwnProperty('antal_personer') &&
-    data[1][0][0].hasOwnProperty('antal_fatality') &&
-    data[1][0][0].hasOwnProperty('sex_id');
+    data[0].hasOwnProperty('antal_personer') &&
+    data[0].hasOwnProperty('antal_fatality') &&
+    data[0].hasOwnProperty('sex_id');
 
 
   if (!keyCheck) {
     console.error('Data is missing necessary keys. Please check your data structure.');
     return;
   }
+
 
   // Konverter dataformatet til det forventede format
   const formattedData = data.map(d => ({
