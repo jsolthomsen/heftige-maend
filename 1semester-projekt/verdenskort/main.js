@@ -1,502 +1,596 @@
 const verdenskortet = document.getElementById("verdenskortet");
 // Variabeldeklarationer
-let mergedData;          // Samlet data fra serveren og verdenskortet
-let countryData;         // Data for det aktuelt valgte land
-let pathGenerator;       // Generator for projektion af landegrænser til SVG-stier
-let zoom;                // Zoom-funktionalitet
-let svg;                 // SVG-container til visualiseringen
-let g;                   // Gruppeelement til landene
-let zoomContainer;       // Container til zoom-funktionaliteten
-let width;               // Bredde på visualiseringen
-let height;              // Højde på visualiseringen
-let legendHeight;        // Højden af ​​legen
+let mergedData; // Samlet data fra serveren og verdenskortet
+let countryData; // Data for det aktuelt valgte land
+let pathGenerator; // Generator for projektion af landegrænser til SVG-stier
+let zoom; // Zoom-funktionalitet
+let svg; // SVG-container til visualiseringen
+let g; // Gruppeelement til landene
+let zoomContainer; // Container til zoom-funktionaliteten
+let width; // Bredde på visualiseringen
+let height; // Højde på visualiseringen
+let legendHeight; // Højden af ​​legen
 
 // Vent på at DOM'en er indlæst, før koden udføres
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialiser dimensionerne på visualiseringen
+  width = 1200;
+  height = 650;
+  legendHeight = 20;
 
+  // Opret SVG-container
+  svg = d3
+    .select("#verdenskortet")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-    // Initialiser dimensionerne på visualiseringen
-    width = 1200;
-    height = 650;
-    legendHeight = 20;
+  // Opret grupperingselementer til zoom
+  zoomContainer = svg.append("g");
+  g = zoomContainer.append("g");
 
-    // Opret SVG-container
-    svg = d3.select('#verdenskortet').append('svg')
-        .attr('width', width)
-        .attr('height', height);
+  // Opret tooltip-element til at vise landeoplysninger ved hover
+  const tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
-    // Opret grupperingselementer til zoom
-    zoomContainer = svg.append('g');
-    g = zoomContainer.append('g');
+  // Opsæt zoom-funktionalitet
+  zoom = d3.zoom().on("zoom", function (event) {
+    g.attr("transform", event.transform);
+    g.selectAll("path").attr("d", (d) => pathGenerator(d));
+  });
 
-    // Opret tooltip-element til at vise landeoplysninger ved hover
-    const tooltip = d3.select('body').append('div')
-        .attr('class', 'tooltip')
-        .style('opacity', 0);
+  // Anvend initial zoom-transform for at undgå initialt zoom-out
+  svg.call(zoom.transform, d3.zoomIdentity);
 
-    // Opsæt zoom-funktionalitet
-    zoom = d3.zoom().on("zoom", function (event) {
-        g.attr("transform", event.transform);
-        g.selectAll('path')
-            .attr('d', d => pathGenerator(d));
-    });
+  // Hent data fra serveren
+  d3.json("http://localhost:3000/values")
+    .then((serverData) => {
+      // Kontroller om serverdataen er gyldig
+      if (serverData && serverData.attacks) {
+        // Behandl og fusioner data fra serveren
+        mergedData = serverData.attacks.map((serverItem) => ({
+          name: serverItem.name ? serverItem.name.toLowerCase() : null,
+          value: serverItem.value,
+        }));
 
-    // Anvend initial zoom-transform for at undgå initialt zoom-out
-    svg.call(zoom.transform, d3.zoomIdentity);
+        // Udskriv fusioneret data til konsollen
+        console.log("Merged Data:", mergedData);
 
-    // Hent data fra serveren
-    d3.json('http://localhost:3000/values')
-        .then(serverData => {
-            // Kontroller om serverdataen er gyldig
-            if (serverData && serverData.attacks) {
-                // Behandl og fusioner data fra serveren
-                mergedData = serverData.attacks.map(serverItem => ({
-                    name: serverItem.name ? serverItem.name.toLowerCase() : null,
-                    value: serverItem.value
-                }));
+        // Opret søjlediagram til top 5 lande
+        createBarChart(mergedData, "#bar-chart-container");
 
-                // Udskriv fusioneret data til konsollen
-                console.log('Merged Data:', mergedData);
+        // Hent verdenskortdata
+        d3.json(
+          "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
+        )
+          .then((data) => {
+            // Kontroller om verdenskortdataen er gyldig
+            if (data && data.objects && data.objects.countries) {
+              // Konverter rå data til features
+              const countries = topojson.feature(data, data.objects.countries);
 
-                // Opret søjlediagram til top 5 lande
-                createBarChart(mergedData, '#bar-chart-container');
+              // Opsæt projektion baseret på dimensioner og landegrænser
+              const projection = d3
+                .geoMercator()
+                .fitSize([width, height], countries)
+                .scale(150)
+                .translate([width / 2, height / 1.5]);
 
-                // Hent verdenskortdata
-                d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-                    .then(data => {
-                        // Kontroller om verdenskortdataen er gyldig
-                        if (data && data.objects && data.objects.countries) {
-                            // Konverter rå data til features
-                            const countries = topojson.feature(data, data.objects.countries);
+              // Konfigurer pathGenerator med den valgte projektion
+              pathGenerator = d3.geoPath().projection(projection);
 
-                            // Opsæt projektion baseret på dimensioner og landegrænser
-                            const projection = d3.geoMercator()
-                                .fitSize([width, height], countries)
-                                .scale(150)
-                                .translate([width / 2, height / 1.5]);
+              // Gem landeobjekter globalt
+              window.countries = countries;
 
-                            // Konfigurer pathGenerator med den valgte projektion
-                            pathGenerator = d3.geoPath().projection(projection);
+              // Opsæt farveskala baseret på dataintervaller
+              const maxDataValue = d3.max(mergedData, (d) => d.value);
+              const colorScale = d3
+                .scaleSequential(d3.interpolateReds)
+                .domain([1, 200, 2000])
+                .nice();
 
-                            // Gem landeobjekter globalt
-                            window.countries = countries;
+              // Opret container for legenden og placer den i bunden af ​​visualiseringen
+              const legendContainer = zoomContainer
+                .append("g")
+                .attr("class", "legend-container")
+                .attr(
+                  "transform",
+                  "translate(10, " + (height - legendHeight) + ")"
+                );
 
-                            // Opsæt farveskala baseret på dataintervaller
-                            const maxDataValue = d3.max(mergedData, d => d.value);
-                            const colorScale = d3.scaleSequential(d3.interpolateReds)
-                                .domain([1, 200, 2000])
-                                .nice();
+              // Definer værdier for farvegradienten
+              const legendValues = d3.range(0, 1.01, 1.01 / 100);
 
-                            // Opret container for legenden og placer den i bunden af ​​visualiseringen
-                            const legendContainer = zoomContainer.append('g')
-                                .attr('class', 'legend-container')
-                                .attr('transform', 'translate(10, ' + (height - legendHeight) + ')');
+              // Opsæt bredde og farveskala for legenden
+              const legendWidth = 300;
+              const legendRectWidth = legendWidth;
 
-                            // Definer værdier for farvegradienten
-                            const legendValues = d3.range(0, 1.01, 1.01 / 100);
+              const legendColorScale = d3
+                .scaleSequential(d3.interpolateReds)
+                .domain([0, 1])
+                .nice();
 
-                            // Opsæt bredde og farveskala for legenden
-                            const legendWidth = 300;
-                            const legendRectWidth = legendWidth;
+              // Opret et gradientforløb for farvelegenden
+              const defs = legendContainer.append("defs");
+              const linearGradient = defs
+                .append("linearGradient")
+                .attr("id", "legend-gradient")
+                .attr("x1", "0%")
+                .attr("y1", "0%")
+                .attr("x2", "70%")
+                .attr("y2", "0%")
+                .attr("x3", "100%")
+                .attr("y3", "0%");
 
-                            const legendColorScale = d3.scaleSequential(d3.interpolateReds)
-                                .domain([0, 1])
-                                .nice();
+              // Tilføj farvepunkter til gradienten baseret på legendValues
+              linearGradient
+                .selectAll("stop")
+                .data(legendValues)
+                .enter()
+                .append("stop")
+                .attr("offset", (d) => d * 100 + "%")
+                .attr("stop-color", (d) => legendColorScale(d));
 
-                            // Opret et gradientforløb for farvelegenden
-                            const defs = legendContainer.append('defs');
-                            const linearGradient = defs.append('linearGradient')
-                                .attr('id', 'legend-gradient')
-                                .attr('x1', '0%')
-                                .attr('y1', '0%')
-                                .attr('x2', '70%')
-                                .attr('y2', '0%')
-                                .attr('x3', '100%')
-                                .attr('y3', '0%');
+              // Opret et rektangel for farvelegenden og anvend gradienten
+              legendContainer
+                .append("rect")
+                .attr("width", legendWidth)
+                .attr("height", legendHeight)
+                .style("fill", "url(#legend-gradient)");
 
-                            // Tilføj farvepunkter til gradienten baseret på legendValues
-                            linearGradient.selectAll('stop')
-                                .data(legendValues)
-                                .enter().append('stop')
-                                .attr('offset', d => d * 100 + '%')
-                                .attr('stop-color', d => legendColorScale(d));
+              // Definer tickværdier for legenden
+              const tickValues = [1, 100, "500+"];
 
-                            // Opret et rektangel for farvelegenden og anvend gradienten
-                            legendContainer.append('rect')
-                                .attr('width', legendWidth)
-                                .attr('height', legendHeight)
-                                .style('fill', 'url(#legend-gradient)');
+              // Tilføj linjer til at repræsentere tickværdier i legenden
+              legendContainer
+                .selectAll(".tick")
+                .data(tickValues)
+                .enter()
+                .append("line")
+                .attr("class", "tick")
+                .attr(
+                  "x1",
+                  (d) =>
+                    legendRectWidth *
+                    (tickValues.indexOf(d) / (tickValues.length - 1))
+                )
+                .attr(
+                  "x2",
+                  (d) =>
+                    legendRectWidth *
+                    (tickValues.indexOf(d) / (tickValues.length - 1))
+                )
+                .attr("y1", 0)
+                .attr("y2", legendHeight)
+                .style("stroke", (d) => legendColorScale(d))
+                .style("stroke-width", 2);
 
-                            // Definer tickværdier for legenden
-                            const tickValues = [1, 100, '500+'];
+              // Tilføj tekstetiketter til legenden
+              legendContainer
+                .selectAll(".tick-label")
+                .data(tickValues)
+                .enter()
+                .append("text")
+                .attr("class", "tick-label")
+                .attr(
+                  "x",
+                  (d) =>
+                    legendRectWidth *
+                    (tickValues.indexOf(d) / (tickValues.length - 1))
+                )
+                .attr("y", -20)
+                .attr("text-anchor", "middle")
+                .attr("fill", "white")
+                .text((d) => d);
 
-                            // Tilføj linjer til at repræsentere tickværdier i legenden
-                            legendContainer.selectAll('.tick')
-                                .data(tickValues)
-                                .enter().append('line')
-                                .attr('class', 'tick')
-                                .attr('x1', d => legendRectWidth * (tickValues.indexOf(d) / (tickValues.length - 1)))
-                                .attr('x2', d => legendRectWidth * (tickValues.indexOf(d) / (tickValues.length - 1)))
-                                .attr('y1', 0)
-                                .attr('y2', legendHeight)
-                                .style('stroke', d => legendColorScale(d))
-                                .style('stroke-width', 2);
+              // Opret en pil for at angive værdien på kortet
+              const arrowSize = 10;
+              const arrow = legendContainer
+                .append("polygon")
+                .attr(
+                  "points",
+                  `0,0 ${arrowSize / 2},${arrowSize} ${arrowSize},0`
+                )
+                .style("fill", "black")
+                .style("opacity", 0);
 
-                            // Tilføj tekstetiketter til legenden
-                            legendContainer.selectAll('.tick-label')
-                                .data(tickValues)
-                                .enter().append('text')
-                                .attr('class', 'tick-label')
-                                .attr('x', d => legendRectWidth * (tickValues.indexOf(d) / (tickValues.length - 1)))
-                                .attr('y', -20)
-                                .attr('text-anchor', 'middle')
-                                .attr('fill', 'white')
-                                .text(d => d);
+              // Find lande uden matchende data
+              const unmatchedCountries = mergedData.filter((d) => {
+                const matchingFeature = countries.features.find(
+                  (f) =>
+                    f.properties &&
+                    f.properties.name &&
+                    typeof f.properties.name === "string" &&
+                    f.properties.name.trim().toLowerCase() ===
+                      (d.name && typeof d.name === "string"
+                        ? d.name.trim().toLowerCase()
+                        : "")
+                );
+                return !matchingFeature;
+              });
 
-                            // Opret en pil for at angive værdien på kortet
-                            const arrowSize = 10;
-                            const arrow = legendContainer.append('polygon')
-                                .attr('points', `0,0 ${arrowSize / 2},${arrowSize} ${arrowSize},0`)
-                                .style('fill', 'black')
-                                .style('opacity', 0);
+              // Udskriv lande uden matchende data til konsollen
+              console.log("Unmatched Countries:", unmatchedCountries);
 
-                            // Find lande uden matchende data
-                            const unmatchedCountries = mergedData.filter(d => {
-                                const matchingFeature = countries.features.find(f => f.properties && f.properties.name && typeof f.properties.name === 'string' && f.properties.name.trim().toLowerCase() === (d.name && typeof d.name === 'string' ? d.name.trim().toLowerCase() : ''));
-                                return !matchingFeature;
-                            });
+              // Filtrer Antarktis ud fra landeobjekterne
+              const countriesFiltered = countries.features.filter(
+                (country) => country.properties.name !== "Antarctica"
+              );
 
-                            // Udskriv lande uden matchende data til konsollen
-                            console.log('Unmatched Countries:', unmatchedCountries);
+              // Visualisér lande på kortet
+              g.selectAll("path")
+                .data(countriesFiltered)
+                .enter()
+                .append("path")
+                .attr("class", "country")
+                .attr("d", pathGenerator)
+                .attr("fill", (d) => {
+                  // Find matchende data for hvert land
+                  const matchingData = mergedData.find((data) => {
+                    const countryName = data.name
+                      ? data.name.trim().toLowerCase()
+                      : "";
+                    return (
+                      countryName === d.properties.name.trim().toLowerCase()
+                    );
+                  });
+                  // Anvend farveskala baseret på matchende data eller grå, hvis ikke fundet
+                  return matchingData ? colorScale(matchingData.value) : "gray";
+                })
+                .on("mouseover", function (event, d) {
+                  // Vis tooltip og pil, når der holdes musen over et land
+                  const feature =
+                    d && d.type === "Feature" ? d : d3.select(this).datum();
+                  if (
+                    feature &&
+                    feature.properties &&
+                    feature.properties.name
+                  ) {
+                    const countryName = feature.properties.name;
+                    const countryNameFromFeature = countryName.toLowerCase();
 
-                            // Filtrer Antarktis ud fra landeobjekterne
-                            const countriesFiltered = countries.features.filter(country => country.properties.name !== 'Antarctica');
+                    // Find data for det aktuelle land
+                    countryData = mergedData.find((data) => {
+                      const dataName = data.name
+                        ? data.name.trim().toLowerCase()
+                        : "";
+                      return dataName === countryNameFromFeature;
+                    });
 
-                            // Visualisér lande på kortet
-                            g.selectAll('path')
-                                .data(countriesFiltered)
-                                .enter().append('path')
-                                .attr('class', 'country')
-                                .attr('d', pathGenerator)
-                                .attr('fill', d => {
-                                    // Find matchende data for hvert land
-                                    const matchingData = mergedData.find(data => {
-                                        const countryName = data.name ? data.name.trim().toLowerCase() : '';
-                                        return countryName === d.properties.name.trim().toLowerCase();
-                                    });
-                                    // Anvend farveskala baseret på matchende data eller grå, hvis ikke fundet
-                                    return matchingData ? colorScale(matchingData.value) : 'gray';
-                                })
-                                .on('mouseover', function (event, d) {
-                                    // Vis tooltip og pil, når der holdes musen over et land
-                                    const feature = d && d.type === 'Feature' ? d : d3.select(this).datum();
-                                    if (feature && feature.properties && feature.properties.name) {
-                                        const countryName = feature.properties.name;
-                                        const countryNameFromFeature = countryName.toLowerCase();
+                    // Vis tooltip med landeoplysninger
+                    if (countryData && countryData.value) {
+                      tooltip.transition().duration(200).style("opacity", 0.9);
 
-                                        // Find data for det aktuelle land
-                                        countryData = mergedData.find(data => {
-                                            const dataName = data.name ? data.name.trim().toLowerCase() : '';
-                                            return dataName === countryNameFromFeature;
-                                        });
+                      tooltip
+                        .html(
+                          `<strong>${countryName}</strong><br/>Value: ${countryData.value}`
+                        )
+                        .style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY + 10 + "px");
 
-                                        // Vis tooltip med landeoplysninger
-                                        if (countryData && countryData.value) {
-                                            tooltip.transition()
-                                                .duration(200)
-                                                .style('opacity', .9);
+                      // Animer pilens position baseret på værdien
+                      arrow
+                        .transition()
+                        .duration(200)
+                        .style("opacity", 1)
+                        .attr("transform", function () {
+                          const legendScale = d3
+                            .scaleLinear()
+                            .domain([1, 200, 2000])
+                            .range([0, legendWidth, legendWidth]);
 
-                                            tooltip.html(`<strong>${countryName}</strong><br/>Value: ${countryData.value}`)
-                                                .style('left', (event.pageX + 10) + 'px')
-                                                .style('top', (event.pageY + 10) + 'px');
+                          const translateY = -arrowSize - 2;
+                          const arrowPosition = countryData.value || 0;
+                          const translateX = legendScale(arrowPosition);
+                          return `translate(${
+                            translateX - arrowSize / 2
+                          }, ${translateY})`;
+                        });
+                    }
+                    // Marker tooltip som aktiv
+                    tooltip.classed("active", true);
+                  }
+                })
+                .on("mouseout", function () {
+                  // Skjul tooltip og pil, når musen forlader landet
+                  tooltip.transition().duration(500).style("opacity", 0);
+                  tooltip.classed("active", false);
 
-                                            // Animer pilens position baseret på værdien
-                                            arrow.transition().duration(200)
-                                                .style('opacity', 1)
-                                                .attr('transform', function () {
-                                                    const legendScale = d3.scaleLinear()
-                                                        .domain([1, 200, 2000])
-                                                        .range([0, legendWidth, legendWidth]);
-
-                                                    const translateY = -arrowSize - 2;
-                                                    const arrowPosition = countryData.value || 0;
-                                                    const translateX = legendScale(arrowPosition);
-                                                    return `translate(${translateX - arrowSize / 2}, ${translateY})`;
-                                                });
-                                        }
-                                        // Marker tooltip som aktiv
-                                        tooltip.classed('active', true);
-                                    }
-                                })
-                                .on('mouseout', function () {
-                                    // Skjul tooltip og pil, når musen forlader landet
-                                    tooltip.transition()
-                                        .duration(500)
-                                        .style('opacity', 0);
-                                    tooltip.classed('active', false);
-
-                                    arrow.transition().duration(200)
-                                        .style('opacity', 0);
-                                })
-                                .on('click', function (event, d) {
-                                    // Kald klikfunktionen ved klik på et land
-                                    clicked(event, this, d);
-                                });
-                        } else {
-                            // Udskriv fejl, hvis verdenskortdatastrukturen er ugyldig
-                            console.error('Invalid world map data structure:', data);
-                        }
-                    })
-                    .catch(error => console.error('Error loading world map data:', error));
+                  arrow.transition().duration(200).style("opacity", 0);
+                })
+                .on("click", function (event, d) {
+                  // Kald klikfunktionen ved klik på et land
+                  clicked(event, this, d);
+                });
             } else {
-                // Udskriv fejl, hvis serverens svar er ugyldigt
-                console.error('Invalid server response:', serverData);
+              // Udskriv fejl, hvis verdenskortdatastrukturen er ugyldig
+              console.error("Invalid world map data structure:", data);
             }
-        })
-        .catch(error => console.error('Error loading data from the server:', error));
+          })
+          .catch((error) =>
+            console.error("Error loading world map data:", error)
+          );
+      } else {
+        // Udskriv fejl, hvis serverens svar er ugyldigt
+        console.error("Invalid server response:", serverData);
+      }
+    })
+    .catch((error) =>
+      console.error("Error loading data from the server:", error)
+    );
 });
 
 // Funktion kaldt ved klik på et land
 function clicked(event, element, d) {
-    // Kontroller om pathGenerator er defineret
-    if (!pathGenerator) {
-        console.error('Path generator is not defined.');
-        return;
-    }
+  // Kontroller om pathGenerator er defineret
+  if (!pathGenerator) {
+    console.error("Path generator is not defined.");
+    return;
+  }
 
-    // Kontroller om landet er markeret som aktivt
-    const isSelected = d3.select(element).classed("active");
+  // Kontroller om landet er markeret som aktivt
+  const isSelected = d3.select(element).classed("active");
 
-    if (isSelected) {
-        // Nulstil visualiseringen ved klik på et allerede markeret land
-        reset(event);
-    } else {
-        // Beregn bounds for det valgte land
-        const [[x0, y0], [x1, y1]] = pathGenerator.bounds(d.geometry);
-        event.stopPropagation();
+  if (isSelected) {
+    // Nulstil visualiseringen ved klik på et allerede markeret land
+    reset(event);
+  } else {
+    // Beregn bounds for det valgte land
+    const [[x0, y0], [x1, y1]] = pathGenerator.bounds(d.geometry);
+    event.stopPropagation();
 
-        // Beregn zoom-parametre for at centrere og zoome til det valgte land
-        const scaleFactor = Math.min(8, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height));
-        const translateX = width / 2 - scaleFactor * (x0 + x1) / 2;
-        const translateY = height / 2 - scaleFactor * (y0 + y1) / 2;
+    // Beregn zoom-parametre for at centrere og zoome til det valgte land
+    const scaleFactor = Math.min(
+      8,
+      0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)
+    );
+    const translateX = width / 2 - (scaleFactor * (x0 + x1)) / 2;
+    const translateY = height / 2 - (scaleFactor * (y0 + y1)) / 2;
 
-        // Nulstil andre markerede lande og animer zoom og pan til det valgte land
-        d3.selectAll('.country.active')
-            .classed('active', false)
-            .transition().duration(750).attr('d', pathGenerator);
+    // Nulstil andre markerede lande og animer zoom og pan til det valgte land
+    d3.selectAll(".country.active")
+      .classed("active", false)
+      .transition()
+      .duration(750)
+      .attr("d", pathGenerator);
 
-        d3.select(element)
-            .classed('active', true)
-            .attr('d', pathGenerator);
+    d3.select(element).classed("active", true).attr("d", pathGenerator);
 
-        svg.transition().duration(750).call(
-            zoom.transform,
-            d3.zoomIdentity.translate(translateX, translateY).scale(scaleFactor)
-        );
-    }
+    svg
+      .transition()
+      .duration(750)
+      .call(
+        zoom.transform,
+        d3.zoomIdentity.translate(translateX, translateY).scale(scaleFactor)
+      );
+  }
 }
 
 // Funktion til at nulstille zoom og aktive lande
 function reset(event, d) {
-    // Kontroller om landeobjekter og pathGenerator er defineret
-    if (!window.countries || window.countries.length === 0 || !pathGenerator) {
-        console.error('Countries data or path generator is not defined.');
-        return;
-    }
+  // Kontroller om landeobjekter og pathGenerator er defineret
+  if (!window.countries || window.countries.length === 0 || !pathGenerator) {
+    console.error("Countries data or path generator is not defined.");
+    return;
+  }
 
-    // Beregn bounds for alle lande
-    const bounds = calculateBounds(window.countries);
+  // Beregn bounds for alle lande
+  const bounds = calculateBounds(window.countries);
 
-    // Kontroller om bounds er gyldige
-    if (!areValidBounds(bounds)) {
-        console.error('Invalid bounds:', bounds);
-        return;
-    }
+  // Kontroller om bounds er gyldige
+  if (!areValidBounds(bounds)) {
+    console.error("Invalid bounds:", bounds);
+    return;
+  }
 
-    // Animer zoom og pan tilbage til det fulde kortudsyn
-    const duration = 750;
-    const transform = d3.zoomIdentity;
-    svg.transition().duration(duration).call(zoom.transform, transform);
+  // Animer zoom og pan tilbage til det fulde kortudsyn
+  const duration = 750;
+  const transform = d3.zoomIdentity;
+  svg.transition().duration(duration).call(zoom.transform, transform);
 
-    // Nulstil visualisering af aktive lande
-    d3.selectAll('.country.active')
-        .classed('active', false)
-        .transition().duration(duration).attr('d', pathGenerator);
+  // Nulstil visualisering af aktive lande
+  d3.selectAll(".country.active")
+    .classed("active", false)
+    .transition()
+    .duration(duration)
+    .attr("d", pathGenerator);
 }
 
 // Funktion til at beregne bounds for alle lande
 function calculateBounds(data) {
-    const bounds = [[Infinity, Infinity], [-Infinity, -Infinity]];
+  const bounds = [
+    [Infinity, Infinity],
+    [-Infinity, -Infinity],
+  ];
 
-    // Beregn bounds for hvert land og opdater det globale bounds-objekt
-    data.features.forEach(feature => {
-        const geometry = feature.geometry;
-        const bbox = d3.geoBounds(geometry);
+  // Beregn bounds for hvert land og opdater det globale bounds-objekt
+  data.features.forEach((feature) => {
+    const geometry = feature.geometry;
+    const bbox = d3.geoBounds(geometry);
 
-        bounds[0][0] = Math.min(bounds[0][0], bbox[0][0]);
-        bounds[0][1] = Math.min(bounds[0][1], bbox[0][1]);
-        bounds[1][0] = Math.max(bounds[1][0], bbox[1][0]);
-        bounds[1][1] = Math.max(bounds[1][1], bbox[1][1]);
-    });
+    bounds[0][0] = Math.min(bounds[0][0], bbox[0][0]);
+    bounds[0][1] = Math.min(bounds[0][1], bbox[0][1]);
+    bounds[1][0] = Math.max(bounds[1][0], bbox[1][0]);
+    bounds[1][1] = Math.max(bounds[1][1], bbox[1][1]);
+  });
 
-    return bounds;
+  return bounds;
 }
 
 // Funktion til at kontrollere gyldigheden af bounds
 function areValidBounds(bounds) {
-    return (
-        Array.isArray(bounds) &&
-        bounds.length === 2 &&
-        Array.isArray(bounds[0]) &&
-        bounds[0].length === 2 &&
-        Array.isArray(bounds[1]) &&
-        bounds[1].length === 2 &&
-        isFinite(bounds[0][0]) &&
-        isFinite(bounds[0][1]) &&
-        isFinite(bounds[1][0]) &&
-        isFinite(bounds[1][1])
-    );
+  return (
+    Array.isArray(bounds) &&
+    bounds.length === 2 &&
+    Array.isArray(bounds[0]) &&
+    bounds[0].length === 2 &&
+    Array.isArray(bounds[1]) &&
+    bounds[1].length === 2 &&
+    isFinite(bounds[0][0]) &&
+    isFinite(bounds[0][1]) &&
+    isFinite(bounds[1][0]) &&
+    isFinite(bounds[1][1])
+  );
 }
-
 
 // Funktion til at oprette en søjlediagram for de 5 lande med flest værdier
 function createBarChart(data) {
-    // Sorter data baseret på værdier i faldende rækkefølge
-    data.sort((a, b) => b.value - a.value);
+  // Sorter data baseret på værdier i faldende rækkefølge
+  data.sort((a, b) => b.value - a.value);
 
-    // Tag de 5 lande med flest værdier
-    const top5Countries = [
-        { name: 'USA', 
-        value: 2171, 
-        flag: 'verdenskort/flag/usaflag.png',
-        fact: 'Staterne med flest hajangreb nogensinde registreret er Florida, Hawaii, Californien og Carolina. Florida er kendt som "verdens hajangrebshovedstad" og står for mere end halvdelen af alle hajangreb i USA hvert år.',
-        kilde: 'https://www.siyachts.com/where-most-shark-attacks-occur'
-          },
+  // Tag de 5 lande med flest værdier
+  const top5Countries = [
+    {
+      name: "USA",
+      value: 2171,
+      flag: "verdenskort/flag/usaflag.png",
+      fact: 'Staterne med flest hajangreb nogensinde registreret er Florida, Hawaii, Californien og Carolina. Florida er kendt som "verdens hajangrebshovedstad" og står for mere end halvdelen af alle hajangreb i USA hvert år.',
+      kilde: "https://www.siyachts.com/where-most-shark-attacks-occur",
+    },
 
-        { name: 'Australia', 
-        value: 1302, 
-        flag: 'verdenskort/flag/australiaflag.png',
-        fact: '- I gennemsnit bliver én person dræbt af et hajangreb om året i Australien.\n- 5 personer dør af at falde ud af sengen.\n- 10 personer bliver ramt af lynet.',
-        kilde: 'https://www.oceanlifeeducation.com.au/wp-content/uploads/2020/12/Australian-Sharks-Fact-Sheet_watermark.pdf' 
-        },
+    {
+      name: "Australia",
+      value: 1302,
+      flag: "verdenskort/flag/australiaflag.png",
+      fact: "- I gennemsnit bliver én person dræbt af et hajangreb om året i Australien.\n- 5 personer dør af at falde ud af sengen.\n- 10 personer bliver ramt af lynet.",
+      kilde:
+        "https://www.oceanlifeeducation.com.au/wp-content/uploads/2020/12/Australian-Sharks-Fact-Sheet_watermark.pdf",
+    },
 
-        { name: 'South Africa', 
-        value: 571, 
-        flag: 'verdenskort/flag/southafricaflag.png',
-        fact: 'Sydafrikas kystlinjer er en af de top tre globale hotspots for mangfoldighed af hajer og rokker, hvor der er registreret 204 forskellige arter.',
-        kilde: 'https://oceanographicmagazine.com/features/in-search-of-sharks-in-south-africa/' 
-        },
-        
-        { name: 'Papua New Guinea', 
-        value: 160, 
-        flag: 'verdenskort/flag/papuanewguineaflag.png',
-        fact: 'Papua New Guinea (PNG) huser 132 haj- og rokkearter, herunder nogle af de mest truede arter som hammerhajer, savfisk og næsehornrokker. Ikke desto mindre er de globale bestande af flere af disse storslåede arter faldet med mere end 70%, og hvis der ikke gøres noget, vil de uddø i vores farvande.',
-        kilde: 'https://www.wwfpacific.org/?379175/TOWARDS-SAVING-SHARKS-AND-RAYS-IN-PNG'
-        },
-        
-        { name: 'New Zealand', 
-        value: 126, 
-        flag: 'verdenskort/flag/newzealandflag.png',
-        fact:'I januar 2020 opdagede de, at tre dybhavshajarter ud for New Zealand lyser i mørket. Mallefet, en ekspert i bioluminescens fra The Catholic University of Louvain i Belgien, siger, at andre studier antyder, at omkring 10 procent af jordens cirka 540 hajarter kan lyse.',
-        kilde: 'https://www.nzgeo.com/stories/glow-in-the-dark-sharks/\nhttps://www.bbc.com/news/world-asia-56256808' 
-        },
-    ];
-    
+    {
+      name: "South Africa",
+      value: 571,
+      flag: "verdenskort/flag/southafricaflag.png",
+      fact: "Sydafrikas kystlinjer er en af de top tre globale hotspots for mangfoldighed af hajer og rokker, hvor der er registreret 204 forskellige arter.",
+      kilde:
+        "https://oceanographicmagazine.com/features/in-search-of-sharks-in-south-africa/",
+    },
 
-    // Opsæt dimensioner for søjlediagrammet
-    const barChartWidth = 550;
-    const barChartHeight = 500;
+    {
+      name: "Papua New Guinea",
+      value: 160,
+      flag: "verdenskort/flag/papuanewguineaflag.png",
+      fact: "Papua New Guinea (PNG) huser 132 haj- og rokkearter, herunder nogle af de mest truede arter som hammerhajer, savfisk og næsehornrokker. Ikke desto mindre er de globale bestande af flere af disse storslåede arter faldet med mere end 70%, og hvis der ikke gøres noget, vil de uddø i vores farvande.",
+      kilde:
+        "https://www.wwfpacific.org/?379175/TOWARDS-SAVING-SHARKS-AND-RAYS-IN-PNG",
+    },
 
-    // Opret en SVG-container til søjlediagrammet
-    const barChartSvg = d3.select('#bar-chart-container').append('svg')
-        .attr('width', 575)
-        .attr('height', 500)
-        .attr('viewBox', `20 -70 500 600`)
-        .attr('class', 'bar-chart');
+    {
+      name: "New Zealand",
+      value: 126,
+      flag: "verdenskort/flag/newzealandflag.png",
+      fact: "I januar 2020 opdagede de, at tre dybhavshajarter ud for New Zealand lyser i mørket. Mallefet, en ekspert i bioluminescens fra The Catholic University of Louvain i Belgien, siger, at andre studier antyder, at omkring 10 procent af jordens cirka 540 hajarter kan lyse.",
+      kilde:
+        "https://www.nzgeo.com/stories/glow-in-the-dark-sharks/\nhttps://www.bbc.com/news/world-asia-56256808",
+    },
+  ];
 
-    // Opsæt skalaer for søjlediagrammet
-    const xScale = d3.scaleBand()
-        .domain(top5Countries.map(d => d.name))
-        .range([0, barChartWidth])
-        .padding(0.3);
+  // Opsæt dimensioner for søjlediagrammet
+  const barChartWidth = 550;
+  const barChartHeight = 500;
 
-    const yScale = d3.scaleLinear()
-        .domain([0, 3000])
-        .range([barChartHeight, 0]);
+  // Opret en SVG-container til søjlediagrammet
+  const barChartSvg = d3
+    .select("#bar-chart-container")
+    .append("svg")
+    .attr("width", 575)
+    .attr("height", 500)
+    .attr("viewBox", `20 -70 500 600`)
+    .attr("class", "bar-chart");
 
-        const tooltip = d3.select('#bar-chart-container').append('div')
-        .attr('class', 'tooltip2')
-        .style('opacity', 0);
+  // Opsæt skalaer for søjlediagrammet
+  const xScale = d3
+    .scaleBand()
+    .domain(top5Countries.map((d) => d.name))
+    .range([0, barChartWidth])
+    .padding(0.3);
 
-        tooltip.on('mouseover', function () {
-            // Forhindre, at tooltip'en forsvinder ved mouseover
-            tooltip.transition()
-                .duration(0);
-        })
-        .on('mouseout', function (d) {
-            // Skjul tooltip ved mouseout
-            tooltip.transition()
-                .duration(500)
-                .style('opacity', 0);
-        });
+  const yScale = d3.scaleLinear().domain([0, 3000]).range([barChartHeight, 0]);
 
-        barChartSvg.selectAll('.bar')
-        .data(top5Countries)
-        .enter().append('g')
-        .attr('class', 'bar-group')
-        .attr('transform', d => `translate(${xScale(d.name)}, 0)`)
-        .on('mouseover', function (event, d) {
-            // Vis tooltip ved mouseover
-            tooltip.transition()
-                .duration(200)
-                .style('opacity', 0.9);
-    
-            // Opdater tooltip-indhold
-            tooltip.html(`<strong>${d.name}</strong><br/>Antal hajangreb: ${d.value}<br>Fun fact: ${d.fact}<br/><br/> <span class="source">Kilde: <a href="${d.kilde}" target="_blank">${d.kilde}</a></span>`)
-                .style('left', '300px')
-                .style('top', '2350px')
-                .style('pointer-events', 'auto');
-        })
-        .on('mouseout', function (d) {
-            // Skjul tooltip ved mouseout efter fem sekunder
-            tooltip.transition()
-                .duration(500)
-                .style('opacity', 0);
-        })
-    
-        .each(function (d) {
-            // Tilføj flagbillede
-            d3.select(this).append('image')
-                .attr('href', d.flag)
-                .attr('width', xScale.bandwidth())
-                .attr('height', xScale.bandwidth())
-                .attr('y', yScale(d.value) - 70);
-    
-            // Tilføj søjle
-            d3.select(this).append('rect')
-                .attr('class', 'bar')
-                .attr('y', yScale(d.value))
-                .attr('width', xScale.bandwidth())
-                .attr('height', barChartHeight - yScale(d.value))
-                .attr('fill', 'steelblue');
-        });
-   
+  const tooltip = d3
+    .select("#bar-chart-container")
+    .append("div")
+    .attr("class", "tooltip2")
+    .style("opacity", 0);
 
-    // Tilføj x-akse til søjlediagrammet
-    barChartSvg.append('g')
-        .attr('class', 'x-axis')
-        .attr('transform', `translate(0, ${barChartHeight})`)
-        .call(d3.axisBottom(xScale).tickSize(0))
-        .selectAll('text')
-        .style('text-anchor', 'middle')
-        .attr('font-size', '12px')
-        .attr('dy', '20')
+  tooltip
+    .on("mouseover", function () {
+      // Forhindre, at tooltip'en forsvinder ved mouseover
+      tooltip.transition().duration(0);
+    })
+    .on("mouseout", function (d) {
+      // Skjul tooltip ved mouseout
+      tooltip.transition().duration(500).style("opacity", 0);
+    });
 
-    // Tilføj y-akse til søjlediagrammet
-    barChartSvg.append('g')
-        .attr('class', 'y-axis')
-        .call(d3.axisLeft(yScale).ticks(d3.max(top5Countries, d => d.value) / 500).tickFormat(d3.format('')))
-        .selectAll('text')
-        .attr('font-size', '13px');
+  barChartSvg
+    .selectAll(".bar")
+    .data(top5Countries)
+    .enter()
+    .append("g")
+    .attr("class", "bar-group")
+    .attr("transform", (d) => `translate(${xScale(d.name)}, 0)`)
+    .on("mouseover", function (event, d) {
+      // Vis tooltip ved mouseover
+      tooltip.transition().duration(200).style("opacity", 0.9);
+
+      // Opdater tooltip-indhold
+      tooltip
+        .html(
+          `<strong>${d.name}</strong><br/>Antal hajangreb: ${d.value}<br>Fun fact: ${d.fact}<br/><br/> <span class="source">Kilde: <a href="${d.kilde}" target="_blank">${d.kilde}</a></span>`
+        )
+        .style("left", "300px")
+        .style("top", "2350px")
+        .style("pointer-events", "auto");
+    })
+    .on("mouseout", function (d) {
+      // Skjul tooltip ved mouseout efter fem sekunder
+      tooltip.transition().duration(500).style("opacity", 0);
+    })
+
+    .each(function (d) {
+      // Tilføj flagbillede
+      d3.select(this)
+        .append("image")
+        .attr("href", d.flag)
+        .attr("width", xScale.bandwidth())
+        .attr("height", xScale.bandwidth())
+        .attr("y", yScale(d.value) - 70);
+
+      // Tilføj søjle
+      d3.select(this)
+        .append("rect")
+        .attr("class", "bar")
+        .attr("y", yScale(d.value))
+        .attr("width", xScale.bandwidth())
+        .attr("height", barChartHeight - yScale(d.value))
+        .attr("fill", "steelblue");
+    });
+
+  // Tilføj x-akse til søjlediagrammet
+  barChartSvg
+    .append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0, ${barChartHeight})`)
+    .call(d3.axisBottom(xScale).tickSize(0))
+    .selectAll("text")
+    .style("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .attr("dy", "20");
+
+  // Tilføj y-akse til søjlediagrammet
+  barChartSvg
+    .append("g")
+    .attr("class", "y-axis")
+    .call(
+      d3
+        .axisLeft(yScale)
+        .ticks(d3.max(top5Countries, (d) => d.value) / 500)
+        .tickFormat(d3.format(""))
+    )
+    .selectAll("text")
+    .attr("font-size", "13px");
 }
-
