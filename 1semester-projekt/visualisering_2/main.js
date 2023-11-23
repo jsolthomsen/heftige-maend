@@ -28,6 +28,26 @@ d3.json("http://localhost:3000/activities-fatal")
     var x = d3.scaleLinear().range([0, width2]);
     var y = d3.scaleLinear().range([0, height2]);
 
+    const svgDefs = svg.append('defs');
+
+const fatalGradient = svgDefs.append('linearGradient')
+    .attr('id', 'fatalGradient');
+fatalGradient.append('stop')
+    .attr('offset', '0%')
+    .attr('stop-color', '#8B0000'); // Dark Red
+fatalGradient.append('stop')
+    .attr('offset', '100%')
+    .attr('stop-color', '#800000'); // Maroon
+
+const nonFatalGradient = svgDefs.append('linearGradient')
+    .attr('id', 'nonFatalGradient');
+nonFatalGradient.append('stop')
+    .attr('offset', '0%')
+    .attr('stop-color', '#006400'); // Dark Green
+nonFatalGradient.append('stop')
+    .attr('offset', '100%')
+    .attr('stop-color', '#556B2F'); // Olive Green
+
     // Zoom-in funktion på treemaps enkelte arealer
     function zoom (event, d) {
       const transition = svg2.transition().duration(1000);
@@ -59,7 +79,7 @@ d3.json("http://localhost:3000/activities-fatal")
               .attr("y", function(d) { return y(d.y0); })
               .attr("width", function(d) { return x(d.x1) - x(d.x0); })
               .attr("height", function(d) { return y(d.y1) - y(d.y0); })
-              .style("fill", function(d) { return d.data.name === 'Fatal' ? 'red' : 'green'; });
+              .style("fill", function(d) { return d.data.name === 'Fatal' ? 'url(#fatalGradient)' : 'url(#nonFatalGradient)'; });
           
               detailGroups.append("text")
               .transition()
@@ -83,12 +103,12 @@ d3.json("http://localhost:3000/activities-fatal")
   }
 // Zoomer ud når man double-clicker - skal evt. aktiveres anderledes.
     function resetZoom() {
-        const transition = svg2.transition().duration(1000);
         x.domain([0, width2]);
         y.domain([0, height2]);
     
         svg2.selectAll("rect")
-            .transition(transition)
+            .transition()
+            .duration(1000)
             .attr("x", (d) => x(d.parent.x0))
             .attr("y", (d) => y(d.parent.y0))
             .attr("width", (d) => x(d.parent.x1) - x(d.parent.x0))
@@ -96,7 +116,7 @@ d3.json("http://localhost:3000/activities-fatal")
     
         svg2.selectAll("text")
             .transition()
-            .duration(1500)
+            .duration(2500)
             .style("opacity", "1")
             .attr("x", (d) => x(d.parent.x0) + 5)
             .attr("y", (d) => y(d.parent.y0) + 20);
@@ -123,7 +143,7 @@ d3.json("http://localhost:3000/activities-fatal")
       .attr('width', function (d) { return d.parent.x1 - d.parent.x0; })
       .attr('height', function (d) { return d.parent.y1 - d.parent.y0; })
       .style("stroke", "black")
-      .style("fill", "darkred")
+      .style("fill", "#d66320")
       .on("click", zoom);
       
   // Sætter tekst på de enkelte arealer

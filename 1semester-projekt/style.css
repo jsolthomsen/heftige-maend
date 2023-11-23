@@ -7,8 +7,10 @@ body {
 }
 
 h1  {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Bebas Neue', sans-serif;
     color: white;
+    text-align: center;
+    size: 40px;
 }
 
 a {
