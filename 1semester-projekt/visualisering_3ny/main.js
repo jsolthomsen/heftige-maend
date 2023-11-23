@@ -55,13 +55,7 @@ const data = [
   { gender: "Female", fatality: "fatal", population: 7 },
   { gender: "Female", fatality: "andet", population: 0 },
 ];
-
-
-
-
-
-
-//CREATE CHART
+  
 function createChart(data) {
   // Specify the chart’s dimensions.
   const width = 928;
@@ -134,38 +128,48 @@ function createChart(data) {
       .call(d3.axisLeft(y).ticks(null, "s"))
       .call(g => g.selectAll(".domain").remove());
 
-  //Legend
+  // Return the chart with the color scale as a property (for the legend).
+  return Object.assign(svg.node(), {scales: {color}});
+}
 
-  // Farveskala til legenden
+const chart = createChart(data);
+
+// Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
+document.body.appendChild(chart);
+
+// test
+
+  // Opret en farveskala til legenden
   const legendColor = d3.scaleOrdinal()
-  .domain(series.map(d => d.key).reverse()) // Reverse rækkefølgen af domænet
-  .range(customColors);
+    .domain(series.map(d => d.key))
+    .range(d3.schemeCategory10);
 
-  // Opret legend
+  // Opret en simpel legend
   const legend = svg.append("g")
-  .attr("class", "legend")
-  .attr("transform", `translate(${width - marginRight - 100},${marginTop})`); // Justér placeringen efter behov
+    .attr("class", "legend")
+    .attr("transform", `translate(${width - marginRight - 100},${marginTop})`); // Justér placeringen efter behov
 
   legend.selectAll("rect")
-  .data(legendColor.domain())
-  .enter()
-  .append("rect")
-  .attr("x", 0)
-  .attr("y", (d, i) => i * 20)
-  .attr("width", 18)
-  .attr("height", 18)
-  .attr("fill", d => legendColor(d));
+    .data(legendColor.domain())
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", (d, i) => i * 20)
+    .attr("width", 18)
+    .attr("height", 18)
+    .attr("fill", d => legendColor(d));
 
   legend.selectAll("text")
-  .data(legendColor.domain())
-  .enter()
-  .append("text")
-  .attr("x", 25)
-  .attr("y", (d, i) => i * 20 + 9)
-  .attr("dy", "0.35em")
-  .style("font-size", "12px")
-  .text(d => d);
+    .data(legendColor.domain())
+    .enter()
+    .append("text")
+    .attr("x", 25)
+    .attr("y", (d, i) => i * 20 + 9)
+    .attr("dy", "0.35em")
+    .style("font-size", "12px")
+    .text(d => d);
 
-  // Return the chart with the color scale as a property (for the legend).
+  // ... (din eksisterende kode)
+
+  // Returner diagrammet med farveskalaen som en egenskab (til legenden).
   return Object.assign(svg.node(), { scales: { color } });
-}
