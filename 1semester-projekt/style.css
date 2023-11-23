@@ -8,9 +8,12 @@ body {
 
 h1  {
     font-family: 'Bebas Neue', sans-serif;
-    color: white;
     text-align: center;
     size: 40px;
+}
+
+p {
+    font-size: 28px;
 }
 
 a {
@@ -77,7 +80,6 @@ width: 95%;
 height: 800px;
 background-color: rgba(211, 211, 211, 0.5);
 margin: 2%;
-display: flex;
 }
 
 #div2 {
