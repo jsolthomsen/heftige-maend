@@ -67,7 +67,7 @@ function createTreemap(data) {
   /* 
   Zoom-in funktion på treemaps enkelte arealer
   Funktionen tager to parametre, en event og d for data. Event i dette tilfælde, er et mouseclick.
-  
+  Div'en ændres til at det enkelte areal fyldet det hele, og der laver to nye arealer for fatal og non-fatal.
   */
   function zoom(event, d) {
     const transition = svg2.transition().duration(1000);
@@ -102,8 +102,7 @@ function createTreemap(data) {
     // Laver rektanglerne med fatal/non-fatal + tekst med navn og værdien på dem
     detailGroups
       .append("rect")
-      .transition()
-      .duration(1000)
+      .transition(transition)
       .attr("x", function (d) {
         return x(d.x0);
       })
@@ -124,8 +123,7 @@ function createTreemap(data) {
 
     detailGroups
       .append("text")
-      .transition()
-      .duration(1000)
+      .transition(transition)
       .attr("x", function (d) {
         return x((d.x0 + d.x1) / 2);
       })
@@ -141,8 +139,7 @@ function createTreemap(data) {
 
     detailGroups
       .append("text")
-      .transition()
-      .duration(1000)
+      .transition(transition)
       .attr("x", function (d) {
         return x((d.x0 + d.x1) / 2);
       })
@@ -156,7 +153,7 @@ function createTreemap(data) {
       .attr("font-size", "24px")
       .attr("fill", "white");
   }
-  // Zoomer ud når man double-clicker - skal evt. aktiveres anderledes.
+  // Funktion for at zoome ud når man doubleclicker.
   function resetZoom() {
     x.domain([0, width2]);
     y.domain([0, height2]);
