@@ -20,7 +20,7 @@ d3.json("http://localhost:3000/activities-fatal")
   });
 
 function createTreemap(data) {
-  // Liste over de forskellige aktiviter - det er disse keywords vi leder efter for at kategoriser aktiveter..
+  // Liste over de forskellige aktiviter - det er disse keywords vi leder efter for at kategoriser aktiveter.
 
   let activities = [
     "Surfing",
@@ -46,11 +46,11 @@ function createTreemap(data) {
   fatalGradient
     .append("stop")
     .attr("offset", "0%")
-    .attr("stop-color", "#8B0000"); // Dark Red
+    .attr("stop-color", "#8B0000"); // Mørkerød
   fatalGradient
     .append("stop")
     .attr("offset", "100%")
-    .attr("stop-color", "#800000"); // Maroon
+    .attr("stop-color", "#800000"); // Rødbrun
 
   const nonFatalGradient = svgDefs
     .append("linearGradient")
@@ -58,13 +58,17 @@ function createTreemap(data) {
   nonFatalGradient
     .append("stop")
     .attr("offset", "0%")
-    .attr("stop-color", "#006400"); // Dark Green
+    .attr("stop-color", "#006400"); // Mørkegrøn
   nonFatalGradient
     .append("stop")
     .attr("offset", "100%")
-    .attr("stop-color", "#556B2F"); // Olive Green
+    .attr("stop-color", "#556B2F"); // Olivengrøn
 
-  // Zoom-in funktion på treemaps enkelte arealer
+  /* 
+  Zoom-in funktion på treemaps enkelte arealer
+  Funktionen tager to parametre, en event og d for data. Event i dette tilfælde, er et mouseclick.
+  
+  */
   function zoom(event, d) {
     const transition = svg2.transition().duration(1000);
     const detailData = d.parent.children || [];
