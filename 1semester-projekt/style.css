@@ -1,168 +1,328 @@
 body {
-    background-image: linear-gradient( rgb(175, 207, 223), rgb(74, 155, 177), rgb(41, 91, 115));
-    background-color:rgb(175, 207, 223);
-    font-family: arial, sans-serif;
-    margin: 0;
-    overflow-x: hidden;
+  background-image: linear-gradient(
+    rgb(175, 207, 223),
+    rgb(74, 155, 177),
+    rgb(41, 91, 115)
+  );
+  background-color: rgb(175, 207, 223);
+  font-family: arial, sans-serif;
+  margin: 0;
+  overflow-x: hidden;
 }
 
-h1  {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    color: white;
+h1 {
+  font-family: "Bebas Neue", sans-serif;
+  text-align: center;
+  size: 40px;
+}
+
+p {
+  font-size: 28px;
 }
 
 a {
-    text-decoration: none;
-    color: rgb(74, 155, 177);
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-decoration: none;
+  color: rgb(74, 155, 177);
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 a:hover {
-    color: rgb(38, 116, 137);
-  }
+  color: rgb(38, 116, 137);
+}
 
 button {
-    text-decoration: none;
-    color: rgb(74, 155, 177);
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-decoration: none;
+  color: rgb(74, 155, 177);
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 button:hover {
-    color: rgb(38, 116, 137);
+  color: rgb(38, 116, 137);
 }
 
 /*menu*/
-.menu{
-    height: 150px;
-    padding: 1%;
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-image: linear-gradient( rgb(175, 207, 223), rgb(175, 207, 223), rgba(175, 207, 223, 0));
+.menu {
+  height: 150px;
+  padding: 1%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-image: linear-gradient(
+    rgb(175, 207, 223),
+    rgb(175, 207, 223),
+    rgba(175, 207, 223, 0)
+  );
 }
 
-.menuUnderside{
-    border: 2px solid rgb(74, 155, 177);
-    border-radius: 30px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 10px;
-    background-color: rgb(206, 247, 254);
-    font-size: 25px;
+.menuUnderside {
+  border: 2px solid rgb(74, 155, 177);
+  border-radius: 30px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+  background-color: rgb(206, 247, 254);
+  font-size: 25px;
 }
 
-.nuværendeUnderside{
-    border: 3.5px solid rgb(47, 141, 167);
-    border-radius: 30px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 10px;
-    background-color: rgb(206, 247, 254);
-    font-size: 25px;
-    font-weight: 600;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+.nuværendeUnderside {
+  border: 3.5px solid rgb(47, 141, 167);
+  border-radius: 30px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+  background-color: rgb(206, 247, 254);
+  font-size: 25px;
+  font-weight: 600;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
 
 /*Mockup */
 
 #div1 {
-width: 95%;
-height: 600px;
-background-color: rgba(211, 211, 211, 0.5);
-margin: 2%;
+  width: 95%;
+  height: 800px;
+  background-color: rgba(211, 211, 211, 0.5);
+  margin: 2%;
 }
 
 #div2 {
-    width: 95%;
-    height: 600px;
-    background-color: rgba(211, 211, 211, 0.5);
-    margin: 2%;
-    }
+  width: 95%;
+  height: 600px;
+  background-color: rgba(211, 211, 211, 0.5);
+  margin: 2%;
+  display: flex;
+}
 
 #div3 {
-    width: 95%;
-    height: 600px;
-    background-color: rgba(211, 211, 211, 0.5);
-    margin: 2%;
-    }
+  width: 95%;
+  height: 600px;
+  background-color: rgba(211, 211, 211, 0.5);
+  margin: 2%;
+  display: flex;
+}
 
 #div4 {
-    width: 95%;
-    height: 600px;
-    background-color: rgba(211, 211, 211, 0.5);
-    margin: 2%;
-    }
+  width: 95%;
+  height: 600px;
+  background-color: rgba(211, 211, 211, 0.5);
+  margin: 2%;
+  display: flex;
+}
 
-.visL {
-    width: 40%;
-    height: 600px;
-    background-color: rgba(255, 255, 255, 0.5);
-    }
-
-.visR {
-    width: 40%;
-    height: 600px;
-    background-color: rgba(255, 255, 255, 0.5);
-    float: right;
-    }
+#hajer {
+  width: 100%;
+  height: 300px;
+  margin: 2%;
+}
 
 #button1 {
-
-    cursor: pointer;
-    border: 2px solid rgb(74, 155, 177);
-    border-radius: 30px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 10px;
-    background-color: rgb(206, 247, 254);
-    font-size: 25px;
-    }
+  cursor: pointer;
+  border: 2px solid rgb(74, 155, 177);
+  border-radius: 30px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+  background-color: rgb(206, 247, 254);
+  font-size: 25px;
+}
 
 #button2 {
-
-    cursor: pointer;
-    border: 2px solid rgb(74, 155, 177);
-    border-radius: 30px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 10px;
-    background-color: rgb(206, 247, 254);
-    font-size: 25px;
-    }
+  cursor: pointer;
+  border: 2px solid rgb(74, 155, 177);
+  border-radius: 30px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+  background-color: rgb(206, 247, 254);
+  font-size: 25px;
+}
 
 #button3 {
-
-    cursor: pointer;
-    border: 2px solid rgb(74, 155, 177);
-    border-radius: 30px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 10px;
-    background-color: rgb(206, 247, 254);
-    font-size: 25px;
-    }
+  cursor: pointer;
+  border: 2px solid rgb(74, 155, 177);
+  border-radius: 30px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+  background-color: rgb(206, 247, 254);
+  font-size: 25px;
+}
 
 #button4 {
+  cursor: pointer;
+  border: 2px solid rgb(74, 155, 177);
+  border-radius: 30px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+  background-color: rgb(206, 247, 254);
+  font-size: 25px;
+}
 
-    cursor: pointer;
-    border: 2px solid rgb(74, 155, 177);
-    border-radius: 30px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 10px;
-    background-color: rgb(206, 247, 254);
-    font-size: 25px;
+#my_dataviz {
+  width: 100%;
+  height: 100%;
+}
+.shark {
+  position: absolute;
+  bottom: 100;
+  left: -50%;
+  transform-origin: center;
+  animation: swim 20s linear; /* Ændret til 60s for at matche intervallet */
+}
+
+.lilleshark {
+  position: absolute;
+  bottom: 100;
+  left: -60%;
+  transform-origin: center;
+  animation: swim 31s linear; /* Ændret til 60s for at matche intervallet */
+}
+
+.shark-delay {
+  animation: delay 30s linear forwards; /* Linear for at gøre overgangen jævn */
+  animation-delay: 30s; /* Delay på 30 sekunder */
+}
+
+@keyframes swim {
+  0% {
+    transform: translateX(0) scaleX(1);
+  }
+
+  49% {
+    transform: translateX(400%) scaleX(1);
+  }
+  50% {
+    transform: translateX(450%) scaleX(-1);
+  }
+  51% {
+    transform: translateX(400%) scaleX(-1);
+  }
+
+  100% {
+    transform: translateX(0) scaleX(-1);
+  }
+}
+
+    svg {
+        display: block;
+        margin: auto; /* Center the SVG horizontally */
     }
+    .country {
+        stroke: #000000; /* Country border color */
+        stroke-width: 0.5; /* Country border width */
+        transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out; /* Add smooth transition effects */
+        border-radius: 8px; /* Optional: Add border-radius for rounded corners */
+        position: relative;
+    }
+    .country:hover {
+        fill: #0dc6ff;
+        stroke: #000000;
+        transition: fill 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), stroke 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+        z-index: 1;
+        cursor: pointer;
+    }
+    
+    .tooltip {
+        position: absolute;
+        padding: 10px;
+        background-color: #303030; /* Tooltip background color */
+        color: #ffffff; /* Tooltip text color */
+        border: 1px solid #ffffff; /* Tooltip border color */
+        border-radius: 6px;
+        pointer-events: none;
+        font-size: 16px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        top: 5%;
+        transform: translate(-50%, -50%); /* Center the tooltip */
+    }
+    
+    .tooltip.active {
+        opacity: 1;
+    }
+
+    .tooltip2 {
+        position: absolute;
+        background-color: #f9f9f9;
+        border: 1px solid #000000;
+        padding: 10px;
+        pointer-events: none;
+        border-radius: 6px;
+        font-size: 12px;
+        width: 200px;
+        height: 200px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        bottom: 0;
+        right: 0;
+    }
+    
+
+    #verdenskort {
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        padding-top: 30px;
+        font-family: 'Bebas Neue', sans-serif; /* A bold and uppercase font */
+        color: #ee6055; /* A deep red color for a touch of danger */
+        font-size: 50px; /* A larger font size for emphasis */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow for depth */
+}
+
+.source {
+    font-size: 7px;
+    text-align: right;
+    bottom: 5px;
+    right: 5px;
+}
+.bar {
+  fill: steelblue;
+  transition: fill 0.3s ease-in-out;
+  border-radius: 8px;
+  position: relative;
+}
+.bar:hover {
+  fill: #0dc6ff;
+  transition: fill 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    stroke 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+.visL {
+  width: 40%;
+  height: 600px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.visR {
+  width: 40%;
+  height: 600px;
+  background-color: rgba(255, 255, 255, 0.5);
+  float: right;
+}
+
+.textL {
+  width: 60%;
+  height: 600px;
+}
+
+.textR {
+  width: 60%;
+  height: 600px;
+  float: right;
+}

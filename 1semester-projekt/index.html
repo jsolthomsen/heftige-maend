@@ -4,20 +4,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
     <title>Forside</title>
+    <script src="verdenskort/main.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap">
 
 </head>
 <body>
     <div class="menu">
-        <h1>Haj Angreb</h1>
+        <h1 >Visualiseringer omkring hajangreb - Hvor farlige er hajer?</h1>
         <button id="button1">Verdenskort</button>
         <button id="button2">Visualisering 1</button>
         <button id="button3">Visualisering 2</button>
         <button id="button4">Visualisering 3</button>
     </div>
 
-    <div id="div1">
-        Verdenskort
+    <div id="div1"> <p id="verdenskort"> Hajangreb fordelt i verden </p>
+        <div id="verdenskortet"></div>
+        <div class="tooltip"></div>
+        <div id="legend"></div>
+        <div id="legend-container"></div>
     </div>
 
     <div id="div2">
@@ -27,17 +34,30 @@
     </div>
 
     <div id="div3">
-        <div class="visR">
-            Visualisering 2
+        <div class="textL">
+            <h1>Activities and their correlation with fatality</h1>
+            <p>This treemap visualization shows <b>the 10 most</b> popular activities to do when getting attacked by sharks</p>
+            <p>You can <b><i>click</i></b> on the different parts of the visualization, to see the amount of fatal vs non-fatal attacks that have occured when doing said activity. If you want to return to the overall data, you can <b><i>double-click</i></b> to zoom out again.</p>
         </div>
+            <div class="visR">
+                <div id="my_dataviz"></div>
+            </div>
     </div>
 
     <div id="div4">
         <div class="visL">
             Visualisering 3
+            <div id="bar-chart-container" ></div>
         </div>
     </div>
 
     <script src="main.js"></script>
+
+    <div id="hajer">
+        <img class="shark" src="shark.gif" alt="shark">
+        <img class="lilleshark" src="shark.gif" alt="shark">
+    </div>
+
+    <script src="visualisering_2/main.js"></script>
 </body>
 </html>
