@@ -83,7 +83,7 @@ function createChart(chartData) {
       .attr("style", "max-width: 100%; height: auto;");
 
   // Append a group for each series, and a rect for each element in the series.
-  svg.append("g")
+            svg.append("g")
     .selectAll()
     .data(series)
     .join("g")
@@ -122,7 +122,7 @@ function createChart(chartData) {
   .attr("class", "legend")
   .attr("transform", `translate(${width - marginRight - 100},${marginTop})`); // placeringen
 
-  legend.selectAll("rect")
+    legend.selectAll("rect")
   .data(legendColor.domain())
   .enter()
   .append("rect")
