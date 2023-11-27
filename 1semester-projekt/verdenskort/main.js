@@ -207,8 +207,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                                 .style('opacity', .9);
 
                                             tooltip.html(`<strong>${countryName}</strong><br/>Value: ${countryData.value}`)
-                                                .style('left', (event.pageX + 10) + 'px')
-                                                .style('top', (event.pageY + 10) + 'px');
+                                                .style('left', (event.pageX + 50) + 'px')
+                                                .style('top', (event.pageY + -20) + 'px');
 
                                             // Animer pilens position baseret på værdien
                                             arrow.transition().duration(200)
@@ -452,15 +452,15 @@ function createBarChart(data) {
                 .style('opacity', 0.9);
     
             // Opdater tooltip-indhold
-            tooltip.html(`<strong>${d.name}</strong><br/>Antal hajangreb: ${d.value}<br>Fun fact: ${d.fact}<br/><br/> <span class="source">Kilde: <a href="${d.kilde}" target="_blank">${d.kilde}</a></span>`)
+            tooltip.html(`<strong>${d.name}</strong><br/>Antal hajangreb: ${d.value}<br>Fun fact: ${d.fact}<br/><br/> <span id="source">Kilde: <a href="${d.kilde}" target="_blank">${d.kilde}</a></span>`)
                 .style('left', '300px')
                 .style('top', '2350px')
                 .style('pointer-events', 'auto');
         })
         .on('mouseout', function (d) {
-            // Skjul tooltip ved mouseout efter fem sekunder
+            // Skjul tooltip ved mouseout
             tooltip.transition()
-                .duration(500)
+                .duration(2000)
                 .style('opacity', 0);
         })
     
