@@ -56,9 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
           value: serverItem.value,
         }));
 
-        // Udskriv fusioneret data til konsollen
-        console.log("Merged Data:", mergedData);
-
         // Opret søjlediagram til top 5 lande
         createBarChart(mergedData, "#bar-chart-container");
 
@@ -212,9 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return !matchingFeature;
               });
 
-              // Udskriv lande uden matchende data til konsollen
-              console.log("Unmatched Countries:", unmatchedCountries);
-
               // Filtrer Antarktis ud fra landeobjekterne
               const countriesFiltered = countries.features.filter(
                 (country) => country.properties.name !== "Antarctica"
@@ -281,9 +275,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             .scaleLinear()
                             .domain([1, 200, 2000])
                             .range([0, legendWidth, legendWidth]);
-                                            tooltip.html(`<strong>${countryName}</strong><br/>Value: ${countryData.value}`)
-                                                .style('left', (event.pageX + 50) + 'px')
-                                                .style('top', (event.pageY + -20) + 'px');
+                          tooltip
+                            .html(
+                              `<strong>${countryName}</strong><br/>Value: ${countryData.value}`
+                            )
+                            .style("left", event.pageX + 50 + "px")
+                            .style("top", event.pageY + -20 + "px");
 
                           const translateY = -arrowSize - 2;
                           const arrowPosition = countryData.value || 0;
@@ -450,7 +447,7 @@ function createBarChart(data) {
       name: "USA",
       value: 2171,
       flag: "verdenskort/flag/usaflag.png",
-      fact: 'Staterne med flest hajangreb nogensinde registreret er Florida, Hawaii, Californien og Carolina. Florida er kendt som "verdens hajangrebshovedstad" og står for mere end halvdelen af alle hajangreb i USA hvert år.',
+      fact: 'The states with the most shark attacks ever recorded are Florida, Hawaii, California, and the Carolinas. Florida is known as the "shark attack capital of the world" and accounts for more than half of all shark attacks in the USA each year.',
       kilde: "https://www.siyachts.com/where-most-shark-attacks-occur",
     },
 
@@ -458,7 +455,7 @@ function createBarChart(data) {
       name: "Australia",
       value: 1302,
       flag: "verdenskort/flag/australiaflag.png",
-      fact: "- I gennemsnit bliver én person dræbt af et hajangreb om året i Australien.\n- 5 personer dør af at falde ud af sengen.\n- 10 personer bliver ramt af lynet.",
+      fact: "- On average, one person is killed by a shark attack per year in Australia.\n- 5 people die from falling out of bed.\n- 10 people get struck by lightning.",
       kilde:
         "https://www.oceanlifeeducation.com.au/wp-content/uploads/2020/12/Australian-Sharks-Fact-Sheet_watermark.pdf",
     },
@@ -467,7 +464,7 @@ function createBarChart(data) {
       name: "South Africa",
       value: 571,
       flag: "verdenskort/flag/southafricaflag.png",
-      fact: "Sydafrikas kystlinjer er en af de top tre globale hotspots for mangfoldighed af hajer og rokker, hvor der er registreret 204 forskellige arter.",
+      fact: "South Africa's coastlines are one of the top three global hotspots for shark and ray diversity, with 204 different species recorded.",
       kilde:
         "https://oceanographicmagazine.com/features/in-search-of-sharks-in-south-africa/",
     },
@@ -476,7 +473,7 @@ function createBarChart(data) {
       name: "Papua New Guinea",
       value: 160,
       flag: "verdenskort/flag/papuanewguineaflag.png",
-      fact: "Papua New Guinea (PNG) huser 132 haj- og rokkearter, herunder nogle af de mest truede arter som hammerhajer, savfisk og næsehornrokker. Ikke desto mindre er de globale bestande af flere af disse storslåede arter faldet med mere end 70%, og hvis der ikke gøres noget, vil de uddø i vores farvande.",
+      fact: "Papua New Guinea (PNG) is home to 132 species of sharks and rays, including some of the most endangered species like hammerheads, sawfish, and rhino rays. However, global populations of several of these magnificent species have declined by more than 70%, and without intervention, they will go extinct in our waters.",
       kilde:
         "https://www.wwfpacific.org/?379175/TOWARDS-SAVING-SHARKS-AND-RAYS-IN-PNG",
     },
@@ -485,7 +482,7 @@ function createBarChart(data) {
       name: "New Zealand",
       value: 126,
       flag: "verdenskort/flag/newzealandflag.png",
-      fact: "I januar 2020 opdagede de, at tre dybhavshajarter ud for New Zealand lyser i mørket. Mallefet, en ekspert i bioluminescens fra The Catholic University of Louvain i Belgien, siger, at andre studier antyder, at omkring 10 procent af jordens cirka 540 hajarter kan lyse.",
+      fact: "In January 2020, it was discovered that three deep-sea shark species off the coast of New Zealand glow in the dark. Mallefet, an expert in bioluminescence from The Catholic University of Louvain in Belgium, says that other studies suggest around 10 percent of the world's approximately 540 shark species can glow.",
       kilde:
         "https://www.nzgeo.com/stories/glow-in-the-dark-sharks/\nhttps://www.bbc.com/news/world-asia-56256808",
     },
@@ -513,64 +510,6 @@ function createBarChart(data) {
 
   const yScale = d3.scaleLinear().domain([0, 3000]).range([barChartHeight, 0]);
 
-        barChartSvg.selectAll('.bar')
-        .data(top5Countries)
-        .enter().append('g')
-        .attr('class', 'bar-group')
-        .attr('transform', d => `translate(${xScale(d.name)}, 0)`)
-        .on('mouseover', function (event, d) {
-            // Vis tooltip ved mouseover
-            tooltip.transition()
-                .duration(200)
-                .style('opacity', 0.9);
-    
-            // Opdater tooltip-indhold
-            tooltip.html(`<strong>${d.name}</strong><br/>Antal hajangreb: ${d.value}<br>Fun fact: ${d.fact}<br/><br/> <span id="source">Kilde: <a href="${d.kilde}" target="_blank">${d.kilde}</a></span>`)
-                .style('left', '300px')
-                .style('top', '2350px')
-                .style('pointer-events', 'auto');
-        })
-        .on('mouseout', function (d) {
-            // Skjul tooltip ved mouseout
-            tooltip.transition()
-                .duration(2000)
-                .style('opacity', 0);
-        })
-    
-        .each(function (d) {
-            // Tilføj flagbillede
-            d3.select(this).append('image')
-                .attr('href', d.flag)
-                .attr('width', xScale.bandwidth())
-                .attr('height', xScale.bandwidth())
-                .attr('y', yScale(d.value) - 70);
-    
-            // Tilføj søjle
-            d3.select(this).append('rect')
-                .attr('class', 'bar')
-                .attr('y', yScale(d.value))
-                .attr('width', xScale.bandwidth())
-                .attr('height', barChartHeight - yScale(d.value))
-                .attr('fill', 'steelblue');
-        });
-   
-
-  const tooltip = d3
-    .select("#bar-chart-container")
-    .append("div")
-    .attr("class", "tooltip2")
-    .style("opacity", 0);
-
-  tooltip
-    .on("mouseover", function () {
-      // Forhindre, at tooltip'en forsvinder ved mouseover
-      tooltip.transition().duration(0);
-    })
-    .on("mouseout", function (d) {
-      // Skjul tooltip ved mouseout
-      tooltip.transition().duration(500).style("opacity", 0);
-    });
-
   barChartSvg
     .selectAll(".bar")
     .data(top5Countries)
@@ -585,15 +524,15 @@ function createBarChart(data) {
       // Opdater tooltip-indhold
       tooltip
         .html(
-          `<strong>${d.name}</strong><br/>Antal hajangreb: ${d.value}<br>Fun fact: ${d.fact}<br/><br/> <span class="source">Kilde: <a href="${d.kilde}" target="_blank">${d.kilde}</a></span>`
+          `<span class="tooltitle"><strong>${d.name}</strong><br/>Total shark attacks: ${d.value}</span><br><br/>Fun Fact: ${d.fact}<br/><br/> <span id="source">Source: <a href="${d.kilde}" target="_blank">${d.kilde}</a></span>`
         )
         .style("left", "300px")
-        .style("top", "2350px")
+        .style("top", "2400px")
         .style("pointer-events", "auto");
     })
     .on("mouseout", function (d) {
-      // Skjul tooltip ved mouseout efter fem sekunder
-      tooltip.transition().duration(500).style("opacity", 0);
+      // Skjul tooltip ved mouseout
+      tooltip.transition().duration(2000).style("opacity", 0);
     })
 
     .each(function (d) {
@@ -613,6 +552,23 @@ function createBarChart(data) {
         .attr("width", xScale.bandwidth())
         .attr("height", barChartHeight - yScale(d.value))
         .attr("fill", "steelblue");
+    });
+
+  // Opret tooltip-element til at vise landeoplysninger ved hover
+  const tooltip = d3
+    .select("#bar-chart-container")
+    .append("div")
+    .attr("class", "tooltip2")
+    .style("opacity", 0);
+
+  tooltip
+    .on("mouseover", function () {
+      // Forhindre, at tooltip'en forsvinder ved mouseover
+      tooltip.transition().duration(0);
+    })
+    .on("mouseout", function (d) {
+      // Skjul tooltip ved mouseout
+      tooltip.transition().duration(500).style("opacity", 0);
     });
 
   // Tilføj x-akse til søjlediagrammet

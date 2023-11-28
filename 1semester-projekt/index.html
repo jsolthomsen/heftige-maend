@@ -13,14 +13,24 @@
 </head>
 <body>
     <div class="menu">
-        <h1 >Visualiseringer omkring hajangreb - Hvor farlige er hajer?</h1>
+        <h1 >
+            Visualiseringer omkring hajangreb - Hvor farlige er hajer?
+            <div id="infoButton">&#9432;
+                <div id="infoBox">
+            <p><p>Explore shark attack data spanning from the year 1543 to 2017. Dive into centuries of insights into these fascinating marine interactions.</p>
+            <p>For detailed analysis and raw data, you can download the dataset <a href="https://www.kaggle.com/datasets/mysarahmadbhat/shark-attacks">here</a>.</p> </p>
+            </div> 
+        </div> 
+        </h1>
         <button id="button1">Verdenskort</button>
         <button id="button2">Visualisering 1</button>
         <button id="button3">Visualisering 2</button>
         <button id="button4">Visualisering 3</button>
     </div>
 
-    <div id="div1"> <p id="verdenskort"> Hajangreb fordelt i verden </p>
+    
+
+    <div id="div1"> <p id="verdenskort"> Shark attacks around the world </p>
         <div id="verdenskortet"></div>
         <div class="tooltip"></div>
         <div id="legend"></div>
@@ -46,9 +56,15 @@
 
     <div id="div4">
         <div class="visL">
-            Visualisering 3
+            <h1>Top 5 countries</h1>
             <div id="bar-chart-container" ></div>
         </div>
+        <div class="textR">
+    <h1>Discover the Top 5 Countries with the Highest Shark Attacks</h1>
+    <p>This bar chart visualization highlights the <b>5 countries</b> with the most shark attack incidents.</p>
+    <p>You can <b><i>hover</i></b> over the bars to unveil the precise number of attacks in that country, accompanied by fascinating shark-related fun facts unique to each location.</p>
+</div>
+
     </div>
 
     <script src="main.js"></script>

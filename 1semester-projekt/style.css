@@ -18,6 +18,7 @@ h1 {
 
 p {
   font-size: 28px;
+  padding: 20px;
 }
 
 a {
@@ -217,79 +218,81 @@ button:hover {
   }
 }
 
-    svg {
-        display: block;
-        margin: auto; /* Center the SVG horizontally */
-    }
-    .country {
-        stroke: #000000; /* Country border color */
-        stroke-width: 0.5; /* Country border width */
-        transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out; /* Add smooth transition effects */
-        border-radius: 8px; /* Optional: Add border-radius for rounded corners */
-        position: relative;
-    }
-    .country:hover {
-        fill: #0dc6ff;
-        stroke: #000000;
-        transition: fill 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), stroke 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
-        z-index: 1;
-        cursor: pointer;
-    }
-    
-    .tooltip {
-        position: absolute;
-        padding: 10px;
-        background-color: #303030; /* Tooltip background color */
-        color: #ffffff; /* Tooltip text color */
-        border: 1px solid #ffffff; /* Tooltip border color */
-        border-radius: 6px;
-        pointer-events: none;
-        font-size: 16px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        transition: opacity 0.2s ease-in-out;
-        top: 5%;
-        transform: translate(-50%, -50%); /* Center the tooltip */
-    }
-    
-    .tooltip.active {
-        opacity: 1;
-    }
-
-    .tooltip2 {
-        position: absolute;
-        background-color: #f9f9f9;
-        border: 1px solid #000000;
-        padding: 10px;
-        pointer-events: none;
-        border-radius: 6px;
-        font-size: 12px;
-        width: 200px;
-        height: 200px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        bottom: 0;
-        right: 0;
-    }
-    
-
-    #verdenskort {
-        text-align: center;
-        margin-top: 10px;
-        margin-bottom: 30px;
-        padding-top: 30px;
-        font-family: 'Bebas Neue', sans-serif; /* A bold and uppercase font */
-        color: #ee6055; /* A deep red color for a touch of danger */
-        font-size: 50px; /* A larger font size for emphasis */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow for depth */
+svg {
+  display: block;
+  margin: auto; /* Center the SVG horizontally */
+}
+.country {
+  stroke: #000000; /* Country border color */
+  stroke-width: 0.5; /* Country border width */
+  transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out; /* Add smooth transition effects */
+  border-radius: 8px; /* Optional: Add border-radius for rounded corners */
+  position: relative;
+}
+.country:hover {
+  fill: rgb(41, 91, 115);
+  stroke: #000000;
+  transition: fill 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    stroke 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+  z-index: 1;
+  cursor: pointer;
 }
 
-.source {
-    font-size: 7px;
-    text-align: right;
-    bottom: 5px;
-    right: 5px;
+.tooltip {
+  position: absolute;
+  padding: 10px;
+  background-color: #303030; /* Tooltip background color */
+  color: #ffffff; /* Tooltip text color */
+  border: 1px solid #ffffff; /* Tooltip border color */
+  border-radius: 6px;
+  pointer-events: none;
+  font-size: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  top: 5%;
+  transform: translate(-50%, -50%); /* Center the tooltip */
 }
+
+.tooltip.active {
+  opacity: 1;
+}
+
+.tooltip2 {
+  position: absolute;
+  background-color: #f9f9f9;
+  border: 1px solid #000000;
+  padding: 10px;
+  pointer-events: none;
+  border-radius: 6px;
+  font-size: 11px;
+  width: 200px;
+  height: 200px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#verdenskort {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding-top: 30px;
+  font-family: "Bebas Neue", sans-serif; /* A bold and uppercase font */
+  color: #ee6055; /* A deep red color for a touch of danger */
+  font-size: 50px; /* A larger font size for emphasis */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow for depth */
+}
+
+#source {
+  font-size: 7px;
+  position: absolute;
+  bottom: 10px;
+}
+
+.tooltitle {
+  font-size: 15px;
+}
+
 .bar {
   fill: steelblue;
   transition: fill 0.3s ease-in-out;
@@ -301,6 +304,31 @@ button:hover {
   transition: fill 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
     stroke 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
+#infoButton {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+#infoButton:hover #infoBox {
+  visibility: visible;
+}
+
+#infoBox {
+  visibility: hidden;
+  width: 350px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
 }
 
 .visL {
