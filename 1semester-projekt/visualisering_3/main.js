@@ -2,8 +2,8 @@ let rawData;
 let data;
 const chartContainer = document.getElementById("chart-container");
 
-// HENT DATA
-d3.json("http://localhost:3000/attacks")
+//HENT DATA
+d3.json("https://nodejs-9zav.onrender.com/attacks")
   .then((responseData) => {
     rawData = responseData.attacks;
     // Behandle dataen og opret diagrammet
@@ -58,13 +58,13 @@ function createChart(data) {
     .stack()
     .keys(d3.union(data.map((d) => d.fatality))) // distinct series keys, in input order
     .value(([, D], key) => D.get(key).population)(
-      // get value for each series key and stack
-      d3.index(
-        data,
-        (d) => d.gender,
-        (d) => d.fatality
-      )
-    ); // group by stack then series key
+    // get value for each series key and stack
+    d3.index(
+      data,
+      (d) => d.gender,
+      (d) => d.fatality
+    )
+  ); // group by stack then series key
 
   // Prepare the scales for positional and color encodings.
   const x = d3
