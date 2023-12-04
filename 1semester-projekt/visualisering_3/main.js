@@ -1,7 +1,8 @@
 let rawData;
 let data;
+const chartContainer = document.getElementById("chart-container");
 
-//HENT DATA
+// HENT DATA
 d3.json("http://localhost:3000/attacks")
   .then((responseData) => {
     rawData = responseData.attacks;
@@ -38,17 +39,14 @@ function handleData(rawData) {
   }));
 
   // Opret diagrammet med den formaterede data
-  const chart = createChart(data); //har ændret formattedData til data
-
-  // Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
-  document.body.appendChild(chart);
+  createChart(data);
 }
 
 function createChart(data) {
   // Specify the chart’s dimensions.
   const width = 928;
-  const height = 500;
-  const marginTop = 10;
+  const height = 660;
+  const marginTop = 50;
   const marginRight = 10;
   const marginBottom = 20;
   const marginLeft = 40;
@@ -60,13 +58,13 @@ function createChart(data) {
     .stack()
     .keys(d3.union(data.map((d) => d.fatality))) // distinct series keys, in input order
     .value(([, D], key) => D.get(key).population)(
-    // get value for each series key and stack
-    d3.index(
-      data,
-      (d) => d.gender,
-      (d) => d.fatality
-    )
-  ); // group by stack then series key
+      // get value for each series key and stack
+      d3.index(
+        data,
+        (d) => d.gender,
+        (d) => d.fatality
+      )
+    ); // group by stack then series key
 
   // Prepare the scales for positional and color encodings.
   const x = d3
@@ -176,11 +174,9 @@ function createChart(data) {
     .style("font-size", "12px")
     .text((d) => d);
 
-  // Return the chart with the color scale as a property (for the legend).
-  return Object.assign(svg.node(), { scales: { color } });
+  // Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
+  chartContainer.appendChild(svg.node());
 }
 
-const chart = createChart(data);
-
-// Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
-document.body.appendChild(chart);
+// Kald til createChart ikke længere nødvendig, da det kaldes inden for handleData-funktionen.
+// const chart = createChart(data);
