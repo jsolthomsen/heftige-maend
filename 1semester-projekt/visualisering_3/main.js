@@ -2,7 +2,7 @@ let rawData;
 let data;
 
 //HENT DATA
-d3.json("http://localhost:3000/attacks")
+d3.json("https://nodejs-9zav.onrender.com/attacks")
   .then((responseData) => {
     rawData = responseData.attacks;
     // Behandle dataen og opret diagrammet
