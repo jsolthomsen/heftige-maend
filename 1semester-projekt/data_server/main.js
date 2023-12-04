@@ -16,6 +16,7 @@ const klient = new Client({
   },
 });
 
+const sexFatalityQry = 'SELECT * FROM sex_fatality';
 const valuesQry = "SELECT * FROM value_pr_countrY";
 const activityFatalQry = "SELECT * FROM activity_fatality";
 
@@ -50,6 +51,21 @@ app.get("/activities-fatal", async (req, res) => {
       message: error.message,
     });
   }
+});
+
+app.get("/attacks", async (req, res) => {
+ try {
+   let queryData = await klient.query(sexFatalityQry);
+   res.json({
+     "ok": true,
+     "attacks": queryData.rows,
+   });
+ } catch (error) {
+   res.json({
+     "ok": false,
+     "message": error.message,
+   });
+ }
 });
 
 app.listen(port, () => {

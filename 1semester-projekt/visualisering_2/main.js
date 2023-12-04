@@ -35,8 +35,8 @@ function createTreemap(data) {
     "Body Boarding",
   ];
 
-  var x = d3.scaleLinear().range([0, width2]);
-  var y = d3.scaleLinear().range([0, height2]);
+  const x = d3.scaleLinear().range([0, width2]);
+  const y = d3.scaleLinear().range([0, height2]);
 
   const svgDefs = svg.append("defs");
 
@@ -63,6 +63,41 @@ function createTreemap(data) {
     .append("stop")
     .attr("offset", "100%")
     .attr("stop-color", "#556B2F"); // Olivengrøn
+
+  function wrap(text, width) {
+    text.each(function () {
+      var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        x = text.attr("x"), // Use the x position of the text element
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text
+          .text(null)
+          .append("tspan")
+          .attr("x", x) // Set the x position for tspan
+          .attr("y", y)
+          .attr("dy", "2em");
+      while ((word = words.pop())) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
+          tspan.text(line.join(" "));
+          line = [word];
+          tspan = text
+            .append("tspan")
+            .attr("x", 0)
+            .attr("y", y)
+            .attr("dy", `${++lineNumber * lineHeight + dy}em`)
+            .text(word);
+        }
+      }
+    });
+  }
 
   /* 
   Zoom-in funktion på treemaps enkelte arealer

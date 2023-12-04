@@ -231,6 +231,7 @@ svg {
 }
 .country:hover {
   fill: rgb(41, 91, 115);
+  fill: #0dc6ff;
   stroke: #000000;
   transition: fill 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
     stroke 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -253,6 +254,43 @@ svg {
   transition: opacity 0.2s ease-in-out;
   top: 5%;
   transform: translate(-50%, -50%);
+}
+
+.tooltip.active {
+  opacity: 1;
+}
+
+.tooltip2 {
+  position: absolute;
+  background-color: #f9f9f9;
+  border: 1px solid #000000;
+  padding: 10px;
+  pointer-events: none;
+  border-radius: 6px;
+  font-size: 12px;
+  width: 200px;
+  height: 200px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  right: 0;
+}
+
+#verdenskort {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding-top: 30px;
+  font-family: "Bebas Neue", sans-serif; /* A bold and uppercase font */
+  color: #ee6055; /* A deep red color for a touch of danger */
+  font-size: 50px; /* A larger font size for emphasis */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow for depth */
+}
+
+.source {
+  font-size: 7px;
+  text-align: right;
+  bottom: 5px;
+  right: 5px;
 }
 
 .tooltip.active {
