@@ -183,6 +183,25 @@ button:hover {
   height: 100%;
 }
 
+#tooltipFatality {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  padding: 5px;
+  border: 1px solid #ddd;
+
+  padding: 10px;
+  background-color: #303030;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  top: 5%;
+  transform: translate(-50%, -50%);
+}
+
 .shark {
   position: absolute;
   bottom: 100;

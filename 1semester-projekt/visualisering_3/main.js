@@ -178,6 +178,46 @@ function createChart(data) {
     .style("font-size", "12px")
     .text((d) => d);
 
+  //tooltip
+
+  // Select tooltip element
+  const tooltipFatality = d3.select("#tooltipFatality");
+
+  // Append a rectangle for each element in the series
+  svg
+    .append("g")
+    .selectAll()
+    .data(series)
+    .join("g")
+    .attr("fill", (d) => color(d.key))
+    .selectAll("rect")
+    .data((D) => D.map((d) => ((d.key = D.key), d)))
+    .join("rect")
+    .attr("x", (d) => x(d.data[0]))
+    .attr("y", (d) => y(d[1]))
+    .attr("height", (d) => y(d[0]) - y(d[1]))
+    .attr("width", x.bandwidth())
+    .on("mouseover", handleMouseOver) // Add mouseover event
+    .on("mouseout", handleMouseOut); // Add mouseout event
+
+  // Function to handle mouseover event
+  function handleMouseOver(event, d) {
+    tooltipFatality.transition().duration(200).style("opacity", 0.9);
+    tooltipFatality
+      .html(
+        `${d.data[0]} ${d.key}<br>${formatValue(
+          d.data[1].get(d.key).population
+        )}`
+      )
+      .style("left", event.pageX + "px")
+      .style("top", event.pageY - 28 + "px");
+  }
+
+  // Function to handle mouseout event
+  function handleMouseOut() {
+    tooltipFatality.transition().duration(500).style("opacity", 0);
+  }
+
   // Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
   chartContainer.appendChild(svg.node());
 }
