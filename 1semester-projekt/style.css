@@ -391,10 +391,12 @@ svg {
 .textL {
   width: 60%;
   height: 600px;
+  padding: 2%;
 }
 
 .textR {
   width: 60%;
   height: 600px;
   float: right;
+  padding: 2%;
 }
