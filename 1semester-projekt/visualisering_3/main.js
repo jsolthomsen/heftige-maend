@@ -129,14 +129,18 @@ function createChart(data) {
     .append("g")
     .attr("transform", `translate(0,${height - marginBottom})`)
     .call(d3.axisBottom(x).tickSizeOuter(0))
-    .call((g) => g.selectAll(".domain").remove());
+    .call((g) => g.selectAll(".domain").remove())
+    .selectAll("text") // Vælg alle aksetekster
+    .style("font-size", "15px"); // Angiv ønsket fontstørrelse
 
   // Append the vertical axis.
   svg
     .append("g")
     .attr("transform", `translate(${marginLeft},0)`)
     .call(d3.axisLeft(y).ticks(null, "s"))
-    .call((g) => g.selectAll(".domain").remove());
+    .call((g) => g.selectAll(".domain").remove())
+    .selectAll("text") // Vælg alle aksetekster
+    .style("font-size", "14px"); // Angiv ønsket fontstørrelse
 
   //Legend
 
