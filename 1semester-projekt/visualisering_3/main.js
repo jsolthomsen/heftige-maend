@@ -85,7 +85,7 @@ function createChart(data) {
     .rangeRound([height - marginBottom, marginTop]);
 
   // Angiv dine egne farver i et array
-  const customColors = ["blue", "red"];
+  const customColors = ["steelblue", "firebrick"];
 
   const color = d3
     .scaleOrdinal()
