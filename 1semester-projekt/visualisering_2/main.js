@@ -11,7 +11,7 @@ const svg2 = d3
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Loader JSON-data fra localhost, og starter vores treemap funktion.
-d3.json("http://localhost:3000/activities-fatal")
+d3.json("https://nodejs-9zav.onrender.com/activities-fatal")
   .then(function (data) {
     createTreemap(data);
   })

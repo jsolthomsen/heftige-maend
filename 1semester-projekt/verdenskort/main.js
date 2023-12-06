@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   svg.call(zoom.transform, d3.zoomIdentity);
 
   // Hent data fra serveren
-  d3.json("http://localhost:3000/values")
+  d3.json("https://nodejs-9zav.onrender.com/values")
     .then((serverData) => {
       // Kontroller om serverdataen er gyldig
       if (serverData && serverData.attacks) {

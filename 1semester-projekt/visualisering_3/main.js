@@ -1,8 +1,9 @@
 let rawData;
 let data;
+const chartContainer = document.getElementById("chart-container");
 
 //HENT DATA
-d3.json("http://localhost:3000/attacks")
+d3.json("https://nodejs-9zav.onrender.com/attacks")
   .then((responseData) => {
     rawData = responseData.attacks;
     // Behandle dataen og opret diagrammet
@@ -38,17 +39,14 @@ function handleData(rawData) {
   }));
 
   // Opret diagrammet med den formaterede data
-  const chart = createChart(data); //har ændret formattedData til data
-
-  // Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
-  document.body.appendChild(chart);
+  createChart(data);
 }
 
 function createChart(data) {
   // Specify the chart’s dimensions.
   const width = 928;
-  const height = 500;
-  const marginTop = 10;
+  const height = 660;
+  const marginTop = 50;
   const marginRight = 10;
   const marginBottom = 20;
   const marginLeft = 40;
@@ -87,7 +85,7 @@ function createChart(data) {
     .rangeRound([height - marginBottom, marginTop]);
 
   // Angiv dine egne farver i et array
-  const customColors = ["blue", "red"];
+  const customColors = ["steelblue", "firebrick"];
 
   const color = d3
     .scaleOrdinal()
@@ -131,14 +129,18 @@ function createChart(data) {
     .append("g")
     .attr("transform", `translate(0,${height - marginBottom})`)
     .call(d3.axisBottom(x).tickSizeOuter(0))
-    .call((g) => g.selectAll(".domain").remove());
+    .call((g) => g.selectAll(".domain").remove())
+    .selectAll("text") // Vælg alle aksetekster
+    .style("font-size", "15px"); // Angiv ønsket fontstørrelse
 
   // Append the vertical axis.
   svg
     .append("g")
     .attr("transform", `translate(${marginLeft},0)`)
     .call(d3.axisLeft(y).ticks(null, "s"))
-    .call((g) => g.selectAll(".domain").remove());
+    .call((g) => g.selectAll(".domain").remove())
+    .selectAll("text") // Vælg alle aksetekster
+    .style("font-size", "14px"); // Angiv ønsket fontstørrelse
 
   //Legend
 
@@ -176,11 +178,49 @@ function createChart(data) {
     .style("font-size", "12px")
     .text((d) => d);
 
-  // Return the chart with the color scale as a property (for the legend).
-  return Object.assign(svg.node(), { scales: { color } });
+  //tooltip
+
+  // Select tooltip element
+  const tooltipFatality = d3.select("#tooltipFatality");
+
+  // Append a rectangle for each element in the series
+  svg
+    .append("g")
+    .selectAll()
+    .data(series)
+    .join("g")
+    .attr("fill", (d) => color(d.key))
+    .selectAll("rect")
+    .data((D) => D.map((d) => ((d.key = D.key), d)))
+    .join("rect")
+    .attr("x", (d) => x(d.data[0]))
+    .attr("y", (d) => y(d[1]))
+    .attr("height", (d) => y(d[0]) - y(d[1]))
+    .attr("width", x.bandwidth())
+    .on("mouseover", handleMouseOver) // Add mouseover event
+    .on("mouseout", handleMouseOut); // Add mouseout event
+
+  // Function to handle mouseover event
+  function handleMouseOver(event, d) {
+    tooltipFatality.transition().duration(200).style("opacity", 0.9);
+    tooltipFatality
+      .html(
+        `${d.data[0]} ${d.key}<br>${formatValue(
+          d.data[1].get(d.key).population
+        )}`
+      )
+      .style("left", event.pageX + "px")
+      .style("top", event.pageY - 28 + "px");
+  }
+
+  // Function to handle mouseout event
+  function handleMouseOut() {
+    tooltipFatality.transition().duration(500).style("opacity", 0);
+  }
+
+  // Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
+  chartContainer.appendChild(svg.node());
 }
 
-const chart = createChart(data);
-
-// Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
-document.body.appendChild(chart);
+// Kald til createChart ikke længere nødvendig, da det kaldes inden for handleData-funktionen.
+// const chart = createChart(data);
