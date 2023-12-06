@@ -2,11 +2,11 @@ let rawData;
 let data;
 const chartContainer = document.getElementById("chart-container");
 
-//HENT DATA
+// HENT DATA: Brug af d3.json til at hente data fra en ekstern API
 d3.json("https://nodejs-9zav.onrender.com/attacks")
   .then((responseData) => {
     rawData = responseData.attacks;
-    // Behandle dataen og opret diagrammet
+    // Behandler dataen og opret diagrammet
     handleData(rawData);
   })
   .catch((error) => {
@@ -16,20 +16,6 @@ d3.json("https://nodejs-9zav.onrender.com/attacks")
 // Funktion til at håndtere dataen
 function handleData(rawData) {
   console.log("Data from server:", rawData);
-
-  // Tjek om nødvendige nøgler findes i mindst ét element i data
-  const keyCheck =
-    rawData.length > 0 &&
-    rawData[0].hasOwnProperty("antal_personer") &&
-    rawData[0].hasOwnProperty("fatal") &&
-    rawData[0].hasOwnProperty("sex_id");
-
-  if (!keyCheck) {
-    console.error(
-      "Data is missing necessary keys. Please check your data structure."
-    );
-    return;
-  }
 
   // Konverter dataformatet til det forventede format
   const data = rawData.map((d) => ({
@@ -42,8 +28,9 @@ function handleData(rawData) {
   createChart(data);
 }
 
+// Funktion til oprettelse af diagram
 function createChart(data) {
-  // Specify the chart’s dimensions.
+  // Specifikation af diagrammets dimensioner
   const width = 928;
   const height = 660;
   const marginTop = 50;
@@ -51,22 +38,20 @@ function createChart(data) {
   const marginBottom = 20;
   const marginLeft = 40;
 
-  console.log(data);
-
-  // Determine the series that need to be stacked.
+  // Bestem hvilke serier der skal stables
   const series = d3
     .stack()
-    .keys(d3.union(data.map((d) => d.fatality))) // distinct series keys, in input order
+    .keys(d3.union(data.map((d) => d.fatality)))
     .value(([, D], key) => D.get(key).population)(
-    // get value for each series key and stack
+    // Hent værdi for hver serienøgle og stack
     d3.index(
       data,
       (d) => d.gender,
       (d) => d.fatality
     )
-  ); // group by stack then series key
+  );
 
-  // Prepare the scales for positional and color encodings.
+  // Forbereder skalaer til positionering og farvekodning
   const x = d3
     .scaleBand()
     .domain(
@@ -84,7 +69,7 @@ function createChart(data) {
     .domain([0, d3.max(series, (d) => d3.max(d, (d) => d[1]))])
     .rangeRound([height - marginBottom, marginTop]);
 
-  // Angiv dine egne farver i et array
+  // Angiver egne farver
   const customColors = ["steelblue", "firebrick"];
 
   const color = d3
@@ -93,10 +78,10 @@ function createChart(data) {
     .range(customColors)
     .unknown("#ccc");
 
-  // A function to format the value in the tooltip.
+  // Funktion til at formatere værdien i tooltip
   const formatValue = (x) => (isNaN(x) ? "N/A" : x.toLocaleString("en"));
 
-  // Create the SVG container.
+  // Opret SVG-containeren
   const svg = d3
     .create("svg")
     .attr("width", width)
@@ -104,7 +89,7 @@ function createChart(data) {
     .attr("viewBox", [0, 0, width, height])
     .attr("style", "max-width: 100%; height: auto;");
 
-  // Append a group for each series, and a rect for each element in the series.
+  // Tilføj en gruppe for hver serie og en rektangel for hvert element i serien
   svg
     .append("g")
     .selectAll()
@@ -124,7 +109,7 @@ function createChart(data) {
         `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).population)}`
     );
 
-  // Append the horizontal axis.
+  // Tilføj den horisontale akse
   svg
     .append("g")
     .attr("transform", `translate(0,${height - marginBottom})`)
@@ -133,7 +118,7 @@ function createChart(data) {
     .selectAll("text") // Vælg alle aksetekster
     .style("font-size", "15px"); // Angiv ønsket fontstørrelse
 
-  // Append the vertical axis.
+  // Tilføj den vertikale akse
   svg
     .append("g")
     .attr("transform", `translate(${marginLeft},0)`)
@@ -147,7 +132,7 @@ function createChart(data) {
   // Farveskala til legenden
   const legendColor = d3
     .scaleOrdinal()
-    .domain(series.map((d) => d.key)) // Reverse rækkefølgen af domænet
+    .domain(series.map((d) => d.key)) // Vend rækkefølgen af domænet
     .range(customColors);
 
   // Opret legend
@@ -180,10 +165,10 @@ function createChart(data) {
 
   //tooltip
 
-  // Select tooltip element
+  // Vælg tooltip-elementet
   const tooltipFatality = d3.select("#tooltipFatality");
 
-  // Append a rectangle for each element in the series
+  // Tilføj et rektangel for hvert element i serien
   svg
     .append("g")
     .selectAll()
@@ -197,10 +182,10 @@ function createChart(data) {
     .attr("y", (d) => y(d[1]))
     .attr("height", (d) => y(d[0]) - y(d[1]))
     .attr("width", x.bandwidth())
-    .on("mouseover", handleMouseOver) // Add mouseover event
-    .on("mouseout", handleMouseOut); // Add mouseout event
+    .on("mouseover", handleMouseOver)
+    .on("mouseout", handleMouseOut);
 
-  // Function to handle mouseover event
+  // Funktion til at håndtere mouseover-event
   function handleMouseOver(event, d) {
     tooltipFatality.transition().duration(200).style("opacity", 0.9);
     tooltipFatality
@@ -213,7 +198,7 @@ function createChart(data) {
       .style("top", event.pageY - 28 + "px");
   }
 
-  // Function to handle mouseout event
+  // Funktion til at håndtere mouseout-event
   function handleMouseOut() {
     tooltipFatality.transition().duration(500).style("opacity", 0);
   }
@@ -221,6 +206,3 @@ function createChart(data) {
   // Tilføj diagrammet til DOM'en eller gør det, der er nødvendigt for at vise det.
   chartContainer.appendChild(svg.node());
 }
-
-// Kald til createChart ikke længere nødvendig, da det kaldes inden for handleData-funktionen.
-// const chart = createChart(data);
