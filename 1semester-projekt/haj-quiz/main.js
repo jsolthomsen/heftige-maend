@@ -60,23 +60,74 @@ const answers = [
     { actual: "Hammerhead Shark", display: "Reading" },
   ],
 ];
-
-let currentSlide = 1; // Keep track of the current slide
-const totalSlides = 10; // Update this to the total number of slides in your quiz
+const totalSlides = 10;
+let currentSlide = 1;
 
 function getSelectedAnswer() {
-  // Special case for the first slide (no answers)
   if (currentSlide === 1) {
     return "Start Quiz";
   }
 
-  let radioButtons = document.getElementsByName("q" + (currentSlide - 2)); // Adjusted index
-  for (let i = 0; i < radioButtons.length; i++) {
-    if (radioButtons[i].checked) {
-      return radioButtons[i].value;
+  const radioButtons = document.getElementsByName("q" + (currentSlide - 2)); // Adjusted index
+  let selectedAnswer = null;
+
+  radioButtons.forEach((radio) => {
+    if (radio.checked) {
+      selectedAnswer = radio.value;
     }
+  });
+
+  return selectedAnswer;
+}
+
+function showHideButton(elementId, display) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.style.display = display;
   }
-  return null;
+}
+
+const audio = new Audio("pic/baby_shark_sound.mp3");
+const audioControls = document.getElementById("audio-controls");
+
+function showResult(resultShark) {
+  const resultSlide = document.getElementById("result-slide");
+  const resultImage = document.getElementById("result-image");
+  const resultText = document.getElementById("result-text");
+
+  resultText.textContent = `You are a ${resultShark}!`;
+
+  if (resultShark === "Baby Shark") {
+    resultImage.src = "pic/baby_shark.gif";
+    audio.play();
+    audioControls.style.display = "block";
+  } else {
+    resultImage.src = `pic/${resultShark
+      .toLowerCase()
+      .replace(/\s/g, "_")}.jpg`;
+    audioControls.style.display = "none";
+  }
+
+  document.querySelectorAll(".quiz-slide").forEach((slide) => {
+    slide.style.display = "none";
+  });
+
+  resultSlide.style.display = "flex";
+}
+
+function toggleAudio() {
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+}
+
+const volumeSlider = document.getElementById("volume-slider");
+if (volumeSlider) {
+  volumeSlider.addEventListener("input", () => {
+    audio.volume = volumeSlider.value;
+  });
 }
 
 function showNextSlide() {
@@ -87,96 +138,59 @@ function showNextSlide() {
     return;
   }
 
-  const currentSlideElement = document.getElementById(`slide${currentSlide}`);
-  if (currentSlideElement) {
-    currentSlideElement.style.display = "none";
-  }
+  showHideButton(`slide${currentSlide}`, "none");
 
   if (currentSlide < totalSlides) {
     currentSlide++;
-    const nextSlideElement = document.getElementById(`slide${currentSlide}`);
-    if (nextSlideElement) {
-      nextSlideElement.style.display = "flex";
-    }
+    showHideButton(`slide${currentSlide}`, "flex");
   } else {
-    const nextBtnElement = document.getElementById(`next-btn${currentSlide}`);
-    if (nextBtnElement) {
-      nextBtnElement.style.display = "none";
-    }
-
-    const prevBtnElement = document.getElementById(`prev-btn${currentSlide}`);
-    if (prevBtnElement) {
-      prevBtnElement.style.display = "inline-block";
-    }
-
-    const lastQuestionElement = document.getElementById("last-question");
-    if (lastQuestionElement) {
-      lastQuestionElement.style.display = "flex";
-    }
+    showHideButton(`next-btn${currentSlide}`, "none");
+    showHideButton(`prev-btn${currentSlide}`, "inline-block");
+    showHideButton("last-question", "flex");
   }
 
-  const prevBtnElement = document.getElementById(`prev-btn${currentSlide}`);
-  if (prevBtnElement) {
-    prevBtnElement.style.display = currentSlide > 1 ? "inline-block" : "none";
-  }
+  showHideButton(
+    `prev-btn${currentSlide}`,
+    currentSlide > 1 ? "inline-block" : "none"
+  );
 }
-// Function to show the previous slide
+
 function showPreviousSlide() {
-  const currentSlideElement = document.getElementById(`slide${currentSlide}`);
-
-  if (currentSlideElement) {
-    // Hide the current slide
-    currentSlideElement.style.display = "none";
-  }
-
+  showHideButton(`slide${currentSlide}`, "none");
   currentSlide--;
 
-  const prevSlideElement = document.getElementById(`slide${currentSlide}`);
-  if (prevSlideElement) {
-    // Show the previous slide
-    prevSlideElement.style.display = "flex";
-
-    // Show or hide the next and previous buttons accordingly
-    const prevBtnElement = document.getElementById(`prev-btn${currentSlide}`);
-    if (prevBtnElement) {
-      prevBtnElement.style.display = currentSlide > 1 ? "inline-block" : "none";
-    }
-
-    const nextBtnElement = document.getElementById(`next-btn${currentSlide}`);
-    if (nextBtnElement) {
-      nextBtnElement.style.display =
-        currentSlide < totalSlides ? "inline-block" : "none";
-    }
-  }
+  const prevSlideId = `slide${currentSlide}`;
+  showHideButton(prevSlideId, "flex");
+  showHideButton(
+    `prev-btn${currentSlide}`,
+    currentSlide > 1 ? "inline-block" : "none"
+  );
+  showHideButton(
+    `next-btn${currentSlide}`,
+    currentSlide < totalSlides ? "inline-block" : "none"
+  );
 }
 
 function resetQuiz() {
-  // Hide all slides except the start slide
   document.querySelectorAll(".quiz-slide").forEach((slide, index) => {
-    slide.style.display = index === 0 ? "flex" : "none";
+    const displayValue = index === 0 ? "flex" : "none";
+    slide.style.display = displayValue;
   });
 
-  // Reset the current slide variable
   currentSlide = 1;
 
-  // Clear the selected radio buttons
   document.querySelectorAll('input[type="radio"]').forEach((radio) => {
     radio.checked = false;
   });
 
-  // Show or hide the previous button accordingly
-  const prevBtnElement = document.getElementById("prev-btn1");
-  if (prevBtnElement) {
-    prevBtnElement.style.display = "none";
+  if (audioControls) {
+    audioControls.style.display = "none";
   }
 
-  const nextBtnElement = document.getElementById("next-btn");
-  if (nextBtnElement) {
-    nextBtnElement.style.display = "inline-block";
-  }
+  showHideButton("prev-btn1", "none");
+  showHideButton("next-btn", "inline-block");
 }
 
-// Function to calculate and display the result
 function calculateResult() {
   const sharkVotes = {
     "Hammerhead Shark": 0,
@@ -185,21 +199,16 @@ function calculateResult() {
     "Great White Shark": 0,
   };
 
-  // Loop through each question
   for (let i = 0; i < questions.length; i++) {
-    // Get the selected answer for the current question
     const selectedAnswer = document.querySelector(
       `input[name="q${i}"]:checked`
     );
-
-    // Add a vote to the corresponding shark based on the selected answer
     if (selectedAnswer) {
       const sharkName = selectedAnswer.value;
       sharkVotes[sharkName]++;
     }
   }
 
-  // Determine the most voted shark
   let maxVotes = 0;
   let resultShark = "";
 
@@ -210,8 +219,7 @@ function calculateResult() {
     }
   }
 
-  // Display the result
-  alert(`You are a ${resultShark}!`);
+  showResult(resultShark);
 }
 
 // Initialize the quiz by showing the first slide

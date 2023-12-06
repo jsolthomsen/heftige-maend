@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shark Personality Quiz</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
   </head>
 
   <body>
@@ -414,15 +415,38 @@
       </div>
     </div>
 
-    <!-- Last Slide 10 for Result -->
+    <!-- Get Your Shark! Button -->
     <div class="quiz-slide" id="slide10">
       <div id="quiz-container">
-        <!-- Result will be displayed here -->
+        <p>Click the button below to get your shark:</p>
       </div>
       <div class="button-container">
         <button onclick="calculateResult()">Get Your Shark!</button>
         <button onclick="resetQuiz()">Reset Quiz</button>
       </div>
+    </div>
+
+    <!-- Result Slide -->
+    <div class="quiz-slide" id="result-slide" style="display: none">
+      <div id="result-container">
+        <img id="result-image" src="" alt="Result Shark Image" />
+        <p id="result-text"></p>
+      </div>
+      <button onclick="resetQuiz()">Reset Quiz</button>
+    </div>
+
+    <!-- Audio controls -->
+    <div id="audio-controls" style="display: none">
+      <label for="volume-slider">Volume:</label>
+      <input
+        type="range"
+        id="volume-slider"
+        min="0"
+        max="1"
+        step="0.1"
+        value="1"
+      />
+      <button id="play-pause-button" onclick="toggleAudio()">Pause/Play</button>
     </div>
 
     <script src="main.js"></script>
