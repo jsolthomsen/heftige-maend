@@ -256,34 +256,15 @@ svg {
   transform: translate(-50%, -50%);
 }
 
-.tooltip.active {
-  opacity: 1;
-}
-
-.tooltip2 {
-  position: absolute;
-  background-color: #f9f9f9;
-  border: 1px solid #000000;
-  padding: 10px;
-  pointer-events: none;
-  border-radius: 6px;
-  font-size: 12px;
-  width: 200px;
-  height: 200px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  bottom: 0;
-  right: 0;
-}
-
 #verdenskort {
   text-align: center;
   margin-top: 10px;
   margin-bottom: 30px;
   padding-top: 30px;
-  font-family: "Bebas Neue", sans-serif; /* A bold and uppercase font */
-  color: #ee6055; /* A deep red color for a touch of danger */
-  font-size: 50px; /* A larger font size for emphasis */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow for depth */
+  font-family: "Bebas Neue", sans-serif;
+  color: #ee6055;
+  font-size: 50px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .source {
@@ -308,17 +289,6 @@ svg {
   width: 200px;
   height: 200px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-#verdenskort {
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  padding-top: 30px;
-  font-family: "Bebas Neue", sans-serif;
-  color: #ee6055;
-  font-size: 50px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #source {
