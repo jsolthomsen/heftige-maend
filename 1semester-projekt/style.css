@@ -46,8 +46,11 @@ button:hover {
 
 /*menu*/
 .menu {
-  height: 150px;
-  padding: 1%;
+  height: 140px;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-top: 0%;
+  padding-bottom: 0%;
   position: sticky;
   top: 0;
   left: 0;
