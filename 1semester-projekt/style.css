@@ -1,8 +1,8 @@
 body {
   background-image: linear-gradient(
-    rgb(175, 207, 223),
-    rgb(74, 155, 177),
-    rgb(41, 91, 115)
+    rgb(119, 188, 222),
+    rgb(59, 132, 152),
+    rgb(24, 70, 91)
   );
   background-color: rgb(175, 207, 223);
   font-family: arial, sans-serif;
@@ -49,11 +49,8 @@ button:hover {
   top: 0;
   left: 0;
   width: 100%;
-  background-image: linear-gradient(
-    rgb(175, 207, 223),
-    rgb(175, 207, 223),
-    rgba(175, 207, 223, 0)
-  );
+  background-color: rgba(119, 188, 222, 0.9);
+  border-bottom: 2px solid rgb(59, 132, 152);
 }
 
 .menuUnderside {
@@ -80,6 +77,12 @@ button:hover {
   font-size: 25px;
   font-weight: 600;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+#overskrift {
+  color: white;
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
 /*Mockup */
