@@ -1,7 +1,10 @@
 body {
+  background-image: linear-gradient(rgb(203, 219, 227), rgb(24, 70, 91));
+  background-color: #a2c8e2;
   font-family: "Arial", sans-serif;
   text-align: center;
   margin: 50px;
+  overflow-x: hidden;
 }
 
 .quiz-slide {
@@ -123,4 +126,15 @@ p {
 
 #play-pause-button:hover {
   background-color: #2980b9;
+}
+
+#play-pause-button.playing {
+  background-color: #e74c3c;
+}
+
+#result-image {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
 }

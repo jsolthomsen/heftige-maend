@@ -115,6 +115,14 @@ function showResult(resultShark) {
   resultSlide.style.display = "flex";
 }
 
+function stopAndResetAudio() {
+  // Pause and reset the audio
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+}
+
 function toggleAudio() {
   if (audio.paused) {
     audio.play();
@@ -172,6 +180,8 @@ function showPreviousSlide() {
 }
 
 function resetQuiz() {
+  stopAndResetAudio();
+
   document.querySelectorAll(".quiz-slide").forEach((slide, index) => {
     const displayValue = index === 0 ? "flex" : "none";
     slide.style.display = displayValue;
