@@ -2,6 +2,8 @@ const margin = { top: 10, right: 10, bottom: 10, left: 10 };
 const width2 = 600 - margin.left - margin.right;
 const height2 = 600 - margin.top - margin.bottom;
 
+const tooltipActivity = d3.select("#tooltipActivity");
+
 const svg2 = d3
   .select("#my_dataviz")
   .append("svg")
@@ -212,9 +214,27 @@ function createTreemap(data) {
     .attr("height", function (d) {
       return d.parent.y1 - d.parent.y0;
     })
+    .text(function (d) {
+      return d;
+    })
     .style("stroke", "black")
     .style("fill", "rgb(24, 70, 91)")
-    .on("click", zoom);
+    .on("click", zoom)
+    .on("mouseover", function (event, d) {
+      tooltipActivity
+        .style("opacity", 1)
+        .html(d.parent.data.name) // Set the tooltip content
+        .style("left", event.pageX + 10 + "px") // Position the tooltip
+        .style("top", event.pageY + 10 + "px");
+    })
+    .on("mousemove", function (event) {
+      tooltipActivity
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY + 10 + "px");
+    })
+    .on("mouseout", function () {
+      tooltipActivity.style("opacity", 0);
+    });
 
   // Sætter tekst på de enkelte arealer
   svg2
