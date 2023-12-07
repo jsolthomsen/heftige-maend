@@ -24,10 +24,11 @@ p {
   color: white;
 }
 
-#infoBox {
+.infoText {
   font-size: 28px;
   padding: 10px;
-  color: black;
+  color: grey;
+  text-shadow: 0px 0px 0px;
 }
 
 a {
