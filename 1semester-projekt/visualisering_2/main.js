@@ -223,8 +223,8 @@ function createTreemap(data) {
     .on("mouseover", function (event, d) {
       tooltipActivity
         .style("opacity", 1)
-        .html(d.parent.data.name) // Set the tooltip content
-        .style("left", event.pageX + 10 + "px") // Position the tooltip
+        .html(d.parent.data.name)
+        .style("left", event.pageX + 10 + "px")
         .style("top", event.pageY + 10 + "px");
     })
     .on("mousemove", function (event) {
@@ -249,7 +249,14 @@ function createTreemap(data) {
       return d.parent.y0 + 20;
     })
     .text(function (d) {
-      return d.parent.data.name;
+      if (
+        d.parent.data.name == "Scuba Diving" ||
+        d.parent.data.name == "Body Boarding"
+      ) {
+        return "";
+      } else {
+        return d.parent.data.name;
+      }
     })
     .attr("font-size", "18px")
     .attr("fill", "white");
