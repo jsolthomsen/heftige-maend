@@ -40,30 +40,6 @@ function createTreemap(data) {
 
   const svgDefs = svg.append("defs");
 
-  const fatalGradient = svgDefs
-    .append("linearGradient")
-    .attr("id", "fatalGradient");
-  fatalGradient
-    .append("stop")
-    .attr("offset", "0%")
-    .attr("stop-color", "#8B0000"); // Mørkerød
-  fatalGradient
-    .append("stop")
-    .attr("offset", "100%")
-    .attr("stop-color", "#800000"); // Rødbrun
-
-  const nonFatalGradient = svgDefs
-    .append("linearGradient")
-    .attr("id", "nonFatalGradient");
-  nonFatalGradient
-    .append("stop")
-    .attr("offset", "0%")
-    .attr("stop-color", "#006400"); // Mørkegrøn
-  nonFatalGradient
-    .append("stop")
-    .attr("offset", "100%")
-    .attr("stop-color", "#556B2F"); // Olivengrøn
-
   function wrap(text, width) {
     text.each(function () {
       var text = d3.select(this),
@@ -151,9 +127,7 @@ function createTreemap(data) {
         return y(d.y1) - y(d.y0);
       })
       .style("fill", function (d) {
-        return d.data.name === "Fatal"
-          ? "url(#fatalGradient)"
-          : "url(#nonFatalGradient)";
+        return d.data.name === "Fatal" ? "firebrick" : "rgb(59, 132, 152)";
       });
 
     detailGroups
@@ -239,7 +213,7 @@ function createTreemap(data) {
       return d.parent.y1 - d.parent.y0;
     })
     .style("stroke", "black")
-    .style("fill", "#d66320")
+    .style("fill", "rgb(24, 70, 91)")
     .on("click", zoom);
 
   // Sætter tekst på de enkelte arealer
