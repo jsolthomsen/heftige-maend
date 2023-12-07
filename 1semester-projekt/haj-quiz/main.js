@@ -68,7 +68,7 @@ function getSelectedAnswer() {
     return "Start Quiz";
   }
 
-  const radioButtons = document.getElementsByName("q" + (currentSlide - 2)); // Adjusted index
+  const radioButtons = document.getElementsByName("q" + (currentSlide - 2));
   let selectedAnswer = null;
 
   radioButtons.forEach((radio) => {
@@ -233,4 +233,4 @@ function calculateResult() {
 }
 
 // Initialize the quiz by showing the first slide
-document.getElementById("slide1").style.display = "block";
+document.getElementById("slide1").style.display = "flex";

@@ -2,9 +2,7 @@ body {
   background-image: linear-gradient(rgb(203, 219, 227), rgb(24, 70, 91));
   background-color: #a2c8e2;
   font-family: "Arial", sans-serif;
-  text-align: center;
   margin: 50px;
-  overflow-x: hidden;
 }
 
 .quiz-slide {
@@ -86,6 +84,7 @@ button#reset-btn:hover {
   height: 250px;
   object-fit: cover;
   border-radius: 8px;
+  box-shadow: 0 0 4px #fff, 0 0 0 3px #000000;
 }
 
 .answers {
@@ -100,9 +99,26 @@ input[type="radio"] {
   margin: auto;
 }
 
-p {
+h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+  font-family: "Bebas Neue", sans-serif;
+  text-align: center;
+  size: 500px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  position: sticky;
+}
+
+p,
+label {
   font-size: 20px;
   margin: 10px;
+  font-family: "Bebas Neue", sans-serif;
+  text-align: center;
+  size: 500px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #audio-controls {
@@ -132,9 +148,52 @@ p {
   background-color: #e74c3c;
 }
 
-#result-image {
-  width: 250px;
-  height: 250px;
+#result-image,
+#sharkman {
+  width: 400px;
+  height: 400px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 100px;
+  padding: 50px;
+  box-shadow: #000000 2px 4px 6px;
+  margin: 95px;
+}
+
+label {
+  background-color: #79b9e4;
+  padding: 7px 12px;
+  margin: 5px;
+  border-radius: 10px;
+}
+#turtle {
+  position: absolute;
+  left: 25px;
+  transform: scaleX(-1);
+  top: 450px;
+}
+#turtle2 {
+  position: absolute;
+  right: 25px;
+  top: 100px;
+}
+#turtle3 {
+  position: absolute;
+  right: 25px;
+  top: 600px;
+}
+#turtle,
+#turtle2,
+#turtle3:hover {
+  cursor: grabbing;
+}
+
+#seaweed {
+  position: absolute;
+  left: 10;
+  bottom: -245px;
+}
+#seaweed2 {
+  position: absolute;
+  right: 0;
+  bottom: -250px;
 }

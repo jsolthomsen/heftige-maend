@@ -11,10 +11,66 @@
   <body>
     <h1>Shark Personality Quiz</h1>
 
+    <div id="turtle">
+      <img src="pic/turtle.png" alt="turtle" style="height: 100px" />
+    </div>
+    <div id="turtle2">
+      <img src="pic/turtle.png" alt="turtle" style="height: 100px" />
+    </div>
+    <div id="turtle3">
+      <img src="pic/turtle.png" alt="turtle" style="height: 100px" />
+    </div>
+    <div id="seaweed">
+      <img src="pic/seaweed.png" alt="seaweed" style="height: 200px" />
+    </div>
+    <div id="seaweed2">
+      <img src="pic/seaweed2.png" alt="seaweed2" style="height: 200px" />
+    </div>
     <!-- Slide 1 -->
     <div class="quiz-slide" id="slide1">
       <div id="quiz-container">
-        <p>Welcome to the Shark Personality Quiz! Click below to start:</p>
+        <p>
+          Welcome to the Shark Personality Quiz! <br />
+          Which shark are you? Click below to start:
+        </p>
+        <div class="answers">
+          <div class="answer-container">
+            <img
+              src="pic/great_white_shark.jpg"
+              alt="Great White Image"
+              class="answer-image"
+              id="great_white"
+            />
+            <label for="great_white">Great White Shark</label>
+          </div>
+          <div class="answer-container">
+            <img
+              src="pic/hammerhead_shark.jpg"
+              alt="Hammerheadmage"
+              class="answer-image"
+              id="hammerhead"
+            />
+            <label for="hammerhead">Hammerhead Shark </label>
+          </div>
+          <div class="answer-container">
+            <img
+              src="pic/tiger_shark.jpg"
+              alt="Tiger Image"
+              class="answer-image"
+              id="tiger"
+            />
+            <label for="tiger">Tiger Shark</label>
+          </div>
+          <div class="answer-container">
+            <img
+              src="pic/baby_shark.gif"
+              alt="Baby Image"
+              class="answer-image"
+              id="baby"
+            />
+            <label for="baby">Baby Shark</label>
+          </div>
+        </div>
       </div>
       <button onclick="showNextSlide()">Start Quiz</button>
     </div>
@@ -424,15 +480,18 @@
         <button onclick="calculateResult()">Get Your Shark!</button>
         <button onclick="resetQuiz()">Reset Quiz</button>
       </div>
+      <div class="answer-container">
+        <img src="pic/sharkman.jpg" alt="Sharkman Image" id="sharkman" />
+      </div>
     </div>
 
     <!-- Result Slide -->
     <div class="quiz-slide" id="result-slide" style="display: none">
       <div id="result-container">
+        <p>Congratulations!!!</p>
         <img id="result-image" src="" alt="Result Shark Image" />
         <p id="result-text"></p>
       </div>
-      <div id="confetti-container"></div>
       <button onclick="resetQuiz()">Reset Quiz</button>
     </div>
 
