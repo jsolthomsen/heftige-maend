@@ -99,8 +99,10 @@ button:hover {
 }
 
 #knapDiv {
-  width: 40%;
+  width: auto;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 /*Mockup */
