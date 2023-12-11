@@ -30,6 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // Rul til elementet
     targetElement.scrollIntoView({ behavior: "smooth", block: "end" });
   });
+
+  document.getElementById("button5").addEventListener("click", function () {
+    // Find det element, du vil rulle til
+    var targetElement = document.getElementById("div5");
+
+    // Rul til elementet
+    targetElement.scrollIntoView({ behavior: "smooth", block: "end" });
+  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
