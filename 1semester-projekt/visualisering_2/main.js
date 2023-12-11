@@ -40,8 +40,6 @@ function createTreemap(data) {
   const x = d3.scaleLinear().range([0, width2]);
   const y = d3.scaleLinear().range([0, height2]);
 
-  const svgDefs = svg.append("defs");
-
   function wrap(text, width) {
     text.each(function () {
       var text = d3.select(this),
