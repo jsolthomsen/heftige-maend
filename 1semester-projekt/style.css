@@ -376,6 +376,25 @@ svg {
   padding: 10px;
 }
 
+.menu,
+#div1,
+#div2,
+#div3,
+#div4,
+#div5 {
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .visL {
   width: 40%;
   height: 600px;

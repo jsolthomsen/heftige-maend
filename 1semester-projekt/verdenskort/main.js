@@ -165,6 +165,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 .style("stroke", (d) => legendColorScale(d))
                 .style("stroke-width", 2);
 
+              // Tilføj en grå boks over gradienten for at repræsentere "no value"
+              legendContainer
+                .append("rect")
+                .attr("width", legendHeight)
+                .attr("height", legendHeight)
+                .attr("x", 0)
+                .attr("y", -80)
+                .style("fill", "gray");
+
+              // Tilføj tekst til den grå boks
+              legendContainer
+                .append("text")
+                .attr("x", 70)
+                .attr("y", -65)
+                .attr("text-anchor", "middle")
+                .attr("fill", "white")
+                .text("= No Value");
+
               // Tilføj tekstetiketter til legenden
               legendContainer
                 .selectAll(".tick-label")
