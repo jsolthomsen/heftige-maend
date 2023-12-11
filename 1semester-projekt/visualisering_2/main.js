@@ -1,6 +1,7 @@
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
-const width2 = 600 - margin.left - margin.right;
-const height2 = 600 - margin.top - margin.bottom;
+const myDatavizDiv = document.getElementById("my_dataviz");
+const width2 = myDatavizDiv.clientWidth - margin.left - margin.right;
+const height2 = myDatavizDiv.clientHeight - margin.top - margin.bottom;
 
 const tooltipActivity = d3.select("#tooltipActivity");
 
