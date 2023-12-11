@@ -207,6 +207,7 @@ button:hover {
 #my_dataviz {
   display: flex;
   justify-content: center;
+  overflow: auto;
 }
 
 #chart-container {
