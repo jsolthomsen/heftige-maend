@@ -96,6 +96,7 @@ button:hover {
   width: 100%;
   background-color: rgba(119, 188, 222, 0.9);
   border-bottom: 2px solid rgb(59, 132, 152);
+  z-index: 100;
 }
 
 .menuUnderside {
