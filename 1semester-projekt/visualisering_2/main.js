@@ -1,12 +1,12 @@
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
-const myDatavizDiv = document.getElementById("my_dataviz");
-const width2 = myDatavizDiv.clientWidth - margin.left - margin.right;
-const height2 = myDatavizDiv.clientHeight - margin.top - margin.bottom;
+const myDatavizDiv = document.getElementById("visualisering_2");
+const width2 = myDatavizDiv.clientWidth;
+const height2 = myDatavizDiv.clientHeight;
 
 const tooltipActivity = d3.select("#tooltipActivity");
 
 const svg2 = d3
-  .select("#my_dataviz")
+  .select("#visualisering_2")
   .append("svg")
   .attr("width", width2 + margin.left + margin.right)
   .attr("height", height2 + margin.top + margin.bottom)

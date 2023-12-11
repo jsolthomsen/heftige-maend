@@ -182,10 +182,7 @@ button:hover {
   font-size: 25px;
 }
 
-#my_dataviz {
-  display: flex;
-  justify-content: center;
-  overflow-y: auto;
+#visualisering_2 {
   width: 100%;
   height: 100%;
 }
