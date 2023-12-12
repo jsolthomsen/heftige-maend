@@ -242,10 +242,10 @@ function createTreemap(data) {
     .enter()
     .append("text")
     .attr("x", function (d) {
-      return d.parent.x0 + 5;
+      return d.parent.x0 + 20;
     })
     .attr("y", function (d) {
-      return d.parent.y0 + 20;
+      return d.parent.y0 + 8;
     })
     .text(function (d) {
       if (
@@ -257,9 +257,8 @@ function createTreemap(data) {
         return d.parent.data.name;
       }
     })
-    .attr("font-size", "18px")
+    .attr("style", "writing-mode: tb; glyph-orientation-vertical: 0")
     .attr("fill", "white");
-
   svg2.on("dblclick", resetZoom);
 }
 
