@@ -259,6 +259,7 @@ svg {
   display: block;
   margin: auto;
 }
+
 .country {
   stroke: #000000;
   stroke-width: 0.5;
@@ -278,7 +279,6 @@ svg {
 }
 
 #worldmap {
-  position: absolute;
   text-align: center;
   margin-top: 10px;
   margin-bottom: 30px;
