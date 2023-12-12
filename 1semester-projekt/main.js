@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("JavaScript file loaded");
   // Find hajelementerne
   const shark = document.querySelector(".shark");
-  const lilleshark = document.querySelectorAll(".lilleshark");
+  const littleshark = document.querySelectorAll(".littleshark");
 
   // Lyt efter scrollhændelser
   window.addEventListener("scroll", function () {
@@ -71,18 +71,18 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Kør samme procedure for hajnr2
-      lilleshark.forEach(function (lilleshark) {
-        lilleshark.classList.add("shark-delay");
+      littleshark.forEach(function (littleshark) {
+        littleshark.classList.add("shark-delay");
 
         // Nulstil animationen for at genstarte den
-        lilleshark.style.animation = "none";
-        void lilleshark.offsetWidth; // Trigger reflow (repaint) for at annullere animationen
-        lilleshark.style.animation = null;
+        littleshark.style.animation = "none";
+        void littleshark.offsetWidth; // Trigger reflow (repaint) for at annullere animationen
+        littleshark.style.animation = null;
 
         setTimeout(function () {
-          lilleshark.classList.remove("shark-delay");
-          lilleshark.style.animation = "swim 30s linear"; // Start hajanimationen igen
-        }, 0);
+          littleshark.classList.remove("shark-delay");
+          littleshark.style.animation = "swim 30s linear"; // Start hajanimationen igen
+        }, 0); // Nulstil med en lille forsinkelse for at sikre, at det sker umiddelbart efter
       });
     }
   });
