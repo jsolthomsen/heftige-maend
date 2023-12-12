@@ -125,20 +125,18 @@ button:hover {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
 
-#overskrift {
+#heading {
   color: white;
   font-size: 40px;
   margin-bottom: 10px;
 }
 
-#knapDiv {
+#buttonDiv {
   width: auto;
   margin: 0 auto;
   display: flex;
   justify-content: center;
 }
-
-/*Mockup */
 
 #div1 {
   width: 95%;
@@ -182,7 +180,7 @@ button:hover {
   font-size: 25px;
 }
 
-#visualisering_2 {
+#visualization2 {
   width: 100%;
   height: 100%;
   display: flex;
@@ -241,7 +239,7 @@ button:hover {
   animation: swim 20s linear;
 }
 
-.lilleshark {
+.littleshark {
   position: absolute;
   bottom: 100;
   left: -60%;
