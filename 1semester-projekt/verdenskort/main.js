@@ -1,4 +1,3 @@
-const verdenskortet = document.getElementById("verdenskortet");
 // Variabeldeklarationer
 let mergedData; // Samlet data fra serveren og verdenskortet
 let countryData; // Data for det aktuelt valgte land
@@ -20,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Opret SVG-container
   svg = d3
-    .select("#verdenskortet")
+    .select("#worldmap")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
@@ -181,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .attr("y", -65)
                 .attr("text-anchor", "middle")
                 .attr("fill", "white")
+                .attr("font-size", "25px")
                 .text("= No Value");
 
               // Tilføj tekstetiketter til legenden
@@ -199,6 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .attr("y", -20)
                 .attr("text-anchor", "middle")
                 .attr("fill", "white")
+                .attr("font-size", "25px")
                 .text((d) => d);
 
               // Opret en pil for at angive værdien på kortet
