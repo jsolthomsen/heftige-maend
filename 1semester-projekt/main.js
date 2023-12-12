@@ -87,3 +87,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const fins = document.querySelectorAll(".fin");
+  const textbox = document.getElementById("textbox");
+  const closeButton = document.getElementById("closeButton");
+
+  fins.forEach((fin) => {
+    fin.addEventListener("click", function () {
+      // Display the textbox
+      textbox.style.display = "block";
+    });
+  });
+
+  closeButton.addEventListener("click", function () {
+    // Hide the textbox when the close button is clicked
+    textbox.style.display = "none";
+  });
+});
