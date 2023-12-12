@@ -83,7 +83,6 @@ button:hover {
   color: rgb(38, 116, 137);
 }
 
-/*menu*/
 .menu {
   height: 140px;
   padding-left: 1%;
@@ -137,8 +136,6 @@ button:hover {
   display: flex;
   justify-content: center;
 }
-
-/*Mockup */
 
 #div1 {
   width: 95%;
@@ -196,31 +193,13 @@ button:hover {
 }
 
 #tooltipFatality,
-.tooltip {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  padding: 5px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  background-color: #303030;
-  color: #ffffff;
-  border-radius: 6px;
-  font-size: 16px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-  top: 5%;
-  transform: translate(-50%, -50%);
-}
-
+.tooltip,
 #tooltipActivity {
   position: absolute;
   opacity: 0;
   pointer-events: none;
   padding: 5px;
   border: 1px solid #ddd;
-
   padding: 10px;
   background-color: #303030;
   color: #ffffff;
@@ -297,14 +276,69 @@ svg {
 }
 
 #verdenskort {
+  position: fixed;
   text-align: center;
   margin-top: 10px;
   margin-bottom: 30px;
   padding-top: 30px;
-  font-family: "Bebas Neue", sans-serif; /* A bold and uppercase font */
-  color: #ee6055; /* A deep red color for a touch of danger */
-  font-size: 50px; /* A larger font size for emphasis */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds a subtle shadow for depth */
+  font-family: "Bebas Neue", sans-serif;
+  color: #ee6055;
+  font-size: 50px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  30% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  50% {
+    opacity: 1;
+    visibility: visible;
+  }
+  65% {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.fin {
+  position: absolute;
+  width: 200px;
+}
+
+#fin1 {
+  left: 10%;
+  animation: fadeInOut 25s infinite;
+}
+
+#fin2 {
+  left: 80%;
+  top: 80%;
+  transform: scaleX(-1);
+  animation: fadeInOut 30s infinite;
+}
+
+#fin3 {
+  top: 90%;
+  left: 15%;
+  animation: fadeInOut 40s infinite;
+}
+
+#fin4 {
+  top: 77%;
+  left: 38%;
+  width: 80px;
+  animation: fadeInOut 50s infinite;
 }
 
 .source {

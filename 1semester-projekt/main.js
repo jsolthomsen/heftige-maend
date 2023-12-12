@@ -65,12 +65,12 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
           shark.classList.remove("shark-delay");
           shark.style.animation = "swim 19s linear"; // Start hajanimationen igen
-        }, 0); // Nulstil med en lille forsinkelse for at sikre, at det sker umiddelbart efter
+        }, 0);
       } else {
         console.error("Couldn't find shark element.");
       }
 
-      // Loop gennem lilleshark-elementet
+      // Kør samme procedure for hajnr2
       lilleshark.forEach(function (lilleshark) {
         lilleshark.classList.add("shark-delay");
 
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
           lilleshark.classList.remove("shark-delay");
           lilleshark.style.animation = "swim 30s linear"; // Start hajanimationen igen
-        }, 0); // Nulstil med en lille forsinkelse for at sikre, at det sker umiddelbart efter
+        }, 0);
       });
     }
   });
