@@ -277,9 +277,8 @@ svg {
   cursor: pointer;
 }
 
-#verdenskort {
-  position: fixed;
 #worldmap {
+  position: absolute;
   text-align: center;
   margin-top: 10px;
   margin-bottom: 30px;
