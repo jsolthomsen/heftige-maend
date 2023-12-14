@@ -160,7 +160,7 @@ function createChart(data) {
     .attr("x", 25)
     .attr("y", (d, i) => i * 20 + 9)
     .attr("dy", "0.35em")
-    .style("font-size", "12px")
+    .style("font-size", "16px")
     .text((d) => d);
 
   //tooltip
