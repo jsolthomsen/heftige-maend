@@ -41,41 +41,6 @@ function createTreemap(data) {
   const x = d3.scaleLinear().range([0, width2]);
   const y = d3.scaleLinear().range([0, height2]);
 
-  function wrap(text, width) {
-    text.each(function () {
-      var text = d3.select(this),
-        words = text.text().split(/\s+/).reverse(),
-        word,
-        line = [],
-        lineNumber = 0,
-        lineHeight = 1.1, // ems
-        x = text.attr("x"), // Use the x position of the text element
-        y = text.attr("y"),
-        dy = parseFloat(text.attr("dy")),
-        tspan = text
-          .text(null)
-          .append("tspan")
-          .attr("x", x) // Set the x position for tspan
-          .attr("y", y)
-          .attr("dy", "2em");
-      while ((word = words.pop())) {
-        line.push(word);
-        tspan.text(line.join(" "));
-        if (tspan.node().getComputedTextLength() > width) {
-          line.pop();
-          tspan.text(line.join(" "));
-          line = [word];
-          tspan = text
-            .append("tspan")
-            .attr("x", 0)
-            .attr("y", y)
-            .attr("dy", `${++lineNumber * lineHeight + dy}em`)
-            .text(word);
-        }
-      }
-    });
-  }
-
   /* 
   Zoom-in funktion på treemaps enkelte arealer
   Funktionen tager to parametre, en event og d for data. Event i dette tilfælde, er et mouseclick.
@@ -182,8 +147,8 @@ function createTreemap(data) {
       .transition()
       .duration(2500)
       .style("opacity", "1")
-      .attr("x", (d) => x(d.parent.x0) + 5)
-      .attr("y", (d) => y(d.parent.y0) + 20);
+      .attr("x", (d) => x(d.parent.x0) + 20)
+      .attr("y", (d) => y(d.parent.y0) + 8);
 
     svg2.selectAll(".detail").remove();
   }
