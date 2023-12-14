@@ -31,7 +31,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #79b9e4;
 }
 
 #next-btn {
@@ -134,7 +134,7 @@ label {
 }
 
 #play-pause-button {
-  background-color: #3498db;
+  background-color: #79b9e4;
   color: #fff;
   border: none;
   padding: 5px 10px;
@@ -143,10 +143,6 @@ label {
 
 #play-pause-button:hover {
   background-color: #2980b9;
-}
-
-#play-pause-button.playing {
-  background-color: #e74c3c;
 }
 
 #result-image,

@@ -476,7 +476,7 @@ function createBarChart(data) {
       value: 2171,
       flag: "verdenskort/flag/usaflag.png",
       fact: '<br>The states with the most shark attacks ever recorded are Florida, Hawaii, California, and the Carolinas. Florida is known as the "shark attack capital of the world" and accounts for more than half of all shark attacks in the USA each year.',
-      kilde: "https://www.siyachts.com/where-most-shark-attacks-occur",
+      source: "https://www.siyachts.com/where-most-shark-attacks-occur",
     },
 
     {
@@ -484,7 +484,7 @@ function createBarChart(data) {
       value: 1302,
       flag: "verdenskort/flag/australiaflag.png",
       fact: "<br>- On average, one person is killed by a shark attack per year in Australia.<br>- 5 people die from falling out of bed.<br>- 10 people get struck by lightning.",
-      kilde:
+      source:
         "https://www.oceanlifeeducation.com.au/wp-content/uploads/2020/12/Australian-Sharks-Fact-Sheet_watermark.pdf",
     },
 
@@ -493,7 +493,7 @@ function createBarChart(data) {
       value: 571,
       flag: "verdenskort/flag/southafricaflag.png",
       fact: "<br>South Africa's coastlines are one of the top three global hotspots for shark and ray diversity, with 204 different species recorded.",
-      kilde:
+      source:
         "https://oceanographicmagazine.com/features/in-search-of-sharks-in-south-africa/",
     },
 
@@ -502,7 +502,7 @@ function createBarChart(data) {
       value: 160,
       flag: "verdenskort/flag/papuanewguineaflag.png",
       fact: "<br>Papua New Guinea (PNG) is home to 132 species of sharks and rays, including some of the most endangered species like hammerheads, sawfish, and rhino rays. However, global populations of several of these magnificent species have declined by more than 70%, and without intervention, they will go extinct in our waters.",
-      kilde:
+      source:
         "https://www.wwfpacific.org/?379175/TOWARDS-SAVING-SHARKS-AND-RAYS-IN-PNG",
     },
 
@@ -511,7 +511,7 @@ function createBarChart(data) {
       value: 126,
       flag: "verdenskort/flag/newzealandflag.png",
       fact: "<br>In January 2020, it was discovered that three deep-sea shark species off the coast of New Zealand glow in the dark. Mallefet, an expert in bioluminescence from The Catholic University of Louvain in Belgium, says that other studies suggest around 10 percent of the world's approximately 540 shark species can glow.",
-      kilde:
+      source:
         "https://www.nzgeo.com/stories/glow-in-the-dark-sharks/\nhttps://www.bbc.com/news/world-asia-56256808",
     },
   ];
@@ -552,7 +552,7 @@ function createBarChart(data) {
       // Opdater tooltip-indhold
       tooltip
         .html(
-          `<span class="tooltitle"><strong>${d.name}</strong><br/>Total shark attacks: ${d.value}</span><br><br/><strong>Fun Fact:</strong> ${d.fact}<br/><br/> <span id="source">Source: <a href="${d.kilde}" target="_blank">${d.kilde}</a></span>`
+          `<span class="tooltitle"><strong>${d.name}</strong><br/>Total shark attacks: ${d.value}</span><br><br/><strong>Fun Fact:</strong> ${d.fact}<br/><br/> <span id="source">Source: <a href="${d.source}" target="_blank">${d.source}</a></span>`
         )
         .style("left", "300px")
         .style("top", "2400px")
