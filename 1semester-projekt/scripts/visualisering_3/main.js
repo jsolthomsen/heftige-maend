@@ -32,7 +32,7 @@ function handleData(rawData) {
 function createChart(data) {
   // Specifikation af diagrammets dimensioner
   const width = 928;
-  const height = 660;
+  const height = 780;
   const marginTop = 50;
   const marginRight = 10;
   const marginBottom = 20;
