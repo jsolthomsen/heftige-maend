@@ -3,20 +3,14 @@ let data;
 const chartContainer = document.getElementById("chart-container");
 
 // HENT DATA: Brug af d3.json til at hente data fra en ekstern API
-d3.json("https://nodejs-9zav.onrender.com/attacks")
-  .then((responseData) => {
-    rawData = responseData.attacks;
-    // Behandler dataen og opret diagrammet
-    handleData(rawData);
-  })
-  .catch((error) => {
-    console.error("There was a problem with the fetch operation:", error);
-  });
+d3.json("https://nodejs-9zav.onrender.com/attacks").then((responseData) => {
+  rawData = responseData.attacks;
+  // Behandler dataen og opret diagrammet
+  handleData(rawData);
+});
 
 // Funktion til at håndtere dataen
 function handleData(rawData) {
-  console.log("Data from server:", rawData);
-
   // Konverter dataformatet til det forventede format
   const data = rawData.map((d) => ({
     gender: d.sex_id === 7 ? "Female" : "Male",
