@@ -622,30 +622,3 @@ function createBarChart(data) {
     .selectAll("text")
     .attr("font-size", "13px");
 }
-
-const finsContainer = g.append("g").attr("class", "fins-container");
-
-// Append fins to the finsContainer
-finsContainer
-  .append("image")
-  .attr("href", "sharkfin.gif")
-  .attr("alt", "fin")
-  .attr("class", "fin")
-  .attr("id", "fin1")
-  .attr("x", yourInitialX1) // Set your initial X position for fin1
-  .attr("y", yourInitialY1) // Set your initial Y position for fin1
-  .attr("width", 200);
-
-finsContainer
-  .append("image")
-  .attr("href", "sharkfin.gif")
-  .attr("alt", "fin")
-  .attr("class", "fin")
-  .attr("id", "fin2")
-  .attr("x", yourInitialX2) // Set your initial X position for fin2
-  .attr("y", yourInitialY2) // Set your initial Y position for fin2
-  .attr("width", 200);
-
-// Repeat the above for other fins with different IDs and positions
-
-// Rest of your code...
