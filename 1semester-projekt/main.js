@@ -1,26 +1,33 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Funktion til at rulle til et specifikt element
   function scrollToElement(elementId) {
     var targetElement = document.getElementById(elementId);
     targetElement.scrollIntoView({ behavior: "smooth", block: "end" });
   }
 
+  // Tilføj klikhændelseslyttere til knapperne
   document.getElementById("button1").addEventListener("click", function () {
+    // Rul til div1, når button1 klikkes
     scrollToElement("div1");
   });
 
   document.getElementById("button2").addEventListener("click", function () {
+    // Rul til div2, når button2 klikkes
     scrollToElement("div2");
   });
 
   document.getElementById("button3").addEventListener("click", function () {
+    // Rul til div3, når button3 klikkes
     scrollToElement("div3");
   });
 
   document.getElementById("button4").addEventListener("click", function () {
+    // Rul til div4, når button4 klikkes
     scrollToElement("div4");
   });
 
   document.getElementById("button5").addEventListener("click", function () {
+    // Rul til div5, når button5 klikkes
     scrollToElement("div5");
   });
 });
@@ -79,13 +86,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   fins.forEach((fin) => {
     fin.addEventListener("click", function () {
-      // Display the textbox
+      // Vis textbox
       textbox.style.display = "block";
     });
   });
 
   closeButton.addEventListener("click", function () {
-    // Hide the textbox when the close button is clicked
+    // Gem textbox når luk knap er trykket
     textbox.style.display = "none";
   });
 });
