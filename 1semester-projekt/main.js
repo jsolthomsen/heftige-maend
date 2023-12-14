@@ -1,42 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("button1").addEventListener("click", function () {
-    // Find det element, du vil rulle til
-    var targetElement = document.getElementById("div1");
-
-    // Rul til elementet
+  function scrollToElement(elementId) {
+    var targetElement = document.getElementById(elementId);
     targetElement.scrollIntoView({ behavior: "smooth", block: "end" });
+  }
+
+  document.getElementById("button1").addEventListener("click", function () {
+    scrollToElement("div1");
   });
 
   document.getElementById("button2").addEventListener("click", function () {
-    // Find det element, du vil rulle til
-    var targetElement = document.getElementById("div2");
-
-    // Rul til elementet
-    targetElement.scrollIntoView({ behavior: "smooth", block: "end" });
+    scrollToElement("div2");
   });
 
   document.getElementById("button3").addEventListener("click", function () {
-    // Find det element, du vil rulle til
-    var targetElement = document.getElementById("div3");
-
-    // Rul til elementet
-    targetElement.scrollIntoView({ behavior: "smooth", block: "end" });
+    scrollToElement("div3");
   });
 
   document.getElementById("button4").addEventListener("click", function () {
-    // Find det element, du vil rulle til
-    var targetElement = document.getElementById("div4");
-
-    // Rul til elementet
-    targetElement.scrollIntoView({ behavior: "smooth", block: "end" });
+    scrollToElement("div4");
   });
 
   document.getElementById("button5").addEventListener("click", function () {
-    // Find det element, du vil rulle til
-    var targetElement = document.getElementById("div5");
-
-    // Rul til elementet
-    targetElement.scrollIntoView({ behavior: "smooth", block: "end" });
+    scrollToElement("div5");
   });
 });
 
