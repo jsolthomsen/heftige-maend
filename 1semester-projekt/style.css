@@ -93,6 +93,29 @@ svg {
   }
 }
 
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  30% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  50% {
+    opacity: 1;
+    visibility: visible;
+  }
+  65% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 /* HTML IDs */
 
 #imgquiz {
@@ -242,7 +265,7 @@ svg {
   text-align: center;
 }
 #textbox p {
-  font-size: 16px; /* Adjust the font size as needed */
+  font-size: 16px;
   margin: 10;
 }
 
