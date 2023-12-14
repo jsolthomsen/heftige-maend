@@ -250,7 +250,8 @@ function createTreemap(data) {
     .text(function (d) {
       if (
         d.parent.data.name == "Scuba Diving" ||
-        d.parent.data.name == "Body Boarding"
+        d.parent.data.name == "Body Boarding" ||
+        d.parent.data.name == "Snorkeling"
       ) {
         return "";
       } else {
