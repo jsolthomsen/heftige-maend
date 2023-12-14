@@ -305,6 +305,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     tooltip.classed("active", true);
                   }
                 })
+                .on("mousemove", function (event) {
+                  tooltip
+                    .style("left", event.pageX + 30 + "px")
+                    .style("top", event.pageY - 30 + "px");
+                })
                 .on("mouseout", function () {
                   // Skjul tooltip og pil, når musen forlader landet
                   tooltip.transition().duration(500).style("opacity", 0);

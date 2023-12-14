@@ -188,13 +188,13 @@ function createTreemap(data) {
       tooltipActivity
         .style("opacity", 1)
         .html(d.parent.data.name)
-        .style("left", event.pageX + 10 + "px")
-        .style("top", event.pageY + 10 + "px");
+        .style("left", event.pageX + 30 + "px")
+        .style("top", event.pageY - 30 + "px");
     })
     .on("mousemove", function (event) {
       tooltipActivity
-        .style("left", event.pageX + 10 + "px")
-        .style("top", event.pageY + 10 + "px");
+        .style("left", event.pageX + 30 + "px")
+        .style("top", event.pageY - 30 + "px");
     })
     .on("mouseout", function () {
       tooltipActivity.style("opacity", 0);

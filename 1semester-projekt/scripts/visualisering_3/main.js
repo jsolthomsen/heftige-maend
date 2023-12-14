@@ -183,6 +183,11 @@ function createChart(data) {
     .attr("height", (d) => y(d[0]) - y(d[1]))
     .attr("width", x.bandwidth())
     .on("mouseover", handleMouseOver)
+    .on("mousemove", function (event) {
+      tooltipFatality
+        .style("left", event.pageX + 30 + "px")
+        .style("top", event.pageY - 30 + "px");
+    })
     .on("mouseout", handleMouseOut);
 
   // Funktion til at håndtere mouseover-event
@@ -194,8 +199,8 @@ function createChart(data) {
           d.data[1].get(d.key).population
         )}`
       )
-      .style("left", event.pageX + "px")
-      .style("top", event.pageY - 28 + "px");
+      .style("left", event.pageX + 30 + "px")
+      .style("top", event.pageY - 30 + "px");
   }
 
   // Funktion til at håndtere mouseout-event
