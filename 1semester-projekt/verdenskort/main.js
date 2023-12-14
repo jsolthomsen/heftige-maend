@@ -1,18 +1,17 @@
 // Variabeldeklarationer
-let mergedData; // Samlet data fra serveren og verdenskortet
-let countryData; // Data for det aktuelt valgte land
-let pathGenerator; // Generator for projektion af landegrænser til SVG-stier
-let zoom; // Zoom-funktionalitet
-let svg; // SVG-container til visualiseringen
-let g; // Gruppeelement til landene
-let zoomContainer; // Container til zoom-funktionaliteten
-let width; // Bredde på visualiseringen
-let height; // Højde på visualiseringen
-let legendHeight; // Højden af ​​legen
+let mergedData;
+let countryData;
+let pathGenerator;
+let zoom;
+let svg;
+let g;
+let zoomContainer;
+let width;
+let height;
+let legendHeight;
 
 // Vent på at DOM'en er indlæst, før koden udføres
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialiser dimensionerne på visualiseringen
   width = 1200;
   height = 650;
   legendHeight = 20;
@@ -55,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
           value: serverItem.value,
         }));
 
-        // Opret søjlediagram til top 5 lande - bunden
+        // Opret søjlediagram til top 5 lande - i bunden af kode
         createBarChart(mergedData, "#bar-chart-container");
 
         d3.json(
@@ -623,3 +622,30 @@ function createBarChart(data) {
     .selectAll("text")
     .attr("font-size", "13px");
 }
+
+const finsContainer = g.append("g").attr("class", "fins-container");
+
+// Append fins to the finsContainer
+finsContainer
+  .append("image")
+  .attr("href", "sharkfin.gif")
+  .attr("alt", "fin")
+  .attr("class", "fin")
+  .attr("id", "fin1")
+  .attr("x", yourInitialX1) // Set your initial X position for fin1
+  .attr("y", yourInitialY1) // Set your initial Y position for fin1
+  .attr("width", 200);
+
+finsContainer
+  .append("image")
+  .attr("href", "sharkfin.gif")
+  .attr("alt", "fin")
+  .attr("class", "fin")
+  .attr("id", "fin2")
+  .attr("x", yourInitialX2) // Set your initial X position for fin2
+  .attr("y", yourInitialY2) // Set your initial Y position for fin2
+  .attr("width", 200);
+
+// Repeat the above for other fins with different IDs and positions
+
+// Rest of your code...
