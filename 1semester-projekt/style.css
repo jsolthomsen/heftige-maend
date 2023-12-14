@@ -64,6 +64,8 @@ svg {
   margin: auto;
 }
 
+/* CSS Animations */
+
 @keyframes swim {
   0% {
     transform: translateX(0) scaleX(1);
@@ -293,7 +295,6 @@ svg {
   margin-bottom: 30px;
   padding-top: 30px;
   font-family: "Bebas Neue", sans-serif;
-  color: #ee6055;
   font-size: 50px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   overflow-x: scroll;
@@ -423,13 +424,6 @@ svg {
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
   z-index: 1;
   cursor: pointer;
-}
-
-.source {
-  font-size: 7px;
-  text-align: right;
-  bottom: 5px;
-  right: 5px;
 }
 
 .tooltip.active {
