@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("JavaScript file loaded");
   // Find hajelementerne
   const shark = document.querySelector(".shark");
   const littleshark = document.querySelectorAll(".littleshark");
