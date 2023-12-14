@@ -168,19 +168,19 @@ label {
 }
 #turtle {
   position: absolute;
-  left: 25px;
+  left: 5%;
   transform: scaleX(-1);
-  top: 450px;
+  top: 50%;
 }
 #turtle2 {
   position: absolute;
-  right: 25px;
-  top: 100px;
+  right: 5%;
+  top: 10%;
 }
 #turtle3 {
   position: absolute;
-  right: 25px;
-  top: 600px;
+  right: 5%;
+  top: 70%;
 }
 #turtle,
 #turtle2,
@@ -190,15 +190,13 @@ label {
 
 #seaweed {
   position: absolute;
-  left: 10;
-  bottom: -275px;
-  padding: 5px;
+  left: 0%;
+  bottom: -35%;
 }
 #seaweed2 {
   position: absolute;
-  right: 0;
-  bottom: -265px;
-  padding: 5px;
+  right: 0%;
+  bottom: -35%;
 }
 #menu a {
   position: absolute;

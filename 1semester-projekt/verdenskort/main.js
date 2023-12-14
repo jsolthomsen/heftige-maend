@@ -1,4 +1,3 @@
-const verdenskortet = document.getElementById("verdenskortet");
 // Variabeldeklarationer
 let mergedData; // Samlet data fra serveren og verdenskortet
 let countryData; // Data for det aktuelt valgte land
@@ -20,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Opret SVG-container
   svg = d3
-    .select("#verdenskortet")
+    .select("#worldmap")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
@@ -56,10 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
           value: serverItem.value,
         }));
 
-        // Opret søjlediagram til top 5 lande
+        // Opret søjlediagram til top 5 lande - bunden
         createBarChart(mergedData, "#bar-chart-container");
 
-        // Hent verdenskortdata
         d3.json(
           "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
         )
@@ -181,6 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .attr("y", -65)
                 .attr("text-anchor", "middle")
                 .attr("fill", "white")
+                .attr("font-size", "25px")
                 .text("= No Value");
 
               // Tilføj tekstetiketter til legenden
@@ -199,6 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .attr("y", -20)
                 .attr("text-anchor", "middle")
                 .attr("fill", "white")
+                .attr("font-size", "25px")
                 .text((d) => d);
 
               // Opret en pil for at angive værdien på kortet
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .attr("class", "country")
                 .attr("d", pathGenerator)
                 .attr("fill", (d) => {
-                  // Find matchende data for hvert land
+                  // Find matchende data for hvert land baseret på navn
                   const matchingData = mergedData.find((data) => {
                     const countryName = data.name
                       ? data.name.trim().toLowerCase()
@@ -280,8 +280,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         .html(
                           `<strong>${countryName}</strong><br/>Value: ${countryData.value}`
                         )
-                        .style("left", event.pageX + 10 + "px")
-                        .style("top", event.pageY + 10 + "px");
+                        .style("left", event.pageX + 30 + "px")
+                        .style("top", event.pageY - 30 + "px");
 
                       // Animer pilens position baseret på værdien
                       arrow
@@ -293,12 +293,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             .scaleLinear()
                             .domain([1, 200, 2000])
                             .range([0, legendWidth, legendWidth]);
-                          tooltip
-                            .html(
-                              `<strong>${countryName}</strong><br/>Value: ${countryData.value}`
-                            )
-                            .style("left", event.pageX + 50 + "px")
-                            .style("top", event.pageY + -20 + "px");
 
                           const translateY = -arrowSize - 2;
                           const arrowPosition = countryData.value || 0;
@@ -320,11 +314,9 @@ document.addEventListener("DOMContentLoaded", function () {
                   arrow.transition().duration(200).style("opacity", 0);
                 })
                 .on("click", function (event, d) {
-                  // Kald klikfunktionen ved klik på et land
                   clicked(event, this, d);
                 });
             } else {
-              // Udskriv fejl, hvis verdenskortdatastrukturen er ugyldig
               console.error("Invalid world map data structure:", data);
             }
           })
@@ -332,7 +324,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error loading world map data:", error)
           );
       } else {
-        // Udskriv fejl, hvis serverens svar er ugyldigt
         console.error("Invalid server response:", serverData);
       }
     })
@@ -356,6 +347,7 @@ function clicked(event, element, d) {
     // Nulstil visualiseringen ved klik på et allerede markeret land
     reset(event);
   } else {
+    hideAllFins();
     // Beregn bounds for det valgte land
     const [[x0, y0], [x1, y1]] = pathGenerator.bounds(d.geometry);
     event.stopPropagation();
@@ -414,17 +406,35 @@ function reset(event, d) {
     .classed("active", false)
     .transition()
     .duration(duration)
-    .attr("d", pathGenerator);
+    .attr("d", pathGenerator)
+    .on("end", function () {
+      showAllFins();
+    });
+}
+// Funktion til at skjule alle finner
+function hideAllFins() {
+  const fins = document.querySelectorAll(".fin");
+  fins.forEach((fin) => {
+    fin.style.display = "none";
+  });
 }
 
-// Funktion til at beregne bounds for alle lande
+// Funktion til at vise alle finner
+function showAllFins() {
+  const fins = document.querySelectorAll(".fin");
+  fins.forEach((fin, index) => {
+    fin.style.display = "block";
+  });
+}
+
+// Funktion til at beregne bounds for alle lande, infinity og -infinity er startværdier
 function calculateBounds(data) {
   const bounds = [
     [Infinity, Infinity],
     [-Infinity, -Infinity],
   ];
 
-  // Beregn bounds for hvert land og opdater det globale bounds-objekt
+  // Beregn bounds for hvert land og opdater det globale bounds-objekt, henter koordinater forEach
   data.features.forEach((feature) => {
     const geometry = feature.geometry;
     const bbox = d3.geoBounds(geometry);
@@ -438,7 +448,7 @@ function calculateBounds(data) {
   return bounds;
 }
 
-// Funktion til at kontrollere gyldigheden af bounds
+// Funktion til at kontrollere gyldigheden af bounds, sørger for at der er reelt tal
 function areValidBounds(bounds) {
   return (
     Array.isArray(bounds) &&

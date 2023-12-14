@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("JavaScript file loaded");
   // Find hajelementerne
   const shark = document.querySelector(".shark");
-  const lilleshark = document.querySelectorAll(".lilleshark");
+  const littleshark = document.querySelectorAll(".littleshark");
 
   // Lyt efter scrollhændelser
   window.addEventListener("scroll", function () {
@@ -65,25 +65,43 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
           shark.classList.remove("shark-delay");
           shark.style.animation = "swim 19s linear"; // Start hajanimationen igen
-        }, 0); // Nulstil med en lille forsinkelse for at sikre, at det sker umiddelbart efter
+        }, 0);
       } else {
         console.error("Couldn't find shark element.");
       }
 
-      // Loop gennem lilleshark-elementet
-      lilleshark.forEach(function (lilleshark) {
-        lilleshark.classList.add("shark-delay");
+      // Kør samme procedure for hajnr2
+      littleshark.forEach(function (littleshark) {
+        littleshark.classList.add("shark-delay");
 
         // Nulstil animationen for at genstarte den
-        lilleshark.style.animation = "none";
-        void lilleshark.offsetWidth; // Trigger reflow (repaint) for at annullere animationen
-        lilleshark.style.animation = null;
+        littleshark.style.animation = "none";
+        void littleshark.offsetWidth; // Trigger reflow (repaint) for at annullere animationen
+        littleshark.style.animation = null;
 
         setTimeout(function () {
-          lilleshark.classList.remove("shark-delay");
-          lilleshark.style.animation = "swim 30s linear"; // Start hajanimationen igen
+          littleshark.classList.remove("shark-delay");
+          littleshark.style.animation = "swim 30s linear"; // Start hajanimationen igen
         }, 0); // Nulstil med en lille forsinkelse for at sikre, at det sker umiddelbart efter
       });
     }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const fins = document.querySelectorAll(".fin");
+  const textbox = document.getElementById("textbox");
+  const closeButton = document.getElementById("closeButton");
+
+  fins.forEach((fin) => {
+    fin.addEventListener("click", function () {
+      // Display the textbox
+      textbox.style.display = "block";
+    });
+  });
+
+  closeButton.addEventListener("click", function () {
+    // Hide the textbox when the close button is clicked
+    textbox.style.display = "none";
   });
 });

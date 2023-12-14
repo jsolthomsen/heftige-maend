@@ -1,12 +1,12 @@
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
-const myDatavizDiv = document.getElementById("visualisering_2");
+const myDatavizDiv = document.getElementById("visualization2");
 const width2 = myDatavizDiv.clientWidth;
 const height2 = myDatavizDiv.clientHeight;
 
 const tooltipActivity = d3.select("#tooltipActivity");
 
 const svg2 = d3
-  .select("#visualisering_2")
+  .select("#visualization2")
   .append("svg")
   .attr("width", width2 + margin.left + margin.right)
   .attr("height", height2 + margin.top + margin.bottom)
@@ -242,24 +242,24 @@ function createTreemap(data) {
     .enter()
     .append("text")
     .attr("x", function (d) {
-      return d.parent.x0 + 5;
+      return d.parent.x0 + 20;
     })
     .attr("y", function (d) {
-      return d.parent.y0 + 20;
+      return d.parent.y0 + 8;
     })
     .text(function (d) {
       if (
         d.parent.data.name == "Scuba Diving" ||
-        d.parent.data.name == "Body Boarding"
+        d.parent.data.name == "Body Boarding" ||
+        d.parent.data.name == "Snorkeling"
       ) {
         return "";
       } else {
         return d.parent.data.name;
       }
     })
-    .attr("font-size", "18px")
+    .attr("style", "writing-mode: tb; glyph-orientation-vertical: 0")
     .attr("fill", "white");
-
   svg2.on("dblclick", resetZoom);
 }
 
