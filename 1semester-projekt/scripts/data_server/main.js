@@ -22,7 +22,6 @@ const activityFatalQry = "SELECT * FROM activity_fatality";
 
 klient.connect();
 
-// Enable CORS for all routes
 app.use(cors());
 
 app.get("/values", async (req, res) => {
