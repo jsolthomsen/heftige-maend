@@ -1,8 +1,8 @@
 // Variabler som sættes i starten
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
 const myDatavizDiv = document.getElementById("visualization2");
-const width2 = myDatavizDiv.clientWidth;
-const height2 = myDatavizDiv.clientHeight;
+const width2 = 600;
+const height2 = 600;
 
 const tooltipActivity = d3.select("#tooltipActivity");
 
