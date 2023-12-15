@@ -212,10 +212,9 @@ svg {
 }
 
 #visualization2 {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
+  width: 600px;
+  height: 600px;
+  overflow: auto;
 }
 
 #chart-container {

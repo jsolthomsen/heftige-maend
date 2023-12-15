@@ -1,7 +1,8 @@
+// Variabler som sættes i starten
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
 const myDatavizDiv = document.getElementById("visualization2");
-const width2 = myDatavizDiv.clientWidth;
-const height2 = myDatavizDiv.clientHeight;
+const width2 = 600;
+const height2 = 800;
 
 const tooltipActivity = d3.select("#tooltipActivity");
 
@@ -38,13 +39,14 @@ function createTreemap(data) {
     "Body Boarding",
   ];
 
+  // Range variabler til længere nede
   const x = d3.scaleLinear().range([0, width2]);
   const y = d3.scaleLinear().range([0, height2]);
 
   /* 
   Zoom-in funktion på treemaps enkelte arealer
   Funktionen tager to parametre, en event og d for data. Event i dette tilfælde, er et mouseclick.
-  Div'en ændres til at det enkelte areal fyldet det hele, og der laver to nye arealer for fatal og non-fatal.
+  Div'en ændres til at det enkelte areal fylder det hele, og der laver to nye arealer for fatal og non-fatal.
   */
   function zoom(event, d) {
     const transition = svg2.transition().duration(1000);
@@ -215,8 +217,7 @@ function createTreemap(data) {
     .text(function (d) {
       if (
         d.parent.data.name == "Scuba Diving" ||
-        d.parent.data.name == "Body Boarding" ||
-        d.parent.data.name == "Snorkeling"
+        d.parent.data.name == "Body Boarding"
       ) {
         return "";
       } else {
