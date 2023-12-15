@@ -1,3 +1,4 @@
+/* HTML Tags */
 body {
   background-image: linear-gradient(rgb(203, 219, 227), rgb(24, 70, 91));
   background-color: #a2c8e2;
@@ -5,20 +6,6 @@ body {
   margin: 50px;
 }
 
-.quiz-slide {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-}
-
-#quiz-container {
-  margin-bottom: 20px;
-  border-radius: 8px;
-  padding: 20px;
-}
-
-/* Style the button */
 button {
   padding: 20px 25px;
   font-size: 16px;
@@ -34,18 +21,8 @@ button:hover {
   background-color: #79b9e4;
 }
 
-#next-btn {
-  display: none; /* Hide next button initially */
-}
-
-/* Style the last question's next button to show result */
-#last-question #next-btn {
-  display: inline-block;
-}
-
-/* Style the previous button */
 button#prev-btn {
-  display: none; /* Hide previous button initially */
+  display: none;
   background-color: #f44336;
   margin-right: 10px;
 }
@@ -54,9 +31,8 @@ button#prev-btn:hover {
   background-color: #d32f2f;
 }
 
-/* Style the reset button */
 button#reset-btn {
-  display: none; /* Hide reset button initially */
+  display: none;
   background-color: #f44336;
   margin-top: 10px;
 }
@@ -65,35 +41,6 @@ button#reset-btn:hover {
   background-color: #d32f2f;
 }
 
-#start-slide {
-  display: block;
-}
-
-/* Add this style for the answer-container */
-.answer-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  height: 100%;
-}
-/* Style the answer images */
-.answer-image {
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 0 4px #fff, 0 0 0 3px #000000;
-}
-
-.answers {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 50px;
-  margin-top: 10px;
-  justify-content: center;
-}
 input[type="radio"] {
   transform: scale(1.5);
   margin: auto;
@@ -109,7 +56,12 @@ h1 {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   position: sticky;
 }
-
+label {
+  background-color: #79b9e4;
+  padding: 7px 12px;
+  margin: 5px;
+  border-radius: 10px;
+}
 p,
 label {
   font-size: 20px;
@@ -120,6 +72,26 @@ label {
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   padding: 5px;
+}
+
+/* HTML IDs */
+
+#quiz-container {
+  margin-bottom: 20px;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+#next-btn {
+  display: none;
+}
+
+#last-question #next-btn {
+  display: inline-block;
+}
+
+#start-slide {
+  display: block;
 }
 
 #audio-controls {
@@ -156,12 +128,6 @@ label {
   margin: 95px;
 }
 
-label {
-  background-color: #79b9e4;
-  padding: 7px 12px;
-  margin: 5px;
-  border-radius: 10px;
-}
 #turtle {
   position: absolute;
   left: 5%;
@@ -215,4 +181,38 @@ label {
 
 #menu a:hover {
   color: rgb(38, 116, 137);
+}
+
+/* HTML Classes */
+
+.answer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  height: 100%;
+}
+
+.answer-image {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 4px #fff, 0 0 0 3px #000000;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.quiz-slide {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
