@@ -2,7 +2,7 @@
 const margin = { top: 10, right: 10, bottom: 10, left: 10 };
 const myDatavizDiv = document.getElementById("visualization2");
 const width2 = 600;
-const height2 = 600;
+const height2 = 800;
 
 const tooltipActivity = d3.select("#tooltipActivity");
 
@@ -217,8 +217,7 @@ function createTreemap(data) {
     .text(function (d) {
       if (
         d.parent.data.name == "Scuba Diving" ||
-        d.parent.data.name == "Body Boarding" ||
-        d.parent.data.name == "Snorkeling"
+        d.parent.data.name == "Body Boarding"
       ) {
         return "";
       } else {
