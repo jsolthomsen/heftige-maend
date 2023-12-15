@@ -215,13 +215,14 @@ document.addEventListener("DOMContentLoaded", function () {
               const unmatchedCountries = mergedData.filter((d) => {
                 const matchingFeature = countries.features.find(
                   (f) =>
-                    f.properties &&
-                    f.properties.name &&
-                    typeof f.properties.name === "string" &&
+                    f.properties && // Tjek om GeoJSON-feature har egenskaber (properties)
+                    f.properties.name && // Tjek om der er en navneegenskab
+                    typeof f.properties.name === "string" && // Tjek om navneegenskaben er en streng
                     f.properties.name.trim().toLowerCase() ===
                       (d.name && typeof d.name === "string"
                         ? d.name.trim().toLowerCase()
                         : "")
+                  // Sammenlign navnet i GeoJSON med navnet i mergedData (case-insensitiv efter trimning)
                 );
                 return !matchingFeature;
               });
@@ -431,7 +432,7 @@ function showAllFins() {
   });
 }
 
-// Funktion til at beregne bounds for alle lande, infinity og -infinity er startværdier
+// Funktion til at beregne bounds for alle lande, infinity og -infinity er startværdier, for at sikre at der ikke er maks
 function calculateBounds(data) {
   const bounds = [
     [Infinity, Infinity],
